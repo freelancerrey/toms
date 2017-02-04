@@ -1,9 +1,6 @@
 @extends('layouts.guest')
 
 @section('title', 'Register')
-@section('customcss')
-<link href="/css/register.css" rel="stylesheet">
-@endsection
 
 @section('sidelinks')
 <a href="{{ url('/login') }}">Login</a>

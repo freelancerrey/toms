@@ -13,8 +13,7 @@
         <!-- Styles -->
         <link href="/css/app.css" rel="stylesheet">
         <!-- Custom Styles -->
-        @section('customcss')
-        @show
+        <link href="/css/guest.css" rel="stylesheet">
 
         <!-- Scripts -->
         <script>

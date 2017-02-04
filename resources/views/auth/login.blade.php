@@ -1,9 +1,6 @@
 @extends('layouts.guest')
 
 @section('title', 'Login')
-@section('customcss')
-<link href="/css/login.css" rel="stylesheet">
-@endsection
 
 @section('sidelinks')
 <a href="{{ url('/password/reset') }}">Forgot Password?</a>
