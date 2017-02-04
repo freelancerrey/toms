@@ -5,6 +5,11 @@
 <link href="/css/login.css" rel="stylesheet">
 @endsection
 
+@section('sidelinks')
+<a href="{{ url('/password/reset') }}">Forgot Password?</a>
+<a href="{{ url('/register') }}">Register</a>
+@endsection
+
 @section('content')
 <form class="form-horizontal" role="form" method="POST" action="{{ url('/login') }}">
     <div class="jumbotron">

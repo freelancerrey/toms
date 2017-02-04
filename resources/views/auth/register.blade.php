@@ -4,6 +4,11 @@
 @section('customcss')
 <link href="/css/register.css" rel="stylesheet">
 @endsection
+
+@section('sidelinks')
+<a href="{{ url('/login') }}">Login</a>
+@endsection
+
 @section('content')
 <form class="form-horizontal" role="form" method="POST" action="{{ url('/register') }}">
     <div class="jumbotron">

@@ -84,3 +84,12 @@ body {
     margin-left: 0px;
     margin-right: 0px;
 }
+
+.header h3{
+  display: inline-block;
+}
+
+.header a{
+  float: right;
+  padding: 10px;
+}

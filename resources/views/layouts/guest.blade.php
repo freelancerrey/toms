@@ -29,6 +29,8 @@
         <div class="container">
             <div class="header clearfix">
                 <h3 class="text-muted">{{ config('app.name', 'Laravel') }} <span style="font-size: 12px;">v{{ config('app.version', 'Laravel') }}</span></h3>
+                @section('sidelinks')
+                @show
             </div>
 
             @yield('content')
