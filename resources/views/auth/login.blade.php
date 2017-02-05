@@ -12,7 +12,9 @@
     <div class="jumbotron">
         <h2 class='text-left' style='margin: 0 0 20px 0;'>LOG IN</h2>
         {{ csrf_field() }}
-        <!-- <div role="alert" class="alert alert-danger well-sm text-left"><strong>Opps!</strong> Invalid Email or Password!</div> -->
+        @if (session('status'))
+            <div role="alert" class="alert alert-success well-sm text-left">{{ session('status') }}</div>
+        @endif
         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }} text-left">
             <label for="email">Email</label>
             <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus placeholder="Email">
