@@ -15,6 +15,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/dashboard', 'DashboardController@index');
+
 Route::get('logout', 'Auth\LoginController@logout');
 
 Auth::routes();

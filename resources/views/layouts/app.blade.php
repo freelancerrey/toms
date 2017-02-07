@@ -1,87 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link rel="icon" href="toms_icon.ico">
 
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+        <!-- CSRF Token -->
+        <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>{{ config('app.name', 'Laravel').' v'.config('app.version', '1.0') }} - @yield('title')</title>
 
-    <!-- Styles -->
-    <link href="/css/app.css" rel="stylesheet">
+        <!-- Styles -->
+        <link href="/css/app.css" rel="stylesheet">
+        <!-- Custom Styles -->
+        <link href="/css/custom.css" rel="stylesheet">
 
-    <!-- Scripts -->
-    <script>
-        window.Laravel = {!! json_encode([
-            'csrfToken' => csrf_token(),
-        ]) !!};
-    </script>
-</head>
-<body>
-    <div id="app">
-        <nav class="navbar navbar-default navbar-static-top">
+        @section('pagecss')
+        <!-- Page Styles -->
+        @show
+
+        <!-- Scripts -->
+        <script>
+            window.Laravel = {!! json_encode([
+                'csrfToken' => csrf_token(),
+            ]) !!};
+        </script>
+    </head>
+
+    <body>
+
+        <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
-
-                    <!-- Collapsed Hamburger -->
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse">
-                        <span class="sr-only">Toggle Navigation</span>
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-
-                    <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'Laravel') }}
-                    </a>
+                    <a class="navbar-brand" href="{{ url('/') }}">{{ config('app.name', 'Laravel') }} <span style="font-size: 12px;">v{{ config('app.version', '1.0') }}</span></a>
                 </div>
-
-                <div class="collapse navbar-collapse" id="app-navbar-collapse">
-                    <!-- Left Side Of Navbar -->
+                <div id="navbar" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
-                        &nbsp;
+                        <li class="active"><a href="#">Dashboard</a></li>
+                        <li><a href="#about">Docs</a></li>
+                        <li><a href="#contact">Report a Bug</a></li>
                     </ul>
-
-                    <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
-                        <!-- Authentication Links -->
-                        @if (Auth::guest())
-                            <li><a href="{{ route('login') }}">Login</a></li>
-                            <li><a href="{{ route('register') }}">Register</a></li>
-                        @else
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                    {{ Auth::user()->name }} <span class="caret"></span>
-                                </a>
-
-                                <ul class="dropdown-menu" role="menu">
-                                    <li>
-                                        <a href="{{ route('logout') }}"
-                                            onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                            Logout
-                                        </a>
-
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                            {{ csrf_field() }}
-                                        </form>
-                                    </li>
-                                </ul>
-                            </li>
-                        @endif
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Howdy, {{ explode(' ', Auth::user()->name)[0] }} &nbsp;&nbsp;&nbsp;&nbsp;<span class="caret"></span></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ url('/logout') }}">Logout</a></li>
+                            </ul>
+                        </li>
                     </ul>
-                </div>
+                </div><!--/.nav-collapse -->
             </div>
         </nav>
 
-        @yield('content')
-    </div>
+        <div class="container">
+            <div class="starter-template">
+                @yield('content')
+            </div>
+        </div><!-- /.container -->
 
-    <!-- Scripts -->
-    <script src="/js/app.js"></script>
-</body>
+
+        <!-- Scripts -->
+        <script src="/js/app.js"></script>
+    </body>
 </html>
