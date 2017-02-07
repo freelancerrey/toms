@@ -52,7 +52,7 @@
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Howdy, {{ explode(' ', Auth::user()->name)[0] }} &nbsp;&nbsp;&nbsp;&nbsp;<span class="caret"></span></span></a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Howdy, {{ explode(' ', Auth::user()->name)[0] }}! &nbsp;&nbsp;&nbsp;&nbsp;<span class="caret"></span></span></a>
                             <ul class="dropdown-menu">
                                 <li><a href="{{ url('/logout') }}">Logout</a></li>
                             </ul>

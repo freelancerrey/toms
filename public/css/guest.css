@@ -45,6 +45,9 @@ body {
 .jumbotron {
   text-align: center;
   border-bottom: 1px solid #e5e5e5;
+  background-color: #222;
+  border-color: #090909;
+  color: #fff !important;
 }
 .jumbotron .btn {
     padding: 8px 30px;
@@ -92,4 +95,8 @@ body {
 .header a{
   float: right;
   padding: 10px;
+}
+
+.alert{
+  margin-bottom: 10px !important;
 }
