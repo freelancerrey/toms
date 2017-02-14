@@ -32,6 +32,12 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
+        if ($exception instanceof ValidationException)
+            return new AjaxFormResponse(
+                $exception->getErrors()->toArray(),
+                400
+            );
+
         parent::report($exception);
     }
 
