@@ -47,7 +47,7 @@ class LoginController extends Controller
     function attemptLogin(Request $request)
     {
         return $this->guard()->attempt(
-            ['email' => $request->input('email'), 'password' => $request->input('password'), 'isactive' => 1],
+            ['email' => $request->input('email'), 'password' => $request->input('password'), 'is_active' => 1],
             $request->has('remember')
         );
     }
