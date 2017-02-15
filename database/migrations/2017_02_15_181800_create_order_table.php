@@ -31,12 +31,16 @@ class CreateOrderTable extends Migration
             $table->smallInteger('optins');
             $table->boolean('followup_sent');
             $table->string('screenshot');
+            $table->unsignedSmallInteger('category');
             $table->timestamps();
             $table->foreign('payment')
                   ->references('id')->on('payment')
                   ->onDelete('cascade');
             $table->foreign('type')
                   ->references('id')->on('order_type')
+                  ->onDelete('cascade');
+            $table->foreign('category')
+                  ->references('id')->on('order_statuses')
                   ->onDelete('cascade');
         });
     }
