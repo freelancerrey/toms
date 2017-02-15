@@ -13,14 +13,14 @@ class CreateNoteTable extends Migration
      */
     public function up()
     {
-        Schema::create('note', function (Blueprint $table) {
+        Schema::create('notes', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('order');
             $table->unsignedInteger('user');
             $table->string('note', 750);
             $table->timestamps();
             $table->foreign('order')
-                  ->references('id')->on('order')
+                  ->references('id')->on('orders')
                   ->onDelete('cascade');
             $table->foreign('user')
                   ->references('id')->on('users')
@@ -35,6 +35,6 @@ class CreateNoteTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('note');
+        Schema::dropIfExists('notes');
     }
 }

@@ -19,6 +19,9 @@ class CreateOrderStatusTable extends Migration
             $table->string('status', 50);
             $table->boolean('is_active');
             $table->timestamps();
+            $table->foreign('category')
+                  ->references('id')->on('status_categories')
+                  ->onDelete('cascade');
         });
     }
 

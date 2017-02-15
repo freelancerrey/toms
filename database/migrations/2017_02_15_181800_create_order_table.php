@@ -13,7 +13,7 @@ class CreateOrderTable extends Migration
      */
     public function up()
     {
-        Schema::create('order', function (Blueprint $table) {
+        Schema::create('orders', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('payment');
             $table->string('entry', 10);
@@ -31,15 +31,15 @@ class CreateOrderTable extends Migration
             $table->smallInteger('optins');
             $table->boolean('followup_sent');
             $table->string('screenshot');
-            $table->unsignedSmallInteger('category');
+            $table->unsignedSmallInteger('status');
             $table->timestamps();
             $table->foreign('payment')
-                  ->references('id')->on('payment')
+                  ->references('id')->on('payments')
                   ->onDelete('cascade');
             $table->foreign('type')
-                  ->references('id')->on('order_type')
+                  ->references('id')->on('order_types')
                   ->onDelete('cascade');
-            $table->foreign('category')
+            $table->foreign('status')
                   ->references('id')->on('order_statuses')
                   ->onDelete('cascade');
         });
@@ -52,6 +52,6 @@ class CreateOrderTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('order');
+        Schema::dropIfExists('orders');
     }
 }

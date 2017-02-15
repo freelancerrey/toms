@@ -13,7 +13,7 @@ class CreateOrderTypeTable extends Migration
      */
     public function up()
     {
-        Schema::create('order_type', function (Blueprint $table) {
+        Schema::create('order_types', function (Blueprint $table) {
             $table->smallIncrements('id');
             $table->string('type', 50);
             $table->boolean('is_active');
@@ -28,6 +28,6 @@ class CreateOrderTypeTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('order_type');
+        Schema::dropIfExists('order_types');
     }
 }
