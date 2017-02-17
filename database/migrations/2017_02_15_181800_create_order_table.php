@@ -32,7 +32,7 @@ class CreateOrderTable extends Migration
             $table->boolean('followup_sent')->default(0);
             $table->string('screenshot', 250)->default('');
             $table->unsignedTinyInteger('priority')->default(0);
-            $table->unsignedSmallInteger('status');
+            $table->unsignedSmallInteger('status')->default(1);
             $table->timestamps();
             $table->foreign('payment')
                   ->references('id')->on('payments')
