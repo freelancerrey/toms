@@ -16,7 +16,7 @@ class PaymentService
         $this->paymentRepository = $paymentRepository;
     }
 
-    public function create(array $data)
+    public function createIfNotExist(array $data)
     {
         $this->validate($data);
 
@@ -24,11 +24,9 @@ class PaymentService
 
             $payment = new Payment;
 
-            $payment->reference = $data['reference'];
-            $payment->name = $data['payment_name'];
-            $payment->email = $data['payment_email'];
-            $payment->amount = $data['amount'];
-            $payment->date = $data['payment_date'];
+            foreach ($data as $key => $value) {
+                $payment->$key = $value;
+            }
 
             $this->paymentRepository->save($payment);
 
@@ -48,10 +46,10 @@ class PaymentService
     {
         $validator = Validator::make($data, [
             'reference' => 'required|string|max:100',
-            'payment_name' => 'required|string|max:50',
-            'payment_email' => 'required|email|max:100',
+            'name' => 'required|string|max:50',
+            'email' => 'required|email|max:100',
             'amount' => 'required|numeric|between:0,999999.99',
-            'payment_date' => 'required|date_format:Y-m-d'
+            'date' => 'required|date_format:Y-m-d'
         ]);
 
         if ($validator->fails()) {
