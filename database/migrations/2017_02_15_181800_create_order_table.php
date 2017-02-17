@@ -16,21 +16,21 @@ class CreateOrderTable extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('payment');
-            $table->string('entry', 10);
-            $table->unsignedSmallInteger('type');
-            $table->string('name', 100);
-            $table->string('email', 100);
-            $table->string('paypal_name', 100);
-            $table->smallInteger('clicks');
-            $table->boolean('put_on_top');
-            $table->dateTime('date_submitted');
-            $table->string('url', 250);
-            $table->string('stats', 250);
-            $table->boolean('in_rotator');
-            $table->smallInteger('clicks_sent');
-            $table->smallInteger('optins');
-            $table->boolean('followup_sent');
-            $table->string('screenshot');
+            $table->string('entry', 10)->nullable()->default(null);
+            $table->unsignedSmallInteger('type')->nullable()->default(null);
+            $table->string('name', 100)->default('');
+            $table->string('email', 100)->default('');
+            $table->string('paypal_name', 100)->default('');
+            $table->smallInteger('clicks')->default(0);
+            $table->boolean('put_on_top')->default(0);
+            $table->dateTime('date_submitted')->nullable()->default(null);
+            $table->string('url', 250)->default('');
+            $table->string('stats', 250)->default('');
+            $table->boolean('in_rotator')->default(0);
+            $table->smallInteger('clicks_sent')->default(0);
+            $table->smallInteger('optins')->default(0);
+            $table->boolean('followup_sent')->default(0);
+            $table->string('screenshot')->default('');
             $table->unsignedSmallInteger('status');
             $table->timestamps();
             $table->foreign('payment')
