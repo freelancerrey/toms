@@ -49,8 +49,8 @@ class PaymentService
         $validator = Validator::make($data, [
             'reference' => 'required|string|max:100',
             'payment_name' => 'required|string|max:50',
-            'payment_email' => 'required|email',
-            'amount' => 'required|numeric',
+            'payment_email' => 'required|email|max:100',
+            'amount' => 'required|numeric|between:0,999999.99',
             'payment_date' => 'required|date_format:Y-m-d'
         ]);
 
