@@ -46,6 +46,7 @@ class PaymentService
     {
         $validator = Validator::make($data, [
             'reference' => 'required|string|max:100',
+            'gateway' => 'required|integer|between:0,65535|exists:payment_gateways,id',
             'name' => 'required|string|max:50',
             'email' => 'required|email|max:100',
             'amount' => 'required|numeric|between:0,999999.99',
