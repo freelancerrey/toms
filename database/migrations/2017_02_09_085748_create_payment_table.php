@@ -16,12 +16,16 @@ class CreatePaymentTable extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->increments('id');
             $table->string('reference', 100);
+            $table->unsignedSmallInteger('paid_thru');
             $table->string('name', 100);
             $table->string('email', 100);
             $table->decimal('amount', 8, 2);
             $table->dateTime('date');
             $table->timestamps();
             $table->unique('reference', 'payment_reference');
+            $table->foreign('paid_thru')
+                  ->references('id')->on('payment_gateways')
+                  ->onDelete('cascade');
         });
     }
 
