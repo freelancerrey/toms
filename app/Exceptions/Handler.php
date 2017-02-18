@@ -46,11 +46,21 @@ class Handler extends ExceptionHandler
     public function render($request, Exception $exception)
     {
 
-        if ($exception instanceof ValidationException)
-            return new AjaxFormResponse(
-                $exception->getErrors()->toArray(),
-                400
-            );
+        if ($exception instanceof ValidationException) {
+
+            if ($request->expectsJson()) {
+                return new AjaxFormResponse(
+                    $exception->getErrors()->toArray(),
+                    400
+                );
+            }
+
+            return redirect()
+                ->back(303)
+                ->withErrors($exception->getErrors())
+                ->withInput();
+
+        }
 
         return parent::render($request, $exception);
     }
