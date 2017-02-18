@@ -1,0 +1,208 @@
+.nav-tabs>li>a {
+    padding-top: 7px;
+    padding-bottom: 7px;
+    font-weight: bold;
+}
+
+.tab-pane td input[type='text'], .tab-pane td select{
+    height: 100%;
+    width: 100%;
+    border: none;
+}
+
+td span.order-status{
+    font-weight: bold;
+    font-size: 10px;
+    display: inline-block;
+    line-height: 10px;
+    padding: 5px 8px;
+    border-radius: 3px;
+    text-align: center;
+}
+
+td span.order-status.payment{
+    background: #fff300;
+    border: 1px solid #e0d500;
+}
+
+td span.order-status.order{
+    background: orange;
+    border: 1px solid #cb8300;
+}
+
+td span.order-status.process{
+    background: #009db7;
+    border: 1px solid #007487;
+}
+
+td span.order-status.traffic{
+    background: #f00;
+    border: 1px solid #930000;
+}
+
+td span.order-status.done{
+    background: #7de300;
+    border: 1px solid #4da100;
+}
+
+td span.order-status.discard{
+    background: #b1b1b1;
+    border: 1px solid #666;
+}
+
+td.status-cell{
+    padding: 3px !important;
+    text-align: center;
+}
+
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+  background-color: #efefef;
+  cursor: pointer;
+}
+
+#view-order-modal td input,
+#view-order-modal td select,
+.attach-formid-btngroup,
+#view-order-modal div.modal-body.edit-mode #form-entry-view{
+    display: none;
+}
+
+#view-order-modal div.modal-body.edit-mode td input,
+#view-order-modal div.modal-body.edit-mode td select{
+    display: block;
+}
+
+#view-order-modal div.modal-body.edit-mode .attach-formid-btngroup{
+    display: table;
+}
+
+#view-notes, #view-logs{
+    overflow-y: scroll;
+    height: 300px;
+}
+
+#view-order-modal div.note{
+    border-width: 1px;
+    border-style: solid;
+    padding: 10px 20px;
+    font-size: 12px;
+    width: 100%;
+    margin: 10px;
+    font-style: italic;
+}
+
+#view-order-modal div.note p{
+    padding-left: 13px;
+    border-left-width: 2px;
+    border-left-style: solid;
+    margin-bottom: 0;
+}
+
+#view-order-modal div.note span{
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-style: normal;
+}
+
+#view-order-modal div.note span.author{
+    margin-bottom: 0;
+    margin-top: 5px;
+}
+
+#view-order-modal div.note:nth-child(5n+1){
+    background: #e9ffc6;
+    border-color: #80bd5b;
+}
+
+#view-order-modal div.note:nth-child(5n+1) p{
+    border-color: #7eaa5b;
+}
+
+#view-order-modal div.note:nth-child(5n+2){
+    background: #ffffd4;
+    border-color: #ffb869;
+}
+
+#view-order-modal div.note:nth-child(5n+2) p{
+    border-color: #ffb869;
+}
+
+#view-order-modal div.note:nth-child(5n+3){
+    background: #ffe4e9;
+    border-color: pink;
+}
+
+#view-order-modal div.note:nth-child(5n+3) p{
+    border-color: #ff9e9e;
+}
+
+#view-order-modal div.note:nth-child(5n+4){
+    background: #daf8ff;
+    border-color: #008BB9;
+}
+
+#view-order-modal div.note:nth-child(5n+4) p{
+    border-color: #9ee4ff;
+}
+
+#view-order-modal div.note:nth-child(5n+5){
+    background: #efefef;
+    border-color: #bcbcbc;
+}
+
+#view-order-modal div.note:nth-child(5n+5) p{
+    border-color: #ccc;
+}
+
+#view-notes textarea{
+    margin: 0px 10px;
+    height: 80px;
+    width: 521px;
+    border: 1px solid rgb(179, 179, 179);
+    padding: 10px;
+    font-size: 12px;
+    resize: vertical;
+}
+
+#log-table{
+    font-size: 12px;
+    border: 1px solid #e1e1e1;
+    width: 100%;
+}
+
+#log-table thead tr{
+    background: #cfcfcf;
+}
+
+#log-table tbody tr:nth-child(1) td{
+    border-top: 1px solid #ababab;
+}
+
+#log-table tbody tr:nth-child(even){
+    background: #f3f3f3;
+}
+
+#log-table th{
+    border: 1px solid #ababab;
+    padding: 3px;
+    text-align: center;
+}
+
+#log-table td{
+    border: 1px solid #e1e1e1;
+    padding: 3px 5px;
+    vertical-align: top;
+}
+
+table tr.has-error th{
+    border-right: 1px solid #a94442;
+}
+
+table tr.has-error td{
+    border: 1px solid #a94442;
+}
+
+#create-notes > div.has-error{
+    border: 1px solid #a94442;
+}

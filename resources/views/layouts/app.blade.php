@@ -17,7 +17,7 @@
         <!-- Styles -->
         <link href="/css/app.css" rel="stylesheet">
         <!-- Custom Styles -->
-        <link href="/css/custom.css" rel="stylesheet">
+        <link href="/css/main.css" rel="stylesheet">
 
         @section('pagecss')
         <!-- Page Styles -->
@@ -71,5 +71,10 @@
 
         <!-- Scripts -->
         <script src="/js/app.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $("body").tooltip({ selector: '[data-toggle=tooltip]' });
+            });
+        </script>
     </body>
 </html>
