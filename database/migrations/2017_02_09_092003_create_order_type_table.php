@@ -16,6 +16,7 @@ class CreateOrderTypeTable extends Migration
         Schema::create('order_types', function (Blueprint $table) {
             $table->smallIncrements('id');
             $table->string('type', 50);
+            $table->string('mapping', 150);
             $table->boolean('is_active');
             $table->timestamps();
         });
