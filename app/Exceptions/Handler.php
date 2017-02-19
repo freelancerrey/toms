@@ -5,7 +5,7 @@ namespace App\Exceptions;
 use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use App\Http\Responses\AjaxFormResponse;
+use App\Http\Responses\AjaxResponse;
 
 class Handler extends ExceptionHandler
 {
@@ -49,7 +49,7 @@ class Handler extends ExceptionHandler
         if ($exception instanceof ValidationException) {
 
             if ($request->expectsJson()) {
-                return new AjaxFormResponse(
+                return new AjaxResponse(
                     $exception->getErrors()->toArray(),
                     400
                 );

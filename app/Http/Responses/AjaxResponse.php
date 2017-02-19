@@ -11,11 +11,11 @@ class AjaxResponse extends JsonResponse
      * @param  mixed  $data
      * @param  int    $status
      */
-    public function __construct($data = [])
+    public function __construct($data = [], $status = 200)
     {
         parent::__construct(
             $data,
-            200,
+            $status,
             ['Content-Type' => 'application/json; charset=utf-8']
         );
     }

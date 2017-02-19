@@ -230,4 +230,8 @@ return [
 
     ],
 
+    'gravity_api_key' => env('GRAVITY_API_KEY'),
+
+    'gravity_private_key' => env('GRAVITY_PRIVATE_KEY'),
+
 ];

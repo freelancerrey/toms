@@ -15,6 +15,10 @@ Route::get('/', 'DashboardController@index');
 
 Route::get('/logout', 'Auth\LoginController@logout');
 
+Route::group(['prefix' => 'ajax'], function () {
+    Route::get('form/apicallurl', 'FormController@getCallUrl');
+});
+
 Route::get('/test.html','TestController@index');
 
 Auth::routes();
