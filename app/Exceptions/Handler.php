@@ -5,6 +5,8 @@ namespace App\Exceptions;
 use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Psr7;
 use App\Http\Responses\AjaxResponse;
 
 class Handler extends ExceptionHandler
@@ -59,6 +61,15 @@ class Handler extends ExceptionHandler
                 ->back(303)
                 ->withErrors($exception->getErrors())
                 ->withInput();
+
+        } else if ($exception instanceof ClientException) {
+
+            return new AjaxResponse([
+                    Psr7\str($exception->getRequest()),
+                    Psr7\str($exception->getResponse())
+                ],
+                500
+            );
 
         }
 

@@ -2,13 +2,14 @@
 namespace App\Services;
 
 use App\Exceptions\ValidationException;
+use GuzzleHttp\Client;
 use Validator;
 use DateTime;
 
 class FormService
 {
 
-    public function getCallUrl(array $data)
+    public function getDetail(array $data)
     {
 
         $this->validate($data);
@@ -24,7 +25,11 @@ class FormService
 
         $callUrl = 'https://www.humaneyeballs.com/gravityformsapi/' . $route . '?api_key=' . $apiKey . '&signature=' . $signature . '&expires=' . $expires;
 
-        return $callUrl;
+        $client = new Client();
+        $response = $client->request('GET', $callUrl);
+        $response = json_decode($response->getBody(), true);
+
+        return $response['response'];
 
     }
 

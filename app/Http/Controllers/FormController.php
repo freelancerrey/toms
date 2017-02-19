@@ -26,6 +26,6 @@ class FormController extends Controller
 
     public function getCallUrl(Request $request)
     {
-        return new AjaxResponse($this->formService->getCallUrl($request->all()));
+        return new AjaxResponse($this->formService->getDetail($request->all()));
     }
 }
