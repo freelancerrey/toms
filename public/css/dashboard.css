@@ -206,3 +206,8 @@ table tr.has-error td{
 #create-notes > div.has-error{
     border: 1px solid #a94442;
 }
+
+div.tab-pane.loading input.form-id-input{
+    background: #ffffff url("/img/horizontal_loading.gif") no-repeat right 10px center;
+    padding-right: 35px;
+}

@@ -6,6 +6,14 @@
 <link href="/css/dashboard.css" rel="stylesheet">
 @endsection
 
+@section('pagescripts')
+<script src="/js/dashboard.js"></script>
+<script type="text/javascript">
+    var orderTypes = {!! json_encode($order_type_mappings['types'], true) !!};
+    var formsMappings = {!! json_encode($order_type_mappings['forms'], true) !!}
+</script>
+@endsection
+
 @section('content')
 <div class="modal fade" id="new-order-modal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
@@ -14,21 +22,20 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">Add New Order</h4>
             </div>
-            <div class="modal-body" style='height: 420px;'>
+            <div class="modal-body" style='height: 450px;'>
                 <div class='row' style='margin-bottom: 10px'>
-                    <div class="col-md-10 text-left">
+                    <div class="col-md-2 text-left">
                         <select style='padding: 7px 10px; border: 1px solid #d1d1d1;'>
-                            <option value='1'>ORDER - Waiting for Confirmation</option>
-                            <option value='2'>ORDER - Waiting for Previous Order</option>
+                            @for ($i = 1; $i < 6; $i++)
+                                <option value='{{ $i }}'>{{ $i }}</option>
+                            @endfor
                         </select>
                     </div>
-                    <div class="col-md-2 text-right">
+                    <div class="col-md-10 text-right">
                         <select style='padding: 7px 10px; border: 1px solid #d1d1d1;'>
-                            <option value='1'>1</option>
-                            <option value='2'>2</option>
-                            <option value='3'>3</option>
-                            <option value='4'>4</option>
-                            <option value='5'>5</option>
+                            @foreach ($order_statuses as $status)
+                                <option value="{{ $status['id'] }}">{{ $status['category'] }} - {{ $status['status'] }}</option>
+                            @endforeach
                         </select>
                     </div>
                 </div>
@@ -52,8 +59,9 @@
                                     <th scope="row" class="active text-right">Paid Thru : </th>
                                     <td>
                                         <select>
-                                            <option value='1'>Authorize.net</option>
-                                            <option value='2'>Paypal</option>
+                                            @foreach ($payment_gateways as $gateway)
+                                                <option value="{{ $gateway['id'] }}">{{ $gateway['gateway'] }}</option>
+                                            @endforeach
                                         </select>
                                     </td>
                                 </tr>
@@ -78,37 +86,45 @@
                     </div>
                     <div role="tabpanel" class="tab-pane" id="create-order">
                         <div class='row'>
-                            <div class="col-md-7 text-left">
-                                <div class="input-group has-error" data-toggle="tooltip" data-placement="bottom" title="Tooltip on left">
+                            <div class="col-md-8 text-left">
+                                <div class="input-group attach-form-btngroup" data-placement="bottom">
                                     <div class="input-group-btn">
-                                        <button type="button" class="btn btn-default">Gravity</button>
-                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <button type="button" class="btn btn-default form-type-display" data-entryprefix='GF'>Gravity</button>
+                                        <button type="button" class="btn btn-default form-type-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <span class="caret"></span>
-                                            <span class="sr-only">Toggle Dropdown</span>
+                                            <span class="sr-only"></span>
                                         </button>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="#">Gravity</a></li>
-                                            <li><a href="#">Wufoo</a></li>
+                                        <button type="button" class="btn btn-default remove-attached-form"><span class="glyphicon glyphicon-trash"></span></button>
+                                        <ul class="dropdown-menu form-type-list">
+                                            <li data-prefix='GF'><a href="#">Gravity</a></li>
+                                            <li data-prefix='WF'><a href="#">Wufoo</a></li>
                                         </ul>
                                     </div>
-                                    <input type="text" class="form-control" aria-label="..." id='create-order-formid' placeholder="Form/Entry ID...">
+                                    <input type="text" class="form-control form-id-input" aria-label="..." placeholder="Form/Entry ID...">
                                     <span class="input-group-btn">
-                                        <button class="btn btn-info" type="button">Go!</button>
+                                        <button class="btn btn-primary attach-form-button" type="button">Go!</button>
                                     </span>
                                 </div>
                             </div>
-                            <div class="col-md-5 text-right">
-                                <div class="checkbox"><label><input type="checkbox" value=""><strong>Put on top of the Que</strong></label></div>
+                            <div class="col-md-4 text-right">
+                                <div class="checkbox"><label><input type="checkbox" value=""><strong>Put on Top of Que</strong></label></div>
                             </div>
                         </div>
+                        <input type="hidden" name="entry" value="">
+                        <input type="hidden" name="type" value="">
+                        <input type="hidden" name="name" value="">
+                        <input type="hidden" name="email" value="">
+                        <input type="hidden" name="paypal_name" value="">
+                        <input type="hidden" name="date_submitted" value="">
                         <table class="table table-bordered" style='margin-top: 5px'>
                             <tbody>
-                                <tr> <th scope="row" class="active text-right" style="width: 165px;">Traffic Type : </th> <td>Mark</td></tr>
-                                <tr> <th scope="row" class="active text-right">Customer Name : </th> <td>Larry</td></tr>
-                                <tr> <th scope="row" class="active text-right">Email : </th> <td>Jacob</td></tr>
-                                <tr> <th scope="row" class="active text-right">Paypal Name : </th> <td>Jacob</td></tr>
-                                <tr> <th scope="row" class="active text-right">Number of Clicks : </th> <td>Larry</td></tr>
-                                <tr> <th scope="row" class="active text-right">Date Submitted : </th> <td>Larry</td></tr>
+                                <tr> <th scope="row" class="active text-right" style="width: 165px;">Entry ID : </th> <td></td></tr>
+                                <tr> <th scope="row" class="active text-right">Traffic Type : </th> <td></td></tr>
+                                <tr> <th scope="row" class="active text-right">Customer Name : </th> <td></td></tr>
+                                <tr> <th scope="row" class="active text-right">Email : </th> <td></td></tr>
+                                <tr> <th scope="row" class="active text-right">Paypal Name : </th> <td></td></tr>
+                                <tr> <th scope="row" class="active text-right">Number of Clicks : </th> <td><input type='text' name='clicks' value=''></td></tr>
+                                <tr> <th scope="row" class="active text-right">Date Submitted : </th> <td></td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -171,8 +187,9 @@
                 <div class='row' style='margin-bottom: 10px'>
                     <div class="col-md-10 text-left">
                         <select style='padding: 7px 10px; border: 1px solid #d1d1d1;'>
-                            <option value='1'>ORDER - Waiting for Confirmation</option>
-                            <option value='2'>ORDER - Waiting for Previous Order</option>
+                            @foreach ($order_statuses as $status)
+                                <option value="{{ $status['status'] }}">ORDER - {{ $status['status'] }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="col-md-2 text-right">

@@ -74,7 +74,17 @@
         <script type="text/javascript">
             $(document).ready(function() {
                 $("body").tooltip({ selector: '[data-toggle=tooltip]' });
+                $.ajaxSetup({
+                    statusCode: {
+                        401: function(){
+                            window.location.href = "/login";
+                        }
+                    }
+                });
             });
         </script>
+        @section('pagescripts')
+        <!-- Page Scripts -->
+        @show
     </body>
 </html>
