@@ -18,7 +18,7 @@ class PaymentService
 
     public function createIfNotExist(array $data)
     {
-        $this->validate($data);
+        //$this->validate($data); validation will on the caller side
 
         if(!$payment = $this->paymentRepository->findByReference($data['reference'])) {
 
@@ -42,7 +42,7 @@ class PaymentService
      *
      * @param array $data
      */
-    private function validate(array $data)
+    public function validate(array $data)
     {
         $validator = Validator::make($data, [
             'reference' => 'required|string|max:100',

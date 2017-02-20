@@ -27,7 +27,7 @@ class OrderService
     public function create(array $data)
     {
 
-        $this->validate($data['order']);
+        $this->validate($data);
 
         $payment = $this->paymentService->createIfNotExist($data['payment']);
 
@@ -56,7 +56,10 @@ class OrderService
      */
     private function validate(array $data)
     {
-        $validator = Validator::make($data, [
+
+        $this->paymentService->validate($data['payment']);
+
+        $validator = Validator::make($data['order'], [
             'entry' => 'nullable|string|max:25',
             'type' => 'integer|between:0,65535|exists:order_types,id',
             'name' => 'string|max:100',
