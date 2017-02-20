@@ -45,12 +45,12 @@ class PaymentService
     public function validate(array $data)
     {
         $validator = Validator::make($data, [
-            'reference' => 'required|string|max:100',
-            'gateway' => 'required|integer|between:0,65535|exists:payment_gateways,id',
-            'name' => 'required|string|max:50',
-            'email' => 'required|email|max:100',
-            'amount' => 'required|numeric|between:0,999999.99',
-            'date' => 'required|date_format:Y-m-d H:i:s'
+            'payment.reference' => 'required|string|max:100',
+            'payment.gateway' => 'required|integer|between:0,65535|exists:payment_gateways,id',
+            'payment.name' => 'required|string|max:50',
+            'payment.email' => 'required|email|max:100',
+            'payment.amount' => 'required|numeric|between:0,999999.99',
+            'payment.date' => 'required|date_format:Y-m-d H:i:s'
         ]);
 
         if ($validator->fails()) {

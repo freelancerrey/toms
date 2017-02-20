@@ -57,26 +57,26 @@ class OrderService
     private function validate(array $data)
     {
 
-        $this->paymentService->validate($data['payment']);
+        $this->paymentService->validate($data);
 
-        $validator = Validator::make($data['order'], [
-            'entry' => 'nullable|string|max:25',
-            'type' => 'integer|between:0,65535|exists:order_types,id',
-            'name' => 'string|max:100',
-            'email' => 'string|max:100',
-            'paypal_name' => 'string|max:100',
-            'clicks' => 'integer|between:0,65535',
-            'put_on_top' => 'boolean',
-            'date_submitted' => 'nullable|date_format:Y-m-d H:i:s',
-            'url' => 'url|max:250',
-            'stats' => 'url|max:250',
-            'in_rotator' => 'boolean',
-            'clicks_sent' => 'integer|between:0,65535',
-            'optins' => 'integer|between:0,65535',
-            'followup_sent' => 'boolean',
-            'screenshot' => 'url|max:250',
-            'priority' => 'integer|between:0,255',
-            'status' => 'integer|between:0,65535|exists:order_statuses,id'
+        $validator = Validator::make($data, [
+            'order.entry' => 'nullable|string|max:25',
+            'order.type' => 'integer|between:0,65535|exists:order_types,id',
+            'order.name' => 'string|max:100',
+            'order.email' => 'email|max:100',
+            'order.paypal_name' => 'string|max:100',
+            'order.clicks' => 'integer|between:0,65535',
+            'order.put_on_top' => 'boolean',
+            'order.date_submitted' => 'nullable|date_format:Y-m-d H:i:s',
+            'order.url' => 'url|max:250',
+            'order.stats' => 'url|max:250',
+            'order.in_rotator' => 'boolean',
+            'order.clicks_sent' => 'integer|between:0,65535',
+            'order.optins' => 'integer|between:0,65535',
+            'order.followup_sent' => 'boolean',
+            'order.screenshot' => 'url|max:250',
+            'order.priority' => 'integer|between:0,255',
+            'order.status' => 'integer|between:0,65535|exists:order_statuses,id'
         ]);
 
         if ($validator->fails()) {
