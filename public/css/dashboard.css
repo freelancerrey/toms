@@ -195,12 +195,8 @@ td.status-cell{
     vertical-align: top;
 }
 
-table tr.has-error th{
-    border-right: 1px solid #a94442;
-}
-
-table tr.has-error td{
-    border: 1px solid #a94442;
+table td.has-error{
+    border-bottom: 2px solid #a94442 !important;
 }
 
 #create-notes > div.has-error{
@@ -210,4 +206,12 @@ table tr.has-error td{
 div.tab-pane.loading input.form-id-input{
     background: #ffffff url("/img/horizontal_loading.gif") no-repeat right 10px center;
     padding-right: 35px;
+}
+
+ul.nav-tabs li.hilight-error a{
+    background: #ffd7d7 !important;
+}
+
+ul.nav-tabs li.active.hilight-error a{
+    background: #ffa4a4 !important;
 }

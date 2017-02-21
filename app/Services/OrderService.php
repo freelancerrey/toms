@@ -40,7 +40,7 @@ class OrderService
 
         $this->orderRepository->save($order);
 
-        if (array_key_exists('note', $data)) {
+        if (array_key_exists('note', $data) && !is_null($data['note'])) {
             $this->noteService->create($order, Auth::user(), $data);
         }
 
@@ -61,22 +61,22 @@ class OrderService
 
         $validator = Validator::make($data, [
             'order.entry' => 'nullable|string|max:25',
-            'order.type' => 'integer|between:0,65535|exists:order_types,id',
-            'order.name' => 'string|max:100',
-            'order.email' => 'email|max:100',
-            'order.paypal_name' => 'string|max:100',
-            'order.clicks' => 'integer|between:0,65535',
-            'order.put_on_top' => 'boolean',
+            'order.type' => 'nullable|integer|between:0,65535|exists:order_types,id',
+            'order.name' => 'nullable|string|max:100',
+            'order.email' => 'nullable|email|max:100',
+            'order.paypal_name' => 'nullable|string|max:100',
+            'order.clicks' => 'nullable|integer|between:0,65535',
+            'order.put_on_top' => 'nullable|boolean',
             'order.date_submitted' => 'nullable|date_format:Y-m-d H:i:s',
-            'order.url' => 'url|max:250',
-            'order.stats' => 'url|max:250',
-            'order.in_rotator' => 'boolean',
-            'order.clicks_sent' => 'integer|between:0,65535',
-            'order.optins' => 'integer|between:0,65535',
-            'order.followup_sent' => 'boolean',
-            'order.screenshot' => 'url|max:250',
-            'order.priority' => 'integer|between:0,255',
-            'order.status' => 'integer|between:0,65535|exists:order_statuses,id'
+            'order.url' => 'nullable|url|max:250',
+            'order.stats' => 'nullable|url|max:250',
+            'order.in_rotator' => 'nullable|boolean',
+            'order.clicks_sent' => 'nullable|integer|between:0,65535',
+            'order.optins' => 'nullable|integer|between:0,65535',
+            'order.followup_sent' => 'nullable|boolean',
+            'order.screenshot' => 'nullable|url|max:250',
+            'order.priority' => 'nullable|integer|between:0,255',
+            'order.status' => 'nullable|integer|between:0,65535|exists:order_statuses,id'
         ]);
 
         if ($validator->fails()) {

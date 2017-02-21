@@ -15,6 +15,12 @@
 @endsection
 
 @section('content')
+<div id="alert-message" style="position: fixed;left: 300px;right: 300px;text-align: center;z-index: 100; display: none">
+    <div class="alert alert-success alert-dismissible fade in" role="alert" style="display: inline-block;margin: 0;">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+        <strong class='status'>Holy guacamole!</strong> <span class='message'>Best check yo self, you're not looking too good.</span>
+    </div>
+</div>
 <div class="modal fade" id="new-order-modal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -53,11 +59,11 @@
                             <tbody>
                                 <tr>
                                     <th scope="row" class="active text-right" style="width: 165px;">Reference : </th>
-                                    <td><input name='payment[reference]' type='text' value='' placeholder='Enter Reference here...'></td>
+                                    <td data-errorfor='payment-reference'><input name='payment[reference]' id='create-order-reference' type='text' value='' placeholder='Enter Reference here...'></td>
                                 </tr>
                                 <tr>
                                     <th scope="row" class="active text-right">Paid Thru : </th>
-                                    <td>
+                                    <td data-errorfor='payment-gateway'>
                                         <select name='payment[gateway]'>
                                             @foreach ($payment_gateways as $gateway)
                                                 <option value="{{ $gateway['id'] }}">{{ $gateway['gateway'] }}</option>
@@ -67,19 +73,19 @@
                                 </tr>
                                 <tr>
                                     <th scope="row" class="active text-right">Name : </th>
-                                    <td><input type='text' name='payment[name]' value='' placeholder='Enter Name here...'></td>
+                                    <td data-errorfor='payment-name'><input type='text' name='payment[name]' value='' placeholder='Enter Name here...'></td>
                                 </tr>
                                 <tr>
                                     <th scope="row" class="active text-right">Email : </th>
-                                    <td><input type='text' name='payment[email]' value='' placeholder='Enter Email here...'></td>
+                                    <td data-errorfor='payment-email'><input type='text' name='payment[email]' value='' placeholder='Enter Email here...'></td>
                                 </tr>
                                 <tr>
                                     <th scope="row" class="active text-right">Amount : </th>
-                                    <td><input type='text' name='payment[amount]' value='' placeholder='Enter Amount here...'></td>
+                                    <td data-errorfor='payment-amount'><input type='text' name='payment[amount]' value='' placeholder='Enter Amount here...'></td>
                                 </tr>
                                 <tr>
                                     <th scope="row" class="active text-right">Date : </th>
-                                    <td><input type='text' name='payment[date]' value='' placeholder='Enter Date here...'></td>
+                                    <td data-errorfor='payment-date'><input type='text' name='payment[date]' value='' placeholder='Enter Date here...'></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -118,13 +124,13 @@
                         <input type="hidden" name="order[date_submitted]" value="">
                         <table class="table table-bordered" style='margin-top: 5px'>
                             <tbody>
-                                <tr> <th scope="row" class="active text-right" style="width: 165px;">Entry ID : </th> <td></td></tr>
-                                <tr> <th scope="row" class="active text-right">Traffic Type : </th> <td></td></tr>
-                                <tr> <th scope="row" class="active text-right">Customer Name : </th> <td></td></tr>
-                                <tr> <th scope="row" class="active text-right">Email : </th> <td></td></tr>
-                                <tr> <th scope="row" class="active text-right">Paypal Name : </th> <td></td></tr>
-                                <tr> <th scope="row" class="active text-right">Number of Clicks : </th> <td><input type='text' name='order[clicks]' value=''></td></tr>
-                                <tr> <th scope="row" class="active text-right">Date Submitted : </th> <td></td></tr>
+                                <tr> <th scope="row" class="active text-right" style="width: 165px;">Entry ID : </th> <td data-errorfor='order-entry'></td></tr>
+                                <tr> <th scope="row" class="active text-right">Traffic Type : </th> <td data-errorfor='order-type'></td></tr>
+                                <tr> <th scope="row" class="active text-right">Customer Name : </th> <td data-errorfor='order-name'></td></tr>
+                                <tr> <th scope="row" class="active text-right">Email : </th> <td data-errorfor='order-email'></td></tr>
+                                <tr> <th scope="row" class="active text-right">Paypal Name : </th> <td data-errorfor='order-paypal_name'></td></tr>
+                                <tr> <th scope="row" class="active text-right">Number of Clicks : </th> <td data-errorfor='order-clicks'><input type='text' name='order[clicks]' value=''></td></tr>
+                                <tr> <th scope="row" class="active text-right">Date Submitted : </th> <td data-errorfor='order-date_submitted'></td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -133,11 +139,11 @@
                             <tbody>
                                 <tr>
                                     <th scope="row" class="active text-right" style="width: 165px;">URL : </th>
-                                    <td><input type='text' name='order[url]' value='' placeholder='Enter URL here...'></td>
+                                    <td data-errorfor='order-url'><input type='text' name='order[url]' value='' placeholder='Enter URL here...'></td>
                                 </tr>
                                 <tr>
                                     <th scope="row" class="active text-right">Stats Page : </th>
-                                    <td><input type='text' name='order[stats]' value='' placeholder='Enter Stats Page here...'></td>
+                                    <td data-errorfor='order-stats'><input type='text' name='order[stats]' value='' placeholder='Enter Stats Page here...'></td>
                                 </tr>
                                 <tr>
                                     <th scope="row" class="active text-right">In the Rotator : </th>
@@ -145,11 +151,11 @@
                                 </tr>
                                 <tr>
                                     <th scope="row" class="active text-right">No. Of Clicks Sent : </th>
-                                    <td><input type='text' value='' name='order[clicks_sent]' placeholder='Enter sent clicks here...'></td>
+                                    <td data-errorfor='order-clicks_sent'><input type='text' value='' name='order[clicks_sent]' placeholder='Enter sent clicks here...'></td>
                                 </tr>
                                 <tr>
                                     <th scope="row" class="active text-right">No. Of Optins : </th>
-                                    <td><input type='text' name='order[optins]' value='' placeholder='Enter no. of optins here...'></td>
+                                    <td data-errorfor='order-optins'><input type='text' name='order[optins]' value='' placeholder='Enter no. of optins here...'></td>
                                 </tr>
                                 <tr>
                                     <th scope="row" class="active text-right">Follow Up Sent : </th>
@@ -157,20 +163,20 @@
                                 </tr>
                                 <tr>
                                     <th scope="row" class="active text-right">Result Screenshoot : </th>
-                                    <td><input type='text' value='' name='order[screenshot]' placeholder='Enter Screenshoot URL here...'></td>
+                                    <td data-errorfor='order-screenshot'><input type='text' value='' name='order[screenshot]' placeholder='Enter Screenshoot URL here...'></td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                     <div role="tabpanel" class="tab-pane" id="create-notes">
-                        <div class='has-error' data-toggle="tooltip" data-placement="bottom" title="Tooltip on left">
+                        <div data-errorfor='note'>
                             <textarea class="form-control" name='note' rows="5"></textarea>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="clear" class="btn btn-default" >Clear</button>
+                <button type="clear" class="btn btn-default" id='create-clear-button'>Clear</button>
                 <button type="button" class="btn btn-primary" id='create-order-button'>Create</button>
             </div>
         </div><!-- /.modal-content -->

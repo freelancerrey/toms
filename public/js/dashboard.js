@@ -2,6 +2,14 @@ $(document).ready(function() {
 
     var attachFormXHR, createOrderXHR;
 
+    $('#new-order-modal').on('show.bs.modal', function () {
+        var modal_content = $(this).find(".modal-content");
+        clearAllCreateField(modal_content);
+        modal_content.find("ul.nav-tabs li a:first").tab('show');
+    });
+
+
+
     $("ul.form-type-list li").on('click', function(e){
         formtypedisplay = $(this).parents("div.input-group-btn").find('.form-type-display').text($(this).text())[0];
         formtypedisplay.dataset.entryprefix = this.dataset.prefix;
@@ -105,16 +113,97 @@ $(document).ready(function() {
 
     $("#create-order-button").on('click', function(e){
 
+        var modal_content = $(this).parents(".modal-content");
         var request_data = {'_token': window.Laravel.csrfToken };
+        var thisbutton = this;
 
-        $(this).parents(".modal-content").find("[name]").each(function(index) {
-            request_data[this.name] = (this.type === 'checkbox')? this.checked:$(this).val();
+        modal_content.find("[name]").each(function(index) {
+            request_data[this.name] = (this.type === 'checkbox')? ((this.checked)? 1:0):$(this).val();
+            this.disabled = true;
         });
 
+        clearAllErrors(modal_content);
+        $(thisbutton).parent().find('button').prop('disabled', true);
+        $("#create-order button, #create-order input").prop('disabled', true);
 
+        createOrderXHR = $.ajax({
+            url: "ajax/order/create",
+            dataType: "json",
+            accepts: "application/json; charset=utf-8",
+            type : "POST",
+            data : request_data,
+            success : function(data) {
+                if(data.hasOwnProperty('id')){
+                    $('#new-order-modal').modal('hide');
+                    displayAlertMessage('success', 'Success!', "Order has been created");
+                } else {
+                    displayAlertMessage('danger', 'Error!', "Something's not right");
+                }
+            },
+            complete : function(){
+                modal_content.find("[name]").prop('disabled', false);
+                $("#create-order button, #create-order input").prop('disabled', false);
+                $(thisbutton).parent().find('button').prop('disabled', false);
+            },
+            statusCode: {
+                400: function(response) {
+                    for(fieldname in response.responseJSON){
+                        var error_element = modal_content.find("[data-errorfor="+fieldname.replace('.','-')+"]");
+                        error_element.addClass('has-error');
+                        error_element.tooltip({'title': response.responseJSON[fieldname][0].replace('.',' '), 'placement': 'left'});
+                        modal_content.find("[data-errorfor]:visible").tooltip('show');
+                    }
+                    modal_content.find("div.tab-content div.tab-pane:has(.has-error:not(.attach-form-btngroup))").each(function(index){
+                        modal_content.find("ul.nav-tabs li:has(a[aria-controls="+this.id+"])").addClass("hilight-error");
+                    });
+                },
+                500: function(response) {
+                    displayAlertMessage('danger', 'Error!', "Something's not right");
+                }
+            }
+        });
 
     });
 
+    $("#create-clear-button").on('click', function(e){
+        var modal_content = $(this).parents(".modal-content");
+        clearAllCreateField(modal_content);
+    });
 
+    function clearAllErrors(modal_content){
+        modal_content.find("ul.nav-tabs li").removeClass("hilight-error");
+        modal_content.find("[data-errorfor],.attach-form-btngroup").removeClass('has-error').removeAttr('data-toggle title data-original-title').tooltip('destroy');
+    }
+
+    function clearAllCreateField(modal_content){
+        modal_content.find("[name],.form-id-input").each(function(index) {
+            if(this.nodeName === "INPUT"){
+                if(this.type === "checkbox"){
+                    this.checked = false;
+                } else {
+                    this.value = "";
+                }
+            } else if (this.nodeName === "TEXTAREA") {
+                this.value = "";
+            } else if (this.nodeName === "SELECT") {
+                $(this).find("option:eq(0)").prop("selected", true);
+            }
+        });
+        modal_content.find('button.remove-attached-form').click();
+        clearAllErrors(modal_content);
+    }
+
+    function displayAlertMessage(type, status, message){
+        var alert = $("#alert-message");
+
+        alert.find('.alert').removeClass("alert-success alert-info alert-warning alert-danger").addClass("alert-"+type);
+        alert.find("strong.status").text(status);
+        alert.find("span.message").text(message);
+
+        alert.fadeIn(600);
+        setTimeout(function(){ alert.fadeOut(600); }, 5000);
+    }
 
 });
+
+
