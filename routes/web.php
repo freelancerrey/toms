@@ -18,6 +18,7 @@ Route::get('/logout', 'Auth\LoginController@logout');
 Route::group(['prefix' => 'ajax'], function () {
     Route::get('form/apicallurl', 'FormController@getCallUrl');
     Route::post('order/create', 'OrderController@postCreate');
+    Route::get('payment/autolist', 'PaymentController@getAutoCompleteList');
 });
 
 Route::get('/test.html','TestController@index');

@@ -4,10 +4,15 @@
 
 @section('pagecss')
 <link href="/css/dashboard.css" rel="stylesheet">
+<link href="/css/bootcomplete.css" rel="stylesheet">
+<link href="/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 @endsection
 
 @section('pagescripts')
 <script src="/js/dashboard.js"></script>
+<script src="/js/jquery.bootcomplete.js"></script>
+<script type="text/javascript" src="/js/moment.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap-datetimepicker.min.js"></script>
 <script type="text/javascript">
     var orderTypes = {!! json_encode($order_type_mappings['types'], true) !!};
     var formsMappings = {!! json_encode($order_type_mappings['forms'], true) !!}
@@ -18,7 +23,7 @@
 <div id="alert-message" style="position: fixed;left: 300px;right: 300px;text-align: center;z-index: 100; display: none">
     <div class="alert alert-success alert-dismissible fade in" role="alert" style="display: inline-block;margin: 0;">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
-        <strong class='status'>Holy guacamole!</strong> <span class='message'>Best check yo self, you're not looking too good.</span>
+        <strong class='status'>Status!</strong> <span class='message'>Message.</span>
     </div>
 </div>
 <div class="modal fade" id="new-order-modal" tabindex="-1" role="dialog">
@@ -85,7 +90,7 @@
                                 </tr>
                                 <tr>
                                     <th scope="row" class="active text-right">Date : </th>
-                                    <td data-errorfor='payment-date'><input type='text' name='payment[date]' value='' placeholder='Enter Date here...'></td>
+                                    <td data-errorfor='payment-date'><input type='text' name='payment[date]' value='' id='create-order-paydate' placeholder='Enter Date here...'></td>
                                 </tr>
                             </tbody>
                         </table>

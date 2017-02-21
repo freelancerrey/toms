@@ -18,6 +18,14 @@ class PaymentRepository
 
     }
 
+    public function findMatch($query)
+    {
+        return Payment::select('id', 'reference as label')
+               ->where('reference', 'like', $query.'%')
+               ->get()
+               ->toArray();
+    }
+
     public function findByReference($reference)
     {
         return Payment::where('reference', $reference)->first();

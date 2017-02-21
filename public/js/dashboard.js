@@ -8,7 +8,14 @@ $(document).ready(function() {
         modal_content.find("ul.nav-tabs li a:first").tab('show');
     });
 
+    $('#create-order-reference').bootcomplete({
+        url :'ajax/payment/autolist'
+    });
 
+    $('#create-order-paydate').datetimepicker({
+        useCurrent: false,
+        format: 'YYYY-MM-DD HH:mm:ss'
+    });
 
     $("ul.form-type-list li").on('click', function(e){
         formtypedisplay = $(this).parents("div.input-group-btn").find('.form-type-display').text($(this).text())[0];

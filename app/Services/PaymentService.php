@@ -36,6 +36,27 @@ class PaymentService
 
     }
 
+    public function getMatch(array $data)
+    {
+
+        $this->validateMatch($data);
+
+        return $this->paymentRepository->findMatch($data['query']);
+
+    }
+
+    private function validateMatch(array $data){
+
+        $validator = Validator::make($data, [
+            'query' => 'required|string|max:100'
+        ]);
+
+        if ($validator->fails()) {
+            throw new ValidationException($validator->errors());
+        }
+
+    }
+
 
     /**
      * Validate and throw ValidationException if data is invalid.
