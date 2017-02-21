@@ -25,14 +25,14 @@
             <div class="modal-body" style='height: 450px;'>
                 <div class='row' style='margin-bottom: 10px'>
                     <div class="col-md-2 text-left">
-                        <select style='padding: 7px 10px; border: 1px solid #d1d1d1;'>
+                        <select style='padding: 7px 10px; border: 1px solid #d1d1d1;' name='order[priority]'>
                             @for ($i = 1; $i < 6; $i++)
                                 <option value='{{ $i }}'>{{ $i }}</option>
                             @endfor
                         </select>
                     </div>
                     <div class="col-md-10 text-right">
-                        <select style='padding: 7px 10px; border: 1px solid #d1d1d1;'>
+                        <select style='padding: 7px 10px; border: 1px solid #d1d1d1;' name='order[status]'>
                             @foreach ($order_statuses as $status)
                                 <option value="{{ $status['id'] }}">{{ $status['category'] }} - {{ $status['status'] }}</option>
                             @endforeach
@@ -53,12 +53,12 @@
                             <tbody>
                                 <tr>
                                     <th scope="row" class="active text-right" style="width: 165px;">Reference : </th>
-                                    <td><input type='text' value='test' placeholder='Enter Reference here...'></td>
+                                    <td><input name='payment[reference]' type='text' value='' placeholder='Enter Reference here...'></td>
                                 </tr>
                                 <tr>
                                     <th scope="row" class="active text-right">Paid Thru : </th>
                                     <td>
-                                        <select>
+                                        <select name='payment[gateway]'>
                                             @foreach ($payment_gateways as $gateway)
                                                 <option value="{{ $gateway['id'] }}">{{ $gateway['gateway'] }}</option>
                                             @endforeach
@@ -67,19 +67,19 @@
                                 </tr>
                                 <tr>
                                     <th scope="row" class="active text-right">Name : </th>
-                                    <td><input type='text' value='' placeholder='Enter Name here...'></td>
+                                    <td><input type='text' name='payment[name]' value='' placeholder='Enter Name here...'></td>
                                 </tr>
                                 <tr>
                                     <th scope="row" class="active text-right">Email : </th>
-                                    <td><input type='text' value='' placeholder='Enter Email here...'></td>
+                                    <td><input type='text' name='payment[email]' value='' placeholder='Enter Email here...'></td>
                                 </tr>
                                 <tr>
                                     <th scope="row" class="active text-right">Amount : </th>
-                                    <td><input type='text' value='' placeholder='Enter Amount here...'></td>
+                                    <td><input type='text' name='payment[amount]' value='' placeholder='Enter Amount here...'></td>
                                 </tr>
                                 <tr>
                                     <th scope="row" class="active text-right">Date : </th>
-                                    <td><input type='text' value='' placeholder='Enter Date here...'></td>
+                                    <td><input type='text' name='payment[date]' value='' placeholder='Enter Date here...'></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -107,15 +107,15 @@
                                 </div>
                             </div>
                             <div class="col-md-4 text-right">
-                                <div class="checkbox"><label><input type="checkbox" value=""><strong>Put on Top of Que</strong></label></div>
+                                <div class="checkbox"><label><input type="checkbox" name='order[put_on_top]' value="1"><strong>Put on Top of Que</strong></label></div>
                             </div>
                         </div>
-                        <input type="hidden" name="entry" value="">
-                        <input type="hidden" name="type" value="">
-                        <input type="hidden" name="name" value="">
-                        <input type="hidden" name="email" value="">
-                        <input type="hidden" name="paypal_name" value="">
-                        <input type="hidden" name="date_submitted" value="">
+                        <input type="hidden" name="order[entry]" value="">
+                        <input type="hidden" name="order[type]" value="">
+                        <input type="hidden" name="order[name]" value="">
+                        <input type="hidden" name="order[email]" value="">
+                        <input type="hidden" name="order[paypal_name]" value="">
+                        <input type="hidden" name="order[date_submitted]" value="">
                         <table class="table table-bordered" style='margin-top: 5px'>
                             <tbody>
                                 <tr> <th scope="row" class="active text-right" style="width: 165px;">Entry ID : </th> <td></td></tr>
@@ -123,7 +123,7 @@
                                 <tr> <th scope="row" class="active text-right">Customer Name : </th> <td></td></tr>
                                 <tr> <th scope="row" class="active text-right">Email : </th> <td></td></tr>
                                 <tr> <th scope="row" class="active text-right">Paypal Name : </th> <td></td></tr>
-                                <tr> <th scope="row" class="active text-right">Number of Clicks : </th> <td><input type='text' name='clicks' value=''></td></tr>
+                                <tr> <th scope="row" class="active text-right">Number of Clicks : </th> <td><input type='text' name='order[clicks]' value=''></td></tr>
                                 <tr> <th scope="row" class="active text-right">Date Submitted : </th> <td></td></tr>
                             </tbody>
                         </table>
@@ -133,45 +133,45 @@
                             <tbody>
                                 <tr>
                                     <th scope="row" class="active text-right" style="width: 165px;">URL : </th>
-                                    <td><input type='text' value='' placeholder='Enter URL here...'></td>
+                                    <td><input type='text' name='order[url]' value='' placeholder='Enter URL here...'></td>
                                 </tr>
                                 <tr>
                                     <th scope="row" class="active text-right">Stats Page : </th>
-                                    <td><input type='text' value='' placeholder='Enter Stats Page here...'></td>
+                                    <td><input type='text' name='order[stats]' value='' placeholder='Enter Stats Page here...'></td>
                                 </tr>
                                 <tr>
                                     <th scope="row" class="active text-right">In the Rotator : </th>
-                                    <td><input type="checkbox" value=""></td>
+                                    <td><input type="checkbox" name='order[in_rotator]' value=""></td>
                                 </tr>
                                 <tr>
                                     <th scope="row" class="active text-right">No. Of Clicks Sent : </th>
-                                    <td><input type='text' value='' placeholder='Enter no. of clicks here...'></td>
+                                    <td><input type='text' value='' name='order[clicks_sent]' placeholder='Enter sent clicks here...'></td>
                                 </tr>
                                 <tr>
                                     <th scope="row" class="active text-right">No. Of Optins : </th>
-                                    <td><input type='text' value='' placeholder='Enter no. of optins here...'></td>
+                                    <td><input type='text' name='order[optins]' value='' placeholder='Enter no. of optins here...'></td>
                                 </tr>
                                 <tr>
                                     <th scope="row" class="active text-right">Follow Up Sent : </th>
-                                    <td><input type="checkbox" value=""></td>
+                                    <td><input type="checkbox" name='order[followup_sent]' value=""></td>
                                 </tr>
                                 <tr>
                                     <th scope="row" class="active text-right">Result Screenshoot : </th>
-                                    <td><input type='text' value='' placeholder='Enter Screenshoot URL here...'></td>
+                                    <td><input type='text' value='' name='order[screenshot]' placeholder='Enter Screenshoot URL here...'></td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                     <div role="tabpanel" class="tab-pane" id="create-notes">
                         <div class='has-error' data-toggle="tooltip" data-placement="bottom" title="Tooltip on left">
-                            <textarea class="form-control" rows="5"></textarea>
+                            <textarea class="form-control" name='note' rows="5"></textarea>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="clear" class="btn btn-default" >Clear</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-primary" id='create-order-button'>Create</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

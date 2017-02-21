@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-    var attachFormXHR;
+    var attachFormXHR, createOrderXHR;
 
     $("ul.form-type-list li").on('click', function(e){
         formtypedisplay = $(this).parents("div.input-group-btn").find('.form-type-display').text($(this).text())[0];
@@ -49,27 +49,27 @@ $(document).ready(function() {
                     var entryTable = tabpane.find('table');
 
                     var entryId = requestdata.code+data.id;
-                    tabpane.find("input[name=entry]").val(entryId);
+                    tabpane.find("input[name=order\\[entry\\]]").val(entryId);
                     entryTable.find('tr:eq(0) td').text(entryId);
 
-                    tabpane.find("input[name=type]").val(formsMappings[data.form_id][0]);
+                    tabpane.find("input[name=order\\[type\\]]").val(formsMappings[data.form_id][0]);
                     entryTable.find('tr:eq(1) td').text(orderTypes[formsMappings[data.form_id][0]]);
 
                     var name = data[formsMappings[data.form_id][1][0]]+" "+data[formsMappings[data.form_id][1][1]];
-                    tabpane.find("input[name=name]").val(name);
+                    tabpane.find("input[name=order\\[name\\]]").val(name);
                     entryTable.find('tr:eq(2) td').text(name);
 
                     var email = data[formsMappings[data.form_id][1][2]];
-                    tabpane.find("input[name=email]").val(email);
+                    tabpane.find("input[name=order\\[email\\]]").val(email);
                     entryTable.find('tr:eq(3) td').text(email);
 
                     var paypal_name = data[formsMappings[data.form_id][1][3]];
-                    tabpane.find("input[name=paypal_name]").val(paypal_name);
+                    tabpane.find("input[name=order\\[paypal_name\\]]").val(paypal_name);
                     entryTable.find('tr:eq(4) td').text(paypal_name);
 
-                    tabpane.find("input[name=clicks]").val(parseInt(data[formsMappings[data.form_id][1][4]]));
+                    tabpane.find("input[name=order\\[clicks\\]]").val(parseInt(data[formsMappings[data.form_id][1][4]]));
 
-                    tabpane.find("input[name=date_submitted]").val(data.date_created);
+                    tabpane.find("input[name=order\\[date_submitted\\]]").val(data.date_created);
                     entryTable.find('tr:eq(6) td').text(data.date_created);
 
                 } else {
@@ -102,6 +102,18 @@ $(document).ready(function() {
         }
 
     }
+
+    $("#create-order-button").on('click', function(e){
+
+        var request_data = {'_token': window.Laravel.csrfToken };
+
+        $(this).parents(".modal-content").find("[name]").each(function(index) {
+            request_data[this.name] = (this.type === 'checkbox')? this.checked:$(this).val();
+        });
+
+
+
+    });
 
 
 
