@@ -10,3 +10,7 @@ body {
 .tab-pane{
     padding: 15px;
 }
+
+.input-group .form-control{
+    height: 100%;
+}
