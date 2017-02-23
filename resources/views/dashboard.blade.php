@@ -37,7 +37,7 @@
                 <div class='row' style='margin-bottom: 10px'>
                     <div class="col-md-2 text-left">
                         <select style='padding: 7px 10px; border: 1px solid #d1d1d1;' name='order[priority]'>
-                            @for ($i = 0; $i < 6; $i++)
+                            @for ($i = 0; $i <= config('custom.priority_level'); $i++)
                                 <option value='{{ $i }}'>{{ $i }}</option>
                             @endfor
                         </select>

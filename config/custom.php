@@ -4,6 +4,8 @@ return [
 
     'version' => '1.0',
 
+    'priority_level' => 5,
+
     'gravity_api_key' => env('GRAVITY_API_KEY'),
 
     'gravity_private_key' => env('GRAVITY_PRIVATE_KEY'),
@@ -12,6 +14,7 @@ return [
 
     'default_orders_list_sort' => [
         'orders.priority' => 'desc',
+        'orders.status' => 'asc',
         'orders.id' => 'asc'
     ],
 
