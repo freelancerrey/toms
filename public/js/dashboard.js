@@ -117,6 +117,25 @@ $(document).ready(function() {
         loadOrderList($(this).find("option:selected").val());
     });
 
+    document.querySelector("div.mytable-wrapper thead tr").onclick = function(e){
+        var originalElement = e.srcElement || e.originalTarget,
+            columnTh = $(originalElement).closest('th');
+
+        if (columnTh.is(".sorter")) {
+            if (columnTh.is('[data-direction=asc]')) {
+                columnTh[0].dataset.direction = 'desc';
+            } else {
+                columnTh.removeClass('sorter').removeAttr('data-direction');
+            }
+        } else {
+            $("div.mytable-wrapper thead tr th").removeClass('sorter').removeAttr('data-direction');
+            columnTh.addClass('sorter')[0].dataset.direction = 'asc';
+        }
+
+        loadOrderList();
+
+    };
+
     loadOrderList();
 
 });
@@ -249,14 +268,20 @@ function loadOrderList(page = 1) {
     $("div.mytable-wrapper").addClass("loading");
     // disable upper button here, don't forget please
 
+    request_data = { 'page': page };
+
+    sorterTh = $("div.mytable-wrapper thead th.sorter");
+    if (sorterTh.length) {
+        request_data['sort[index]'] = sorterTh.index();
+        request_data['sort[direction]'] = sorterTh[0].dataset.direction;
+    }
+
     $.ajax({
         url: "ajax/order/list",
         dataType: "json",
         accepts: "application/json; charset=utf-8",
         type : "GET",
-        data : {
-            page: page
-        },
+        data : request_data,
         success : function(response) {
             renderTableData(response);
         },

@@ -20,9 +20,7 @@ class OrderRepository
 
     public function getList(array $data){
 
-        /*
-
-        $defaultSorter = config('default_orders_list_sort');
+        $defaultSorter = config('custom.default_orders_list_sort');
         $sortingMap = config('custom.orders_list_sort_map');
 
         $sorter = $defaultSorter;
@@ -32,24 +30,22 @@ class OrderRepository
             $sortIndex = $data['sort']['index'];
 
             $sorter = [
-                [$sortingMap[$sortIndex][0] => $data['sort']['direction']]
+                $sortingMap[$sortIndex][0] => $data['sort']['direction']
             ];
 
-            if (is_null($sortingMap[$sortIndex][1])) {
-                foreach ($defaultSorter as $column => $direction) {
-                    $sorter[$column] = $direction;
-                }
-            } else {
-                foreach ($sortingMap[$sortIndex][1] as $column => $direction) {
-                    $sorter[$column] = $direction;
-                }
+            $secondarySorter = $defaultSorter;
+
+            if (is_array($sortingMap[$sortIndex][1])) {
+                $secondarySorter = $sortingMap[$sortIndex][1];
+            }
+
+            foreach ($secondarySorter as $column => $direction) {
+                $sorter[$column] = $direction;
             }
 
         }
 
-        */
-
-        return Order::join(
+        $query = Order::join(
             'payments',
             'orders.payment',
             '=',
@@ -80,7 +76,14 @@ class OrderRepository
             'order_types.type',
             'status_categories.category as status_category',
             'order_statuses.status'
-        )->paginate(config('custom.orders_list_per_page'));
+        );
+
+        foreach ($sorter as $column => $direction) {
+            $query->orderBy($column, $direction);
+        }
+
+        return $query->paginate(config('custom.orders_list_per_page'));
+
     }
 
 }

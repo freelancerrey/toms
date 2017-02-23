@@ -19,15 +19,15 @@ return [
     ],
 
     'orders_list_sort_map' => [
-        0 => ['orders.id',[]],
+        0 => ['orders.id', []],
         1 => ['payments.name', null],
         2 => ['payments.date', null],
         3 => ['orders.type', null],
         4 => ['orders.name', null],
         5 => ['orders.clicks', null],
         6 => ['orders.date_submitted', null],
-        7 => ['orders.priority', ['id' => 'asc']],
-        8 => ['orders.status', null]
+        7 => ['orders.priority', ['orders.status' => 'asc', 'orders.id' => 'asc']],
+        8 => ['orders.status', ['orders.priority' => 'desc', 'orders.id' => 'asc']]
     ]
 
 ];
