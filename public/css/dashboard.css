@@ -283,3 +283,43 @@ div.mytable-wrapper tfoot td{
 div.mytable-wrapper.initializing tfoot tr.no-record, div.mytable-wrapper.empty tfoot tr.init{
     display: none;
 }
+
+div.mytable-wrapper thead th{
+    cursor: pointer;
+}
+
+div.mytable-wrapper thead th.sorter span{
+    display: inline-block;
+    height: 100%;
+    width: 100%;
+    position: relative;
+}
+
+div.mytable-wrapper thead th.sorter span:after{
+    position: absolute;
+    right: 0;
+    font-family: 'Glyphicons Halflings';
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1;
+    color: #dbdbdb;
+    padding: 3px;
+    background: rgba(54, 54, 54, 0.41);
+    border-radius: 3px;
+    border: 1px solid #6F6F6F;
+    font-size: 12px;
+}
+
+div.mytable-wrapper thead th.sorter:hover span:after{
+    bottom: 25px;
+    background: rgb(92, 92, 92);
+    border: 1px solid #414141;
+}
+
+div.mytable-wrapper thead th[data-direction=asc].sorter span:after{
+    content: "\e155";
+}
+
+div.mytable-wrapper thead th[data-direction=desc].sorter span:after{
+    content: "\e156";
+}

@@ -290,12 +290,12 @@ function generateOrderTrs(orders){
     for(i in orders){
         var order = orders[i];
         badgeHtml = (order.priority > 0)? "<span class='badge'>"+order.priority+"</span>":"";
-        ordersHtml += "<tr><th scope='row' class='text-center'>"+order.id+"</th> <td>"+order.payment_name+" "+badgeHtml+"</td>\
-                       <td class='text-center'>"+moment(order.payment_date).format('L')+"</td> <td>"+emptyIfNull(order.type)+"</td>\
+        ordersHtml += "<tr><th scope='row' class='text-center'>"+order.id+"</th> <td>"+order.payment_name+"</td><td class='text-center'>\
+                      "+moment(order.payment_date).format('L')+"</td> <td class='text-center'>"+emptyIfNull(order.type)+"</td>\
                        <td>"+emptyIfNull(order.name)+"</td> <td class='text-center'>"+emptyIfNull(order.clicks)+"</td>\
-                       <td class='text-center'>"+dateIfNotNull(order.date_submitted)+"</td> <td class='status-cell'>\
-                       <span class='order-status "+order.status_category.toLowerCase()+"'>"+order.status_category.toUpperCase()+"\
-                        - "+order.status+"</span></td></tr>";
+                       <td class='text-center'>"+dateIfNotNull(order.date_submitted)+"</td><td class='text-center'>"+badgeHtml+"</td>\
+                       <td class='status-cell'><span class='order-status "+order.status_category.toLowerCase()+"'>\
+                       "+order.status_category.toUpperCase()+" - "+order.status+"</span></td></tr>";
     }
 
     return ordersHtml;

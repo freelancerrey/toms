@@ -467,7 +467,7 @@
     <button type="button" class="btn btn-default btn-xs pag-prev-btn" title='Previous' disabled='true'>
         <span class="glyphicon glyphicon-backward" aria-hidden="true"></span>
     </button>
-    <select disabled='true' class='show-pages-select'></select>
+    <select disabled='true' class='show-pages-select' title='Jump to Pages'></select>
     <button type="button" class="btn btn-default btn-xs pag-next-btn" title='Next' disabled='true'>
         <span class="glyphicon glyphicon-forward" aria-hidden="true"></span>
     </button>
@@ -475,24 +475,26 @@
         <span class="glyphicon glyphicon-fast-forward" aria-hidden="true"></span>
     </button>
 </div>
+<!-- <button type="button" class="btn btn-default btn-xs" style='float:right;'><span class="glyphicon glyphicon-sort-by-alphabet"></span></button> -->
 <div class='mytable-wrapper loading initializing'>
     <table class="table table-striped table-bordered table-hover">
         <thead>
             <tr style='background: #adadad;'>
-                <th class='text-center'>#</th>
-                <th>Payment Name <button type="button" class="btn btn-default btn-xs" style='float:right;'><span class="glyphicon glyphicon-sort-by-alphabet"></span></button></th>
-                <th class='text-center'>Pay Date</th>
-                <th class='text-center'>Type</th>
-                <th>Customer Name</th>
-                <th class='text-center'>Clicks</th>
-                <th class='text-center'>Order Date</th>
-                <th style='width: 180px;' class='text-center'>Status</th>
+                <th class='text-center'><span>#</span></th>
+                <th class='text-center'><span>Payment Name</span></th>
+                <th class='text-center'><span>Pay Date</span></th>
+                <th class='text-center'><span>Type</span></th>
+                <th class='text-center'><span>Customer Name</span></th>
+                <th class='text-center'><span>Clicks</span></th>
+                <th class='text-center'><span>Order Date</span></th>
+                <th class='text-center'><span>P</span></th>
+                <th style='width: 180px;' class='text-center'><span>Status</span></th>
             </tr>
         </thead>
         <tbody></tbody>
         <tfoot>
-            <tr class='no-record'><td colspan='8'>No Order Found</td></tr>
-            <tr class='init'><td colspan='8'>Initializing</td></tr>
+            <tr class='no-record'><td colspan='9'>No Order Found</td></tr>
+            <tr class='init'><td colspan='9'>Initializing</td></tr>
         </tfoot>
     </table>
 </div>
@@ -503,7 +505,7 @@
     <button type="button" class="btn btn-default btn-xs pag-prev-btn" title='Previous' disabled='true'>
         <span class="glyphicon glyphicon-backward" aria-hidden="true"></span>
     </button>
-    <select disabled='true' class='show-pages-select'></select>
+    <select disabled='true' class='show-pages-select' title='Jump to Pages'></select>
     <button type="button" class="btn btn-default btn-xs pag-next-btn" title='Next' disabled='true'>
         <span class="glyphicon glyphicon-forward" aria-hidden="true"></span>
     </button>
