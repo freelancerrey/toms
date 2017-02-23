@@ -12,7 +12,7 @@
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel').' v'.config('app.version', '1.0') }} - @yield('title')</title>
+        <title>{{ config('app.name', 'Laravel').' v'.config('custom.version', '1.0') }} - @yield('title')</title>
 
         <!-- Styles -->
         <link href="/css/app.css" rel="stylesheet">
@@ -42,7 +42,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="{{ url('/') }}">{{ config('app.name', 'Laravel') }} <span style="font-size: 12px;">v{{ config('app.version', '1.0') }}</span></a>
+                    <a class="navbar-brand" href="{{ url('/') }}">{{ config('app.name', 'Laravel') }} <span style="font-size: 12px;">v{{ config('custom.version', '1.0') }}</span></a>
                 </div>
                 <div id="navbar" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">

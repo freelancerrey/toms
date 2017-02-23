@@ -14,8 +14,8 @@ class FormService
 
         $this->validate($data);
 
-        $apiKey = config('app.gravity_api_key');
-        $privateKey = config('app.gravity_private_key');
+        $apiKey = config('custom.gravity_api_key');
+        $privateKey = config('custom.gravity_private_key');
 
         $route = 'entries/' . $data['id'];
         $expires = (new DateTime())->modify('+60 mins')->getTimestamp();

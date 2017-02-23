@@ -14,8 +14,6 @@ return [
 
     'name' => 'TOMS',
 
-    'version' => '1.0',
-
     /*
     |--------------------------------------------------------------------------
     | Application Environment
@@ -229,9 +227,5 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
     ],
-
-    'gravity_api_key' => env('GRAVITY_API_KEY'),
-
-    'gravity_private_key' => env('GRAVITY_PRIVATE_KEY'),
 
 ];

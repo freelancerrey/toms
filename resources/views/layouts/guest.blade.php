@@ -8,7 +8,7 @@
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel').' v'.config('app.version', '1.0') }} - @yield('title')</title>
+        <title>{{ config('app.name', 'Laravel').' v'.config('custom.version', '1.0') }} - @yield('title')</title>
 
         <!-- Styles -->
         <link href="/css/app.css" rel="stylesheet">
@@ -28,7 +28,7 @@
 
         <div class="container">
             <div class="header clearfix">
-                <h3 class="text-muted">{{ config('app.name', 'Laravel') }} <span style="font-size: 12px;">v{{ config('app.version', 'Laravel') }}</span></h3>
+                <h3 class="text-muted">{{ config('app.name', 'Laravel') }} <span style="font-size: 12px;">v{{ config('custom.version', 'Laravel') }}</span></h3>
                 @section('sidelinks')
                 @show
             </div>
