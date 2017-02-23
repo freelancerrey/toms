@@ -9,7 +9,7 @@ class OrderStatusRepository
     public function getAllForView()
     {
 
-        return OrderStatus::leftJoin(
+        return OrderStatus::join(
             'status_categories',
             'order_statuses.category',
             '=',

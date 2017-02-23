@@ -11,6 +11,12 @@ body {
     padding: 15px;
 }
 
-.input-group .form-control{
-    height: 100%;
+@-moz-document url-prefix() {
+    .input-group .form-control{
+       height: 100%;
+    }
+}
+
+*:focus {
+    outline: none;
 }

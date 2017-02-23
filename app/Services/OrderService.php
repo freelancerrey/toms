@@ -48,6 +48,15 @@ class OrderService
 
     }
 
+    public function getList(array $data)
+    {
+
+        //$this->validate($data);
+
+        return $this->orderRepository->getList($data);
+
+    }
+
 
     /**
      * Validate and throw ValidationException if data is invalid.

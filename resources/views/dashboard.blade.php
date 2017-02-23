@@ -37,7 +37,7 @@
                 <div class='row' style='margin-bottom: 10px'>
                     <div class="col-md-2 text-left">
                         <select style='padding: 7px 10px; border: 1px solid #d1d1d1;' name='order[priority]'>
-                            @for ($i = 1; $i < 6; $i++)
+                            @for ($i = 0; $i < 6; $i++)
                                 <option value='{{ $i }}'>{{ $i }}</option>
                             @endfor
                         </select>
@@ -454,34 +454,64 @@
         </div>
     </div>
 </div>
-<div class="input-group">
+<div class="input-group" style='margin-bottom: 40px;'>
     <input type="text" class="form-control" placeholder="Type Search Keyword Here...">
         <span class="input-group-btn">
     <button class="btn btn-default" type="button" style='width: 90px;'>Search!</button>
     </span>
 </div>
-<nav aria-label="..."> <ul class="pagination pagination-sm"> <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">«</span></a></li> <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li> <li><a href="#">2</a></li> <li><a href="#">3</a></li> <li><a href="#">4</a></li> <li><a href="#">5</a></li> <li><a href="#" aria-label="Next"><span aria-hidden="true">»</span></a></li> </ul> </nav>
-<table class="table table-striped table-bordered table-hover">
-    <thead>
-        <tr style='background: #adadad;'>
-            <th class='text-center'>#</th>
-            <th>Payment Name <button type="button" class="btn btn-default btn-xs" style='float:right;'><span class="glyphicon glyphicon-sort-by-alphabet"></span></button></th>
-            <th class='text-center'>Pay Date</th>
-            <th class='text-center'>Type</th>
-            <th>Customer Name</th>
-            <th class='text-center'>Clicks</th>
-            <th class='text-center'>Order Date</th>
-            <th style='width: 180px;' class='text-center'>Status</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr> <th scope="row" class='text-center'>1</th> <td>Mark Jacob <span class="badge">4</span></td> <td>12/23/16</td> <td>@otto</td> <td>Otto</td> <td>@mdo</td><td>12/23/16</td> <td class='status-cell'><span class="order-status payment">PROCESS<br>Waiting for Previous Order</span></td> </tr>
-        <tr> <th scope="row" class='text-center'>2</th> <td>Jacob <span class="badge">4</span></td> <td>Thornton</td> <td>@fat</td> <td>Otto</td> <td>@mdo</td><td>Otto</td> <td class='status-cell'><span class="order-status order">PROCESS<br>Waiting for Previous Order</span></td></tr>
-        <tr> <th scope="row" class='text-center'>3</th> <td>Larry <span class="badge">4</span></td> <td>the Bird</td> <td>@twitter</td> <td>Otto</td> <td>@mdo</td><td>Otto</td> <td class='status-cell'><span class="order-status process">PROCESS<br>Waiting for Previous Order</span></td></tr>
-        <tr> <th scope="row" class='text-center'>3</th> <td>Larry</td> <td>the Bird</td> <td>@twitter</td> <td>Otto</td> <td>@mdo</td><td>Otto</td> <td class='status-cell'><span class="order-status traffic">PROCESS<br>Waiting for Previous Order</span></td></tr>
-        <tr> <th scope="row" class='text-center'>3</th> <td>Larry</td> <td>the Bird</td> <td>@twitter</td> <td>Otto</td> <td>@mdo</td><td>Otto</td> <td class='status-cell'><span class="order-status done">PROCESS<br>Waiting for Previous Order</span></td></tr>
-        <tr> <th scope="row" class='text-center'>3</th> <td>Larry</td> <td>the Bird</td> <td>@twitter</td> <td>Otto</td> <td>@mdo</td><td>Otto</td> <td class='status-cell'><span class="order-status discard">PROCESS<br>Waiting for Previous Order</span></td></tr>
-    </tbody>
-</table>
-<nav aria-label="..."> <ul class="pagination pagination-sm"> <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">«</span></a></li> <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li> <li><a href="#">2</a></li> <li><a href="#">3</a></li> <li><a href="#">4</a></li> <li><a href="#">5</a></li> <li><a href="#" aria-label="Next"><span aria-hidden="true">»</span></a></li> </ul> </nav>
+<div class="pagination-wrapper">
+    <button type="button" class="btn btn-default btn-xs pag-first-btn" title='First' disabled='true'>
+        <span class="glyphicon glyphicon-fast-backward" aria-hidden="true"></span>
+    </button>
+    <button type="button" class="btn btn-default btn-xs pag-prev-btn" title='Previous' disabled='true'>
+        <span class="glyphicon glyphicon-backward" aria-hidden="true"></span>
+    </button>
+    <select disabled='true' class='show-pages-select'></select>
+    <button type="button" class="btn btn-default btn-xs pag-next-btn" title='Next' disabled='true'>
+        <span class="glyphicon glyphicon-forward" aria-hidden="true"></span>
+    </button>
+    <button type="button" class="btn btn-default btn-xs pag-last-btn" title='Last' disabled='true'>
+        <span class="glyphicon glyphicon-fast-forward" aria-hidden="true"></span>
+    </button>
+</div>
+<div class='mytable-wrapper'>
+    <table class="table table-striped table-bordered table-hover">
+        <thead>
+            <tr style='background: #adadad;'>
+                <th class='text-center'>#</th>
+                <th>Payment Name <button type="button" class="btn btn-default btn-xs" style='float:right;'><span class="glyphicon glyphicon-sort-by-alphabet"></span></button></th>
+                <th class='text-center'>Pay Date</th>
+                <th class='text-center'>Type</th>
+                <th>Customer Name</th>
+                <th class='text-center'>Clicks</th>
+                <th class='text-center'>Order Date</th>
+                <th style='width: 180px;' class='text-center'>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr> <th scope="row" class='text-center'>1</th> <td>Mark Jacob <span class="badge">4</span></td> <td>12/23/16</td> <td>@otto</td> <td>Otto</td> <td>@mdo</td><td>12/23/16</td> <td class='status-cell'><span class="order-status payment">PROCESS<br>Waiting for Previous Order</span></td> </tr>
+            <tr> <th scope="row" class='text-center'>2</th> <td>Jacob <span class="badge">4</span></td> <td>Thornton</td> <td>@fat</td> <td>Otto</td> <td>@mdo</td><td>Otto</td> <td class='status-cell'><span class="order-status order">PROCESS<br>Waiting for Previous Order</span></td></tr>
+            <tr> <th scope="row" class='text-center'>3</th> <td>Larry <span class="badge">4</span></td> <td>the Bird</td> <td>@twitter</td> <td>Otto</td> <td>@mdo</td><td>Otto</td> <td class='status-cell'><span class="order-status process">PROCESS<br>Waiting for Previous Order</span></td></tr>
+            <tr> <th scope="row" class='text-center'>3</th> <td>Larry</td> <td>the Bird</td> <td>@twitter</td> <td>Otto</td> <td>@mdo</td><td>Otto</td> <td class='status-cell'><span class="order-status traffic">PROCESS<br>Waiting for Previous Order</span></td></tr>
+            <tr> <th scope="row" class='text-center'>3</th> <td>Larry</td> <td>the Bird</td> <td>@twitter</td> <td>Otto</td> <td>@mdo</td><td>Otto</td> <td class='status-cell'><span class="order-status done">PROCESS<br>Waiting for Previous Order</span></td></tr>
+            <tr> <th scope="row" class='text-center'>3</th> <td>Larry</td> <td>the Bird</td> <td>@twitter</td> <td>Otto</td> <td>@mdo</td><td>Otto</td> <td class='status-cell'><span class="order-status discard">PROCESS<br>Waiting for Previous Order</span></td></tr>
+        </tbody>
+    </table>
+</div>
+<div class="pagination-wrapper">
+    <button type="button" class="btn btn-default btn-xs pag-first-btn" title='First' disabled='true'>
+        <span class="glyphicon glyphicon-fast-backward" aria-hidden="true"></span>
+    </button>
+    <button type="button" class="btn btn-default btn-xs pag-prev-btn" title='Previous' disabled='true'>
+        <span class="glyphicon glyphicon-backward" aria-hidden="true"></span>
+    </button>
+    <select disabled='true' class='show-pages-select'></select>
+    <button type="button" class="btn btn-default btn-xs pag-next-btn" title='Next' disabled='true'>
+        <span class="glyphicon glyphicon-forward" aria-hidden="true"></span>
+    </button>
+    <button type="button" class="btn btn-default btn-xs pag-last-btn" title='Last' disabled='true'>
+        <span class="glyphicon glyphicon-fast-forward" aria-hidden="true"></span>
+    </button>
+</div>
 @endsection
