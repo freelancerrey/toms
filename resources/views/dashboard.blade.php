@@ -475,7 +475,7 @@
         <span class="glyphicon glyphicon-fast-forward" aria-hidden="true"></span>
     </button>
 </div>
-<div class='mytable-wrapper'>
+<div class='mytable-wrapper loading initializing'>
     <table class="table table-striped table-bordered table-hover">
         <thead>
             <tr style='background: #adadad;'>
@@ -489,14 +489,11 @@
                 <th style='width: 180px;' class='text-center'>Status</th>
             </tr>
         </thead>
-        <tbody>
-            <tr> <th scope="row" class='text-center'>1</th> <td>Mark Jacob <span class="badge">4</span></td> <td>12/23/16</td> <td>@otto</td> <td>Otto</td> <td>@mdo</td><td>12/23/16</td> <td class='status-cell'><span class="order-status payment">PROCESS<br>Waiting for Previous Order</span></td> </tr>
-            <tr> <th scope="row" class='text-center'>2</th> <td>Jacob <span class="badge">4</span></td> <td>Thornton</td> <td>@fat</td> <td>Otto</td> <td>@mdo</td><td>Otto</td> <td class='status-cell'><span class="order-status order">PROCESS<br>Waiting for Previous Order</span></td></tr>
-            <tr> <th scope="row" class='text-center'>3</th> <td>Larry <span class="badge">4</span></td> <td>the Bird</td> <td>@twitter</td> <td>Otto</td> <td>@mdo</td><td>Otto</td> <td class='status-cell'><span class="order-status process">PROCESS<br>Waiting for Previous Order</span></td></tr>
-            <tr> <th scope="row" class='text-center'>3</th> <td>Larry</td> <td>the Bird</td> <td>@twitter</td> <td>Otto</td> <td>@mdo</td><td>Otto</td> <td class='status-cell'><span class="order-status traffic">PROCESS<br>Waiting for Previous Order</span></td></tr>
-            <tr> <th scope="row" class='text-center'>3</th> <td>Larry</td> <td>the Bird</td> <td>@twitter</td> <td>Otto</td> <td>@mdo</td><td>Otto</td> <td class='status-cell'><span class="order-status done">PROCESS<br>Waiting for Previous Order</span></td></tr>
-            <tr> <th scope="row" class='text-center'>3</th> <td>Larry</td> <td>the Bird</td> <td>@twitter</td> <td>Otto</td> <td>@mdo</td><td>Otto</td> <td class='status-cell'><span class="order-status discard">PROCESS<br>Waiting for Previous Order</span></td></tr>
-        </tbody>
+        <tbody></tbody>
+        <tfoot>
+            <tr class='no-record'><td colspan='8'>No Order Found</td></tr>
+            <tr class='init'><td colspan='8'>Initializing</td></tr>
+        </tfoot>
     </table>
 </div>
 <div class="pagination-wrapper">

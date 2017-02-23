@@ -50,7 +50,7 @@ class OrderRepository
             'order_types.type',
             'status_categories.category as status_category',
             'order_statuses.status'
-        )->paginate(50);
+        )->paginate(10);
     }
 
 }

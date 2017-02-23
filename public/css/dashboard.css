@@ -259,6 +259,27 @@ div.mytable-wrapper.loading:before{
     content: "";
 }
 
-table.table{
+div.mytable-wrapper table.table{
     margin-bottom: 0;
+}
+
+div.mytable-wrapper tfoot{
+    display: none;
+}
+
+div.mytable-wrapper.initializing tfoot, div.mytable-wrapper.empty tfoot{
+    display: table-footer-group;
+}
+
+div.mytable-wrapper tfoot td{
+    background-color: #f9f9f9;
+    height: 250px;
+    text-align: center;
+    vertical-align: middle !important;
+    font-size: 18px;
+    color: silver;
+}
+
+div.mytable-wrapper.initializing tfoot tr.no-record, div.mytable-wrapper.empty tfoot tr.init{
+    display: none;
 }

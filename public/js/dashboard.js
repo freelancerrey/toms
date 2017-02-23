@@ -66,12 +66,11 @@ $(document).ready(function() {
                 } else {
                     displayAlertMessage('danger', 'Error!', "Something's not right");
                 }
-                enableFieldsAndButtons();
             },
             complete : function(response){
-                if(response.status != 200){
-                    enableFieldsAndButtons();
-                }
+                modal_content.find("[name]").prop('disabled', false);
+                $("#create-order button, #create-order input").prop('disabled', false);
+                $(thisbutton).parent().find('button').prop('disabled', false);
             },
             statusCode: {
                 400: function(response) {
@@ -90,12 +89,6 @@ $(document).ready(function() {
                 }
             }
         });
-
-        function enableFieldsAndButtons(){
-            modal_content.find("[name]").prop('disabled', false);
-            $("#create-order button, #create-order input").prop('disabled', false);
-            $(thisbutton).parent().find('button').prop('disabled', false);
-        }
 
     });
 
@@ -254,6 +247,8 @@ function displayAlertMessage(type, status, message){
 function loadOrderList(page = 1) {
     $("div.pagination-wrapper").find("select,button").prop('disabled', true);
     $("div.mytable-wrapper").addClass("loading");
+    // disable upper button here, don't forget please
+
     $.ajax({
         url: "ajax/order/list",
         dataType: "json",
@@ -263,81 +258,90 @@ function loadOrderList(page = 1) {
             page: page
         },
         success : function(response) {
-            if(response.total > 0){
-                renderTableData(response.data);
-
-                var optionsHtml = "";
-                for (var i = 1; i<=response.last_page; i++ ) {
-                    var from = ((i-1)*response.per_page)+1,
-                          to = (i==response.last_page)? response.total:(i*response.per_page);
-
-                    optionsHtml += "<option value='"+i+"' "+((i==response.current_page)? "selected":"")+">Page "+i+"&nbsp;&nbsp;\
-                                    |&nbsp;&nbsp;"+from+" to "+to+" of "+response.total+"</option>";
-                }
-
-                $("select.show-pages-select").html(optionsHtml);
-
-                if(response.last_page > 1){
-                    $("select.show-pages-select").prop('disabled', false);
-                }
-                if(response.current_page > 1){
-                    $("div.pagination-wrapper button.pag-first-btn, div.pagination-wrapper button.pag-prev-btn").prop('disabled', false);
-                }
-                if(response.current_page < response.last_page){
-                    $("div.pagination-wrapper button.pag-next-btn, div.pagination-wrapper button.pag-last-btn").prop('disabled', false);
-                }
-            } else {
-
-            }
-            enableFieldsAndButtons();
+            renderTableData(response);
         },
-        complete : function(response){
-            if(response.status != 200){
-                enableFieldsAndButtons();
-            }
-        },
-        statusCode: {
-            500: function(response) {
-
-            },
-            400: function(response) {
-
-            }
+        complete : function(data) {
+            //enable buttons and fields here, don't forget please
         }
 
     });
+}
 
-    function enableFieldsAndButtons(){
-        $("div.mytable-wrapper").removeClass("loading");
+function renderTableData(response){
+
+    tbody_data = generateOrderTrs(response.data);
+
+    $("div.mytable-wrapper").removeClass("initializing");
+    if(response.data.length == 0){
+        $("div.mytable-wrapper").addClass("empty");
     }
 
-    function renderTableData(orders){
-        var ordersHTML = "";
-        for(i in orders){
-            var order = orders[i];
-            badgeHtml = (order.priority > 0)? "<span class='badge'>"+order.priority+"</span>":"";
-            ordersHTML += "<tr><th scope='row' class='text-center'>"+order.id+"</th> <td>"+order.payment_name+" "+badgeHtml+"</td>\
-                           <td class='text-center'>"+moment(order.payment_date).format('L')+"</td> <td>"+emptyIfNull(order.type)+"</td>\
-                           <td>"+emptyIfNull(order.name)+"</td> <td class='text-center'>"+emptyIfNull(order.clicks)+"</td>\
-                           <td class='text-center'>"+dateIfNotNull(order.date_submitted)+"</td> <td class='status-cell'>\
-                           <span class='order-status "+order.status_category.toLowerCase()+"'>"+order.status_category.toUpperCase()+"\
-                            - "+order.status+"</span></td></tr>";
-        }
+    $("div.mytable-wrapper tbody").html(tbody_data);
 
-        $("div.mytable-wrapper tbody").fadeOut(function(){
-            $("div.mytable-wrapper tbody").html(ordersHTML).fadeIn();
-        });
+    $("div.mytable-wrapper").removeClass("loading");
+    updatePaginator(response);
 
-        // helpers
+}
 
-        function emptyIfNull(data){
-            return (data == null)? "":data;
-        }
+function generateOrderTrs(orders){
 
-        function dateIfNotNull(data){
-            return (data == null)? "":moment(data).format('L');
-        }
+    var ordersHtml = "";
 
+    for(i in orders){
+        var order = orders[i];
+        badgeHtml = (order.priority > 0)? "<span class='badge'>"+order.priority+"</span>":"";
+        ordersHtml += "<tr><th scope='row' class='text-center'>"+order.id+"</th> <td>"+order.payment_name+" "+badgeHtml+"</td>\
+                       <td class='text-center'>"+moment(order.payment_date).format('L')+"</td> <td>"+emptyIfNull(order.type)+"</td>\
+                       <td>"+emptyIfNull(order.name)+"</td> <td class='text-center'>"+emptyIfNull(order.clicks)+"</td>\
+                       <td class='text-center'>"+dateIfNotNull(order.date_submitted)+"</td> <td class='status-cell'>\
+                       <span class='order-status "+order.status_category.toLowerCase()+"'>"+order.status_category.toUpperCase()+"\
+                        - "+order.status+"</span></td></tr>";
     }
 
+    return ordersHtml;
+
+}
+
+
+function updatePaginator(pagination_data){
+
+    var page_options = generatePageOptions(pagination_data);
+
+    $("select.show-pages-select").html(page_options);
+
+    if(pagination_data.last_page > 1){
+        $("select.show-pages-select").prop('disabled', false);
+    }
+    if(pagination_data.current_page > 1){
+        $("div.pagination-wrapper button.pag-first-btn, div.pagination-wrapper button.pag-prev-btn").prop('disabled', false);
+    }
+    if(pagination_data.current_page < pagination_data.last_page){
+        $("div.pagination-wrapper button.pag-next-btn, div.pagination-wrapper button.pag-last-btn").prop('disabled', false);
+    }
+
+}
+
+function generatePageOptions(pagination_data){
+    var optionsHtml = "";
+
+    for (var i = 1; i<=pagination_data.last_page; i++ ) {
+        var from = ((i-1)*pagination_data.per_page)+1,
+              to = (i==pagination_data.last_page)? pagination_data.total:(i*pagination_data.per_page);
+
+        optionsHtml += "<option value='"+i+"' "+((i==pagination_data.current_page)? "selected":"")+">Page "+i+"&nbsp;&nbsp;\
+                        |&nbsp;&nbsp;"+from+" to "+to+" of "+pagination_data.total+"</option>";
+    }
+
+    return optionsHtml;
+}
+
+
+// ========================  HELPERs =====================
+
+function emptyIfNull(data){
+    return (data == null)? "":data;
+}
+
+function dateIfNotNull(data){
+    return (data == null)? "":moment(data).format('L');
 }
