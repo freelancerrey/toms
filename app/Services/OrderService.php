@@ -75,17 +75,17 @@ class OrderService
             'order.email' => 'nullable|email|max:100',
             'order.paypal_name' => 'nullable|string|max:100',
             'order.clicks' => 'nullable|integer|between:0,65535',
-            'order.put_on_top' => 'nullable|boolean',
+            'order.put_on_top' => 'boolean',
             'order.date_submitted' => 'nullable|date_format:Y-m-d H:i:s',
             'order.url' => 'nullable|url|max:250',
             'order.stats' => 'nullable|url|max:250',
-            'order.in_rotator' => 'nullable|boolean',
+            'order.in_rotator' => 'boolean',
             'order.clicks_sent' => 'nullable|integer|between:0,65535',
             'order.optins' => 'nullable|integer|between:0,65535',
-            'order.followup_sent' => 'nullable|boolean',
+            'order.followup_sent' => 'boolean',
             'order.screenshot' => 'nullable|url|max:250',
-            'order.priority' => 'nullable|integer|between:0,255',
-            'order.status' => 'nullable|integer|between:0,65535|exists:order_statuses,id'
+            'order.priority' => 'integer|between:0,'.config('custom.priority_level'),
+            'order.status' => 'integer|between:0,65535|exists:order_statuses,id'
         ]);
 
         if ($validator->fails()) {
