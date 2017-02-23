@@ -19,6 +19,36 @@ class OrderRepository
     }
 
     public function getList(array $data){
+
+        /*
+
+        $defaultSorter = config('default_orders_list_sort');
+        $sortingMap = config('custom.orders_list_sort_map');
+
+        $sorter = $defaultSorter;
+
+        if (array_key_exists('sort', $data)) {
+
+            $sortIndex = $data['sort']['index'];
+
+            $sorter = [
+                [$sortingMap[$sortIndex][0] => $data['sort']['direction']]
+            ];
+
+            if (is_null($sortingMap[$sortIndex][1])) {
+                foreach ($defaultSorter as $column => $direction) {
+                    $sorter[$column] = $direction;
+                }
+            } else {
+                foreach ($sortingMap[$sortIndex][1] as $column => $direction) {
+                    $sorter[$column] = $direction;
+                }
+            }
+
+        }
+
+        */
+
         return Order::join(
             'payments',
             'orders.payment',
@@ -50,7 +80,7 @@ class OrderRepository
             'order_types.type',
             'status_categories.category as status_category',
             'order_statuses.status'
-        )->paginate(10);
+        )->paginate(config('custom.orders_list_per_page'));
     }
 
 }
