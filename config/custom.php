@@ -8,6 +8,8 @@ return [
 
     'gravity_private_key' => env('GRAVITY_PRIVATE_KEY'),
 
+    'orders_list_per_page' => 10,
+
     'default_orders_list_sort' => [
         'orders.priority' => 'desc',
         'orders.id' => 'asc'
