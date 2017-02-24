@@ -68,7 +68,9 @@ class OrderService
                 'integer',
                 Rule::in(array_keys(config('custom.orders_list_sort_map')))
             ],
-            'sort.direction' => 'string|in:asc,desc'
+            'sort.direction' => 'string|in:asc,desc',
+            'filters' => 'array',
+            'filters.*' => 'integer|between:0,65535'
         ]);
 
         if ($validator->fails()) {

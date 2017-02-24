@@ -6,7 +6,7 @@ use App\OrderStatus;
 class OrderStatusRepository
 {
 
-    public function getAllForView()
+    public function getAllActive()
     {
 
         return OrderStatus::join(
@@ -23,6 +23,34 @@ class OrderStatusRepository
         ->orderBy('order_statuses.id')
         ->get()
         ->toArray();
+
+    }
+
+    public function getAllForFilter()
+    {
+
+        $orderStatuses = OrderStatus::join(
+            'status_categories',
+            'order_statuses.category',
+            '=',
+            'status_categories.id'
+        )
+        ->select(
+            'order_statuses.*',
+            'order_statuses.category as cat_id',
+            'status_categories.category'
+        )
+        ->orderBy('order_statuses.id')
+        ->get()
+        ->toArray();
+
+        $arrangedStatuses = [];
+
+        foreach ($orderStatuses as $status) {
+            $arrangedStatuses[$status['category']][$status['id']] = $status['status'];
+        }
+
+        return $arrangedStatuses;
 
     }
 

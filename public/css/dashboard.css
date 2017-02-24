@@ -284,7 +284,7 @@ div.mytable-wrapper.initializing tfoot tr.no-record, div.mytable-wrapper.empty t
     display: none;
 }
 
-div.mytable-wrapper thead th{
+div.mytable-wrapper:not(.empty):not(.initializing) thead th{
     cursor: pointer;
 }
 
@@ -324,29 +324,6 @@ div.mytable-wrapper thead th[data-direction=desc].sorter span:after{
     content: "\e156";
 }
 
-input.active-filters + div button{
-    color: #fff !important;
-    background-color: #bf5329;
-    border-color: #aa4a24;
-}
-
-input.active-filters + div button:hover{
-    color: #fff !important;
-    background-color: #c9302c;
-    border-color: #ac2925;
-}
-
-input.active-filters[value=""] + div button {
-    color: #333 !important;
-    background-color: #fff;
-    border-color: #ccc;
-}
-
-input.active-filters[value=""] + div button:hover {
-    background-color: #e6e6e6;
-    border-color: #adadad;
-}
-
 #collapseFilters div.filters div{
     width: 16.3%;
     display:inline-block;
@@ -372,7 +349,14 @@ div.filters div label.status span{
     display: block;
     float: right;
     width: 88%;
-    margin-top: 6px;
+    margin-top: 8px;
+    font-size: 11px;
+}
+
+div.filters div label.status input[data-active] + span{
+    font-weight: bold;
+    color: #b60000;
+    text-decoration: underline;
 }
 
 div.filters div label.status input{

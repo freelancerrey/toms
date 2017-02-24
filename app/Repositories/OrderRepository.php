@@ -78,6 +78,10 @@ class OrderRepository
             'order_statuses.status'
         );
 
+        if (array_key_exists('filters', $data)) {
+            $query->whereIn('orders.status', $data['filters']);
+        }
+
         foreach ($sorter as $column => $direction) {
             $query->orderBy($column, $direction);
         }

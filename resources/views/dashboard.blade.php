@@ -422,29 +422,25 @@
 </div>
 
 <div class='row' style='margin-bottom: 20px;'>
-    <input value="" class="active-filters" type="hidden">
-    <div class="col-md-6"><button class="btn" type="button" data-toggle="collapse" data-target="#collapseFilters" aria-expanded="false" aria-controls="collapseFilters" style="width: 90px"><span class="glyphicon glyphicon-filter"></span>&nbsp;Filters</button></div>
+    <div class="col-md-6"><button class="btn btn-default filter-btn" type="button" data-toggle="collapse" data-target="#collapseFilters" aria-expanded="false" aria-controls="collapseFilters" style="width: 90px"><span class="glyphicon glyphicon-filter"></span>&nbsp;Filters</button></div>
     <div class="col-md-6 text-right"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#new-order-modal"><span class="glyphicon glyphicon-plus-sign"></span>&nbsp;&nbsp;New Order</button></div>
 </div>
 <div class="collapse" id="collapseFilters">
     <div class="well">
         <div class='filters'>
+            @foreach ($statuses_filters as $category => $statuses)
             <div>
-                <label class='status-head'><input type='checkbox'> Payment</label>
-                <label class='status'><input type='checkbox'> <span>Waiting for client to confirm</span><br></label>
-                <label class='status'><input type='checkbox'> <span>Waiting for client to confirm</span><br></label>
-                <label class='status'><input type='checkbox'> <span>Unverified</span><br></label>
+                <label class='status-head'><input type='checkbox'> {{ $category }}</label>
+                @foreach ($statuses as $id => $status)
+                <label class='status'><input type='checkbox' value='{{ $id }}'> <span>{{ $status }}</span><br></label>
+                @endforeach
             </div>
-            <div>test</div>
-            <div>test</div>
-            <div>test</div>
-            <div>test</div>
-            <div>test</div>
+            @endforeach
         </div>
         <div class='text-right' style='margin-top: 15px;'>
-            <button class="btn btn-default btn-sm" type="clear">Clear</button>
-            <button class="btn btn-default btn-sm" type="button">Default</button>
-            <button class="btn btn-primary btn-sm" type="submit">Update</button>
+            <button class="btn btn-default btn-sm clear-filter-btn" type="clear">Clear</button>
+            <button class="btn btn-default btn-sm default-filter-btn" type="button">Default</button>
+            <button class="btn btn-primary btn-sm update-filter-btn" type="submit">Update</button>
         </div>
     </div>
 </div>

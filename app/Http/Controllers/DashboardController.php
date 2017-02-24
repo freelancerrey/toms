@@ -38,9 +38,10 @@ class DashboardController extends Controller
     public function index()
     {
         return view('dashboard', [
-            'order_statuses' => $this->orderStatusRepository->getAllForView(),
-            'payment_gateways' => $this->paymentGatewayRepository->getAllForView(),
-            'order_type_mappings' => $this->orderTypeService->getMappings()
+            'order_statuses' => $this->orderStatusRepository->getAllActive(),
+            'payment_gateways' => $this->paymentGatewayRepository->getAllActive(),
+            'order_type_mappings' => $this->orderTypeService->getMappings(),
+            'statuses_filters' => $this->orderStatusRepository->getAllForFilter()
         ]);
     }
 }

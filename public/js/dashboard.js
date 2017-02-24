@@ -118,23 +118,62 @@ $(document).ready(function() {
     });
 
     document.querySelector("div.mytable-wrapper thead tr").onclick = function(e){
-        var originalElement = e.srcElement || e.originalTarget,
-            columnTh = $(originalElement).closest('th');
 
-        if (columnTh.is(".sorter")) {
-            if (columnTh.is('[data-direction=asc]')) {
-                columnTh[0].dataset.direction = 'desc';
+        if ($("div.mytable-wrapper").is(":not(.empty,.initializing)")) {
+
+            var originalElement = e.srcElement || e.originalTarget,
+                columnTh = $(originalElement).closest('th');
+
+            if (columnTh.is(".sorter")) {
+                if (columnTh.is('[data-direction=asc]')) {
+                    columnTh[0].dataset.direction = 'desc';
+                } else {
+                    columnTh.removeClass('sorter').removeAttr('data-direction');
+                }
             } else {
-                columnTh.removeClass('sorter').removeAttr('data-direction');
+                $("div.mytable-wrapper thead tr th").removeClass('sorter').removeAttr('data-direction');
+                columnTh.addClass('sorter')[0].dataset.direction = 'asc';
             }
-        } else {
-            $("div.mytable-wrapper thead tr th").removeClass('sorter').removeAttr('data-direction');
-            columnTh.addClass('sorter')[0].dataset.direction = 'asc';
+
+            loadOrderList();
+
         }
 
-        loadOrderList();
+    };
+
+    $(".update-filter-btn").on('click', function(e){
+        filterOrderList();
+    });
+
+    $(".clear-filter-btn").on('click', function(e){
+        var filterCheckBoxes = parentDiv[0].querySelectorAll('input');
+        for (i in filterCheckBoxes) {
+            filterCheckBoxes[i].checked = false;
+        }
+        filterOrderList();
+    });
+
+    document.querySelector("#collapseFilters .well").onchange = function(e){
+        var originalElement = e.srcElement || e.originalTarget;
+            jSourceElement = $(originalElement),
+            parentDiv = jSourceElement.closest('div');
+
+        if (jSourceElement.is('input[value]')) {
+            parentDiv[0].querySelector('label.status-head input').checked = parentDiv.find('input[value]').length == parentDiv.find('input[value]:checked').length;
+        } else {
+            var filterCheckBoxes = parentDiv[0].querySelectorAll('input[value]');
+            for (i in filterCheckBoxes) {
+                filterCheckBoxes[i].checked = originalElement.checked;
+            }
+        }
 
     };
+
+    $("#collapseFilters .well").keypress(function(e) {
+        if (e.which == "13") {
+            $(".update-filter-btn").click();
+        }
+    });
 
     loadOrderList();
 
@@ -280,6 +319,10 @@ function loadOrderList(page = 1) {
         request_data['sort[direction]'] = sorterTh[0].dataset.direction;
     }
 
+    if((filters = getActiveFilters()).length){
+        request_data['filters'] = filters;
+    }
+
     $.ajax({
         url: "ajax/order/list",
         dataType: "json",
@@ -311,7 +354,7 @@ function renderTableData(response){
 
     tbody_data = generateOrderTrs(response.data);
 
-    $("div.mytable-wrapper").removeClass("initializing");
+    $("div.mytable-wrapper").removeClass("empty initializing");
     if(response.data.length == 0){
         $("div.mytable-wrapper").addClass("empty");
     }
@@ -382,6 +425,36 @@ function renderEmptyTable(){
         current_page: 0
     }
     renderTableData(empty_fake_date);
+}
+
+function filterOrderList(){
+    updateFilters();
+    $("div.mytable-wrapper thead tr th").removeClass('sorter').removeAttr('data-direction');
+    loadOrderList();
+    setTimeout(function(){
+        $("#collapseFilters").collapse('hide');
+    }, 500);
+}
+
+function updateFilters(){
+    $("#collapseFilters input[data-active]").removeAttr('data-active');
+    $("#collapseFilters input[value]:checked").attr('data-active','');
+    colorFilterButton();
+}
+
+function colorFilterButton(){
+    $(".filter-btn").removeClass("btn-danger").addClass("btn-default");
+    if($("#collapseFilters input[data-active]").length){
+         $(".filter-btn").addClass("btn-danger");
+    }
+}
+
+function getActiveFilters(){
+    var active_filters = [];
+    $("#collapseFilters input[data-active]").each(function(index){
+        active_filters.push(parseInt(this.value));
+    });
+    return active_filters;
 }
 
 
