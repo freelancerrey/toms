@@ -263,6 +263,10 @@ function displayAlertMessage(type, status, message){
     setTimeout(function(){ alert.fadeOut(600); }, 5000);
 }
 
+function refreshOrderList(){
+    loadOrderList($("div.pagination-wrapper select option:selected").val());
+}
+
 function loadOrderList(page = 1) {
     $("div.pagination-wrapper").find("select,button").prop('disabled', true);
     $("div.mytable-wrapper").addClass("loading");
@@ -287,6 +291,17 @@ function loadOrderList(page = 1) {
         },
         complete : function(data) {
             //enable buttons and fields here, don't forget please
+        },
+        statusCode: {
+            400: function(response) {
+                validationResponse = response.responseJSON;
+                renderEmptyTable();
+                displayAlertMessage('danger', 'Error!', validationResponse[Object.keys(validationResponse)[0]][0]);
+            },
+            500: function(response) {
+                renderEmptyTable();
+                displayAlertMessage('danger', 'Error!', "Something's not right");
+            }
         }
 
     });
@@ -358,6 +373,15 @@ function generatePageOptions(pagination_data){
     }
 
     return optionsHtml;
+}
+
+function renderEmptyTable(){
+    var empty_fake_date = {
+        data: [],
+        last_page: 0,
+        current_page: 0
+    }
+    renderTableData(empty_fake_date);
 }
 
 

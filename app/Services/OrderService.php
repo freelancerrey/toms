@@ -4,6 +4,7 @@ namespace App\Services;
 use App\Exceptions\ValidationException;
 use App\Repositories\OrderRepository;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 use App\Order;
 use Validator;
 
@@ -51,9 +52,28 @@ class OrderService
     public function getList(array $data)
     {
 
-        //$this->validate($data);
+        $this->validateQuery($data);
 
         return $this->orderRepository->getList($data);
+
+    }
+
+    private function validateQuery(array $data)
+    {
+
+        $validator = Validator::make($data, [
+            'sort' => 'array',
+            'page' => 'integer|between:0,65535',
+            'sort.index' => [
+                'integer',
+                Rule::in(array_keys(config('custom.orders_list_sort_map')))
+            ],
+            'sort.direction' => 'string|in:asc,desc'
+        ]);
+
+        if ($validator->fails()) {
+            throw new ValidationException($validator->errors());
+        }
 
     }
 
