@@ -8,17 +8,6 @@
 <link href="/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 @endsection
 
-@section('pagescripts')
-<script src="/js/dashboard.js"></script>
-<script src="/js/jquery.bootcomplete.js"></script>
-<script type="text/javascript" src="/js/moment.min.js"></script>
-<script type="text/javascript" src="/js/bootstrap-datetimepicker.min.js"></script>
-<script type="text/javascript">
-    var orderTypes = {!! json_encode($order_type_mappings['types'], true) !!};
-    var formsMappings = {!! json_encode($order_type_mappings['forms'], true) !!}
-</script>
-@endsection
-
 @section('content')
 <div id="alert-message" style="position: fixed;left: 300px;right: 300px;text-align: center;z-index: 100; display: none">
     <div class="alert alert-success alert-dismissible fade in" role="alert" style="display: inline-block;margin: 0;">
@@ -503,4 +492,17 @@
         <span class="glyphicon glyphicon-fast-forward" aria-hidden="true"></span>
     </button>
 </div>
+@endsection
+
+@section('pagescripts')
+<script src="/js/dashboard.js"></script>
+<script src="/js/jquery.bootcomplete.js"></script>
+<script type="text/javascript" src="/js/moment.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript">
+    var orderTypes = {!! json_encode($order_type_mappings['types'], true) !!},
+        formsMappings = {!! json_encode($order_type_mappings['forms'], true) !!},
+        user_default_filter = {!! json_encode(explode(',', Auth::user()->default_filter), true) !!};
+
+</script>
 @endsection

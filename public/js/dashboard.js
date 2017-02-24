@@ -62,6 +62,9 @@ $(document).ready(function() {
             success : function(data) {
                 if(data.hasOwnProperty('id')){
                     $('#new-order-modal').modal('hide');
+                    if ($("#collapseFilters .well input[value="+data.status+"][data-active]").length || isFilterClear()) {
+                        refreshOrderList();
+                    }
                     displayAlertMessage('success', 'Success!', "Order has been created");
                 } else {
                     displayAlertMessage('danger', 'Error!', "Something's not right");
@@ -146,9 +149,19 @@ $(document).ready(function() {
     });
 
     $(".clear-filter-btn").on('click', function(e){
+        if (!isFilterClear()) {
+            var filterCheckBoxes = document.querySelectorAll("#collapseFilters .well input");
+            for (i in filterCheckBoxes) {
+                filterCheckBoxes[i].checked = false;
+            }
+            filterOrderList();
+        }
+    });
+
+    $(".default-filter-btn").on('click', function(e){
         var filterCheckBoxes = document.querySelectorAll("#collapseFilters .well input");
         for (i in filterCheckBoxes) {
-            filterCheckBoxes[i].checked = false;
+            filterCheckBoxes[i].checked = (user_default_filter.indexOf(filterCheckBoxes[i].value) > -1);
         }
         filterOrderList();
     });
@@ -229,16 +242,12 @@ function getFormDetai(caller){
                 tabpane.find("input[name=order\\[date_submitted\\]]").val(data.date_created);
                 entryTable.find('tr:eq(6) td').text(data.date_created);
 
-                removeLoadingAndEnableFields();
-
             } else {
                 renderFormAttachError('Entry/Form ID Invalid or Not Found!');
             }
         },
         complete : function(response){
-            if(response.status != 200){
-                removeLoadingAndEnableFields();
-            }
+            removeLoadingAndEnableFields();
         },
         statusCode: {
             500: function(response) {
@@ -431,9 +440,9 @@ function filterOrderList(){
     updateFilters();
     $("div.mytable-wrapper thead tr th").removeClass('sorter').removeAttr('data-direction');
     loadOrderList();
-    /*setTimeout(function(){
+    setTimeout(function(){
         $("#collapseFilters").collapse('hide');
-    }, 500);*/
+    }, 700);
 }
 
 function updateFilters(){
@@ -456,6 +465,12 @@ function getActiveFilters(){
     });
     return active_filters;
 }
+
+function isFilterClear(){
+    return (getActiveFilters().length == 0);
+}
+
+
 
 
 // ========================  HELPERs =====================
