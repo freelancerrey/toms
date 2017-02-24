@@ -346,3 +346,43 @@ input.active-filters[value=""] + div button:hover {
     background-color: #e6e6e6;
     border-color: #adadad;
 }
+
+#collapseFilters div.filters div{
+    width: 16.3%;
+    display:inline-block;
+    vertical-align: top;
+}
+
+div.filters div label{
+    display: block;
+    margin: 0;
+    line-height: 1;
+}
+
+div.filters div label.status-head{
+    margin-bottom: 2px;
+}
+
+div.filters div label.status{
+    margin-left: 15px;
+    font-weight: normal;
+}
+
+div.filters div label.status span{
+    display: block;
+    float: right;
+    width: 88%;
+    margin-top: 6px;
+}
+
+div.filters div label.status input{
+    display: block;
+    float: left;
+    margin: 0;
+    margin-top: 7px;
+}
+
+div.filters div label.status br{
+    float: right;
+    clear: both;
+}

@@ -428,30 +428,23 @@
 </div>
 <div class="collapse" id="collapseFilters">
     <div class="well">
-        <div class='row'>
-            <div class="col-md-2">
-                <div class="checkbox"><label><input type="checkbox" value=""><strong>Payment</strong></label></div>
+        <div class='filters'>
+            <div>
+                <label class='status-head'><input type='checkbox'> Payment</label>
+                <label class='status'><input type='checkbox'> <span>Waiting for client to confirm</span><br></label>
+                <label class='status'><input type='checkbox'> <span>Waiting for client to confirm</span><br></label>
+                <label class='status'><input type='checkbox'> <span>Unverified</span><br></label>
             </div>
-            <div class="col-md-2">
-                <div class="checkbox"><label><input type="checkbox" value=""><strong>Order</strong></label></div>
-            </div>
-            <div class="col-md-2">
-                <div class="checkbox"><label><input type="checkbox" value=""><strong>Process</strong></label></div>
-            </div>
-            <div class="col-md-2">
-                <div class="checkbox"><label><input type="checkbox" value=""><strong>Traffic</strong></label></div>
-            </div>
-            <div class="col-md-2">
-                <div class="checkbox"><label><input type="checkbox" value=""><strong>Done</strong></label></div>
-            </div>
-            <div class="col-md-2">
-                <div class="checkbox"><label><input type="checkbox" value=""><strong>Discard</strong></label></div>
-            </div>
+            <div>test</div>
+            <div>test</div>
+            <div>test</div>
+            <div>test</div>
+            <div>test</div>
         </div>
         <div class='text-right' style='margin-top: 15px;'>
-            <button class="btn btn-default" type="clear">Clear</button>
-            <button class="btn btn-default" type="button">Default</button>
-            <button class="btn btn-primary" type="submit">Update</button>
+            <button class="btn btn-default btn-sm" type="clear">Clear</button>
+            <button class="btn btn-default btn-sm" type="button">Default</button>
+            <button class="btn btn-primary btn-sm" type="submit">Update</button>
         </div>
     </div>
 </div>
