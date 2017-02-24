@@ -146,7 +146,7 @@ $(document).ready(function() {
     });
 
     $(".clear-filter-btn").on('click', function(e){
-        var filterCheckBoxes = parentDiv[0].querySelectorAll('input');
+        var filterCheckBoxes = document.querySelectorAll("#collapseFilters .well input");
         for (i in filterCheckBoxes) {
             filterCheckBoxes[i].checked = false;
         }
@@ -431,9 +431,9 @@ function filterOrderList(){
     updateFilters();
     $("div.mytable-wrapper thead tr th").removeClass('sorter').removeAttr('data-direction');
     loadOrderList();
-    setTimeout(function(){
+    /*setTimeout(function(){
         $("#collapseFilters").collapse('hide');
-    }, 500);
+    }, 500);*/
 }
 
 function updateFilters(){
