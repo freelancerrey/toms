@@ -6,7 +6,7 @@ use App\PaymentGateway;
 class PaymentGatewayRepository
 {
 
-    public function getAllForView()
+    public function getAllActive()
     {
 
         return PaymentGateway::where('is_active', true)
