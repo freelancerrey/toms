@@ -19,11 +19,12 @@ td span.order-status{
     border-radius: 3px;
     text-align: center;
     width: 145px;
+    color: #2a2a2a;
 }
 
 td span.order-status.payment{
     background: #fff300;
-    border: 1px solid #e0d500;
+    border: 1px solid #e0c600;
 }
 
 td span.order-status.order{
