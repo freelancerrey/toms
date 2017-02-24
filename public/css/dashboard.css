@@ -323,3 +323,26 @@ div.mytable-wrapper thead th[data-direction=asc].sorter span:after{
 div.mytable-wrapper thead th[data-direction=desc].sorter span:after{
     content: "\e156";
 }
+
+input.active-filters + div button{
+    color: #fff !important;
+    background-color: #bf5329;
+    border-color: #aa4a24;
+}
+
+input.active-filters + div button:hover{
+    color: #fff !important;
+    background-color: #c9302c;
+    border-color: #ac2925;
+}
+
+input.active-filters[value=""] + div button {
+    color: #333 !important;
+    background-color: #fff;
+    border-color: #ccc;
+}
+
+input.active-filters[value=""] + div button:hover {
+    background-color: #e6e6e6;
+    border-color: #adadad;
+}

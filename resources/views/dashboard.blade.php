@@ -422,7 +422,8 @@
 </div>
 
 <div class='row' style='margin-bottom: 20px;'>
-    <div class="col-md-6"><button class="btn btn-default" type="button" data-toggle="collapse" data-target="#collapseFilters" aria-expanded="false" aria-controls="collapseFilters" style="width: 90px"><span class="glyphicon glyphicon-filter"></span>&nbsp;Filters</button></div>
+    <input value="" class="active-filters" type="hidden">
+    <div class="col-md-6"><button class="btn" type="button" data-toggle="collapse" data-target="#collapseFilters" aria-expanded="false" aria-controls="collapseFilters" style="width: 90px"><span class="glyphicon glyphicon-filter"></span>&nbsp;Filters</button></div>
     <div class="col-md-6 text-right"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#new-order-modal"><span class="glyphicon glyphicon-plus-sign"></span>&nbsp;&nbsp;New Order</button></div>
 </div>
 <div class="collapse" id="collapseFilters">
