@@ -134,7 +134,7 @@ $(document).ready(function() {
                     columnTh.removeClass('sorter').removeAttr('data-direction');
                 }
             } else {
-                $("div.mytable-wrapper thead tr th").removeClass('sorter').removeAttr('data-direction');
+                removeSorter();
                 columnTh.addClass('sorter')[0].dataset.direction = 'asc';
             }
 
@@ -191,6 +191,28 @@ $(document).ready(function() {
     $(".search-note-btn").click(function() {
         $(this).toggleClass('btn-default btn-primary');
     });
+
+    $("button.search-btn").on('click', function(e){
+        search();
+    });
+
+    $("input.search-key-input").keypress(function(e) {
+        if (e.which == "13") {
+            search();
+        }
+    });
+
+    $(".clear-search").on('click', function(){
+        var searchinput = $("input.search-key-input")[0];
+        searchinput.value = '';
+        if(searchinput.dataset.key.trim().length){
+            searchinput.dataset.key = '';
+            removeSorter();
+            loadOrderList();
+        }
+    });
+
+
 
     loadOrderList();
 
@@ -336,6 +358,8 @@ function loadOrderList(page = 1) {
         request_data['filters'] = filters;
     }
 
+    setSearchData(request_data);
+
     $.ajax({
         url: "ajax/order/list",
         dataType: "json",
@@ -440,9 +464,13 @@ function renderEmptyTable(){
     renderTableData(empty_fake_date);
 }
 
+function removeSorter(){
+    $("div.mytable-wrapper thead tr th").removeClass('sorter').removeAttr('data-direction');
+}
+
 function filterOrderList(){
     updateFilters();
-    $("div.mytable-wrapper thead tr th").removeClass('sorter').removeAttr('data-direction');
+    removeSorter();
     loadOrderList();
     setTimeout(function(){
         $("#collapseFilters").collapse('hide');
@@ -474,6 +502,21 @@ function isFilterClear(){
     return (getActiveFilters().length == 0);
 }
 
+function setSearchData(request_data){
+    var search_key = $("input.search-key-input")[0].dataset.key;
+    if (search_key.trim().length) {
+        request_data['search_key'] = search_key;
+    }
+}
+
+function search(){
+    var search_input = $("input.search-key-input")[0], search_text = search_input.value.trim();
+    if(search_text.length){
+        search_input.dataset.key = search_input.value.trim();
+        removeSorter();
+        loadOrderList();
+    }
+}
 
 
 

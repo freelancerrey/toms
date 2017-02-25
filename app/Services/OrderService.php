@@ -70,7 +70,8 @@ class OrderService
             ],
             'sort.direction' => 'string|in:asc,desc',
             'filters' => 'array',
-            'filters.*' => 'integer|between:0,65535'
+            'filters.*' => 'integer|between:0,65535',
+            'search_key' => 'string|max:250'
         ]);
 
         if ($validator->fails()) {

@@ -78,6 +78,21 @@ class OrderRepository
             'order_statuses.status'
         );
 
+        if (array_key_exists('search_key', $data)) {
+            $query->whereRaw("(CONCAT(
+                payments.reference, ':#:',
+                payments.name, ':#:',
+                payments.email, ':#:',
+                ifnull(orders.entry,''), ':#:',
+                ifnull(orders.name,''), ':#:',
+                ifnull(orders.email,''), ':#:',
+                ifnull(orders.paypal_name,''), ':#:',
+                ifnull(orders.url,''), ':#:',
+                ifnull(orders.stats,''), ':#:',
+                ifnull(orders.screenshot,'')
+            ) like ?)", ['%'.$data['search_key'].'%']);
+        }
+
         if (array_key_exists('filters', $data)) {
             $query->whereIn('orders.status', $data['filters']);
         }
