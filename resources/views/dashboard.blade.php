@@ -436,7 +436,13 @@
 <div class="input-group" style='margin-bottom: 40px;'>
     <input type="text" class="form-control" placeholder="Type Search Keyword Here...">
         <span class="input-group-btn">
-    <button class="btn btn-default" type="button" style='width: 90px;'>Search!</button>
+    <button class="btn btn-default search-note-btn" type="button">
+        <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+    </button>
+    <button class="btn btn-default" type="button" style='width: 90px;'>
+        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+        Search!
+    </button>
     </span>
 </div>
 <div class="pagination-wrapper">
@@ -503,6 +509,5 @@
     var orderTypes = {!! json_encode($order_type_mappings['types'], true) !!},
         formsMappings = {!! json_encode($order_type_mappings['forms'], true) !!},
         user_default_filter = {!! json_encode(explode(',', Auth::user()->default_filter), true) !!};
-
 </script>
 @endsection

@@ -188,6 +188,10 @@ $(document).ready(function() {
         }
     });
 
+    $(".search-note-btn").click(function() {
+        $(this).toggleClass('btn-default btn-primary');
+    });
+
     loadOrderList();
 
 });
