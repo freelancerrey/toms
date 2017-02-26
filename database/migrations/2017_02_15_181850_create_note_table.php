@@ -26,6 +26,7 @@ class CreateNoteTable extends Migration
                   ->references('id')->on('users')
                   ->onDelete('cascade');
         });
+        DB::statement('alter table notes add fulltext note(note)');
     }
 
     /**
