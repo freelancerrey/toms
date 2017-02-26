@@ -344,7 +344,7 @@ function refreshOrderList(){
 function loadOrderList(page = 1) {
     $("div.pagination-wrapper").find("select,button").prop('disabled', true);
     $("div.mytable-wrapper").addClass("loading");
-    // disable upper button here, don't forget please
+    toggleUpperInputs(false);
 
     request_data = { 'page': page };
 
@@ -370,7 +370,7 @@ function loadOrderList(page = 1) {
             renderTableData(response);
         },
         complete : function(data) {
-            //enable buttons and fields here, don't forget please
+            toggleUpperInputs(true);
         },
         statusCode: {
             400: function(response) {
@@ -453,6 +453,11 @@ function generatePageOptions(pagination_data){
     }
 
     return optionsHtml;
+}
+
+function toggleUpperInputs(enabled){
+    $("#collapseFilters").collapse('hide');
+    $(".filter-btn, .new-order-btn, .search-input-group input, .search-input-group button").attr('disabled', !enabled);
 }
 
 function renderEmptyTable(){

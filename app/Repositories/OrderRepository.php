@@ -23,28 +23,6 @@ class OrderRepository
         $defaultSorter = config('custom.default_orders_list_sort');
         $sortingMap = config('custom.orders_list_sort_map');
 
-        $sorter = $defaultSorter;
-
-        if (array_key_exists('sort', $data)) {
-
-            $sortIndex = $data['sort']['index'];
-
-            $sorter = [
-                $sortingMap[$sortIndex][0] => $data['sort']['direction']
-            ];
-
-            $secondarySorter = $defaultSorter;
-
-            if (is_array($sortingMap[$sortIndex][1])) {
-                $secondarySorter = $sortingMap[$sortIndex][1];
-            }
-
-            foreach ($secondarySorter as $column => $direction) {
-                $sorter[$column] = $direction;
-            }
-
-        }
-
         $query = Order::join(
             'payments',
             'orders.payment',
@@ -79,22 +57,55 @@ class OrderRepository
         );
 
         if (array_key_exists('search_key', $data)) {
-            $query->whereRaw("(CONCAT(
-                payments.reference, ':#:',
-                payments.name, ':#:',
-                payments.email, ':#:',
-                ifnull(orders.entry,''), ':#:',
-                ifnull(orders.name,''), ':#:',
-                ifnull(orders.email,''), ':#:',
-                ifnull(orders.paypal_name,''), ':#:',
-                ifnull(orders.url,''), ':#:',
-                ifnull(orders.stats,''), ':#:',
-                ifnull(orders.screenshot,'')
-            ) like ?)", ['%'.$data['search_key'].'%']);
+            $searhKey = "%".$data['search_key']."%";
+            $query->addSelect(
+                DB::raw(
+                    "(if((concat(payments.name, ':#:', ifnull(orders.name,'')) like ? ), 20, 0)+
+                     if((concat(payments.reference, ':#:', payments.email) like ? ), 8, 0)+
+                     if((concat(ifnull(orders.entry,''), ':#:', ifnull(orders.email,''), ':#:', ifnull(orders.paypal_name,'')) like ? ), 5, 0)+
+                     if((concat(ifnull(orders.url,''), ':#:', ifnull(orders.stats,''), ':#:', ifnull(orders.screenshot,'')) like ? ), 2, 0)) as searchrank"
+                )
+            )->setBindings(
+                array_merge($query->getBindings(),
+                [$searhKey,$searhKey,$searhKey,$searhKey])
+            )->whereRaw("
+                (if((concat(payments.name, ':#:', ifnull(orders.name,'')) like ? ), 20, 0)+
+                if((concat(payments.reference, ':#:', payments.email) like ? ), 8, 0)+
+                if((concat(ifnull(orders.entry,''), ':#:', ifnull(orders.email,''), ':#:', ifnull(orders.paypal_name,'')) like ? ), 5, 0)+
+                if((concat(ifnull(orders.url,''), ':#:', ifnull(orders.stats,''), ':#:', ifnull(orders.screenshot,'')) like ? ), 2, 0)) > 0
+            ")->setBindings(
+                array_merge($query->getBindings(),
+                [$searhKey,$searhKey,$searhKey,$searhKey])
+            );
+
+            $defaultSorter = ['searchrank' => 'desc']+$defaultSorter;
+
         }
 
         if (array_key_exists('filters', $data)) {
             $query->whereIn('orders.status', $data['filters']);
+        }
+
+        $sorter = $defaultSorter;
+
+        if (array_key_exists('sort', $data)) {
+
+            $sortIndex = $data['sort']['index'];
+
+            $sorter = [
+                $sortingMap[$sortIndex][0] => $data['sort']['direction']
+            ];
+
+            $secondarySorter = $defaultSorter;
+
+            if (is_array($sortingMap[$sortIndex][1])) {
+                $secondarySorter = $sortingMap[$sortIndex][1];
+            }
+
+            foreach ($secondarySorter as $column => $direction) {
+                $sorter[$column] = $direction;
+            }
+
         }
 
         foreach ($sorter as $column => $direction) {

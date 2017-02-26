@@ -412,7 +412,7 @@
 
 <div class='row' style='margin-bottom: 20px;'>
     <div class="col-md-6"><button class="btn btn-default filter-btn" type="button" data-toggle="collapse" data-target="#collapseFilters" aria-expanded="false" aria-controls="collapseFilters" style="width: 90px"><span class="glyphicon glyphicon-filter"></span>&nbsp;Filters</button></div>
-    <div class="col-md-6 text-right"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#new-order-modal"><span class="glyphicon glyphicon-plus-sign"></span>&nbsp;&nbsp;New Order</button></div>
+    <div class="col-md-6 text-right"><button type="button" class="btn btn-primary new-order-btn" data-toggle="modal" data-target="#new-order-modal"><span class="glyphicon glyphicon-plus-sign"></span>&nbsp;&nbsp;New Order</button></div>
 </div>
 <div class="collapse" id="collapseFilters">
     <div class="well">
@@ -433,7 +433,7 @@
         </div>
     </div>
 </div>
-<div class="input-group" style='margin-bottom: 40px;'>
+<div class="input-group search-input-group" style='margin-bottom: 40px;'>
     <input type="text" class="form-control search-key-input" data-key='' placeholder="Type Search Keyword Here...">
     <span class="input-group-btn">
         <button class="btn btn-default clear-search" type="button">
