@@ -18,4 +18,15 @@ class NoteRepository
 
     }
 
+    public function getMatch($searchKey){
+        return Note::whereRaw(
+            "MATCH(note) AGAINST( ? IN BOOLEAN MODE)",
+            [$searchKey.'*']
+        )
+        ->select('order')
+        ->groupby('order')
+        ->get()
+        ->toArray();
+    }
+
 }

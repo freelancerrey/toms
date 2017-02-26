@@ -205,6 +205,7 @@ $(document).ready(function() {
     $(".clear-search").on('click', function(){
         var searchinput = $("input.search-key-input")[0];
         searchinput.value = '';
+        $(".search-note-btn").removeClass('btn-primary').addClass("btn-default");
         if(searchinput.dataset.key.trim().length){
             searchinput.dataset.key = '';
             removeSorter();
@@ -511,6 +512,9 @@ function setSearchData(request_data){
     var search_key = $("input.search-key-input")[0].dataset.key;
     if (search_key.trim().length) {
         request_data['search_key'] = search_key;
+        if ($(".search-note-btn").hasClass("btn-primary")) {
+            request_data['search_note'] = 1;
+        }
     }
 }
 

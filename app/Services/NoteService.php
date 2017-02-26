@@ -33,6 +33,20 @@ class NoteService
 
     }
 
+    public function search($searchKey)
+    {
+
+        $matchOrders = $this->noteRepository->getMatch($searchKey);
+        $ids = [];
+
+        foreach ($matchOrders as $order) {
+            $ids[] = $order['order'];
+        }
+
+        return $ids;
+
+    }
+
 
     /**
      * Validate and throw ValidationException if data is invalid.

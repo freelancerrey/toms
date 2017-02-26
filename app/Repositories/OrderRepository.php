@@ -18,7 +18,7 @@ class OrderRepository
 
     }
 
-    public function getList(array $data){
+    public function getList(array $data, array $noteMatches = []){
 
         $defaultSorter = config('custom.default_orders_list_sort');
         $sortingMap = config('custom.orders_list_sort_map');
@@ -58,24 +58,30 @@ class OrderRepository
 
         if (array_key_exists('search_key', $data)) {
             $searhKey = "%".$data['search_key']."%";
+
+            $noteMatchedOrderQuery = "";
+            if (array_key_exists('search_note', $data) && (!empty($noteMatches))) {
+                $noteMatchedOrderQuery = "+(`orders`.`id` in (".implode(',', $noteMatches)."))";
+            }
+
             $query->addSelect(
                 DB::raw(
                     "(if((concat(payments.name, ':#:', ifnull(orders.name,'')) like ? ), 20, 0)+
                      if((concat(payments.reference, ':#:', payments.email) like ? ), 8, 0)+
                      if((concat(ifnull(orders.entry,''), ':#:', ifnull(orders.email,''), ':#:', ifnull(orders.paypal_name,'')) like ? ), 5, 0)+
-                     if((concat(ifnull(orders.url,''), ':#:', ifnull(orders.stats,''), ':#:', ifnull(orders.screenshot,'')) like ? ), 2, 0)) as searchrank"
+                     if((concat(ifnull(orders.url,''), ':#:', ifnull(orders.stats,''), ':#:', ifnull(orders.screenshot,'')) like ? ), 2, 0)
+                     ".$noteMatchedOrderQuery.") as searchrank"
                 )
             )->setBindings(
                 array_merge($query->getBindings(),
                 [$searhKey,$searhKey,$searhKey,$searhKey])
-            )->whereRaw("
-                (if((concat(payments.name, ':#:', ifnull(orders.name,'')) like ? ), 20, 0)+
+            )->whereRaw(
+                "(if((concat(payments.name, ':#:', ifnull(orders.name,'')) like ? ), 20, 0)+
                 if((concat(payments.reference, ':#:', payments.email) like ? ), 8, 0)+
                 if((concat(ifnull(orders.entry,''), ':#:', ifnull(orders.email,''), ':#:', ifnull(orders.paypal_name,'')) like ? ), 5, 0)+
-                if((concat(ifnull(orders.url,''), ':#:', ifnull(orders.stats,''), ':#:', ifnull(orders.screenshot,'')) like ? ), 2, 0)) > 0
-            ")->setBindings(
-                array_merge($query->getBindings(),
-                [$searhKey,$searhKey,$searhKey,$searhKey])
+                if((concat(ifnull(orders.url,''), ':#:', ifnull(orders.stats,''), ':#:', ifnull(orders.screenshot,'')) like ? ), 2, 0)".
+                $noteMatchedOrderQuery.") > 0",
+                [$searhKey,$searhKey,$searhKey,$searhKey]
             );
 
             $defaultSorter = ['searchrank' => 'desc']+$defaultSorter;

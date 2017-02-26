@@ -54,7 +54,12 @@ class OrderService
 
         $this->validateQuery($data);
 
-        return $this->orderRepository->getList($data);
+        $noteMatches = [];
+        if (array_key_exists('search_note', $data)) {
+            $noteMatches = $this->noteService->search($data['search_key']);
+        }
+
+        return $this->orderRepository->getList($data, $noteMatches);
 
     }
 
@@ -71,7 +76,8 @@ class OrderService
             'sort.direction' => 'string|in:asc,desc',
             'filters' => 'array',
             'filters.*' => 'integer|between:0,65535',
-            'search_key' => 'string|max:250'
+            'search_key' => 'string|max:250',
+            'search_note' => 'boolean'
         ]);
 
         if ($validator->fails()) {
