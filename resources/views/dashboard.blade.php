@@ -94,7 +94,7 @@
                                             <span class="caret"></span>
                                             <span class="sr-only"></span>
                                         </button>
-                                        <button type="button" class="btn btn-default remove-attached-form"><span class="glyphicon glyphicon-trash"></span></button>
+                                        <button type="button" class="btn btn-default remove-attached-form"><span class="glyphicon glyphicon-remove-sign"></span></button>
                                         <ul class="dropdown-menu form-type-list">
                                             <li data-prefix='GF'><a href="#">Gravity</a></li>
                                             <li data-prefix='WF'><a href="#">Wufoo</a></li>
