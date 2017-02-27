@@ -3,6 +3,7 @@ namespace App\Services;
 
 use App\Exceptions\ValidationException;
 use App\Repositories\OrderRepository;
+use App\Repositories\NoteRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use App\Order;
@@ -12,15 +13,18 @@ class OrderService
 {
 
     private $orderRepository;
+    private $noteRepository;
     private $paymentService;
     private $noteService;
 
     public function __construct(
         OrderRepository $orderRepository,
+        NoteRepository $noteRepository,
         PaymentService $paymentService,
         NoteService $noteService
     ) {
         $this->orderRepository = $orderRepository;
+        $this->noteRepository = $noteRepository;
         $this->paymentService = $paymentService;
         $this->noteService = $noteService;
     }
@@ -49,6 +53,19 @@ class OrderService
 
     }
 
+    public function getDetail(array $data)
+    {
+
+        $this->validateId($data);
+
+        $details = $this->orderRepository->getRecord($data['id']);
+
+        $details['notes'] = $this->noteRepository->getForOrder($data['id']);
+
+        return $details;
+
+    }
+
     public function getList(array $data)
     {
 
@@ -60,6 +77,19 @@ class OrderService
         }
 
         return $this->orderRepository->getList($data, $noteMatches);
+
+    }
+
+    private function validateId(array $data)
+    {
+
+        $validator = Validator::make($data, [
+            'id' => 'required|integer|between:0,65535|exists:orders,id'
+        ]);
+
+        if ($validator->fails()) {
+            throw new ValidationException($validator->errors());
+        }
 
     }
 

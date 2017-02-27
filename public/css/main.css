@@ -20,3 +20,7 @@ body {
 *:focus {
     outline: none;
 }
+
+.badge{
+    padding: 2px 7px 3px;
+}

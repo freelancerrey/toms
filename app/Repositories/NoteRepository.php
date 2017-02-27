@@ -18,6 +18,22 @@ class NoteRepository
 
     }
 
+    public function getForOrder($orderId)
+    {
+        return Note::join(
+                'users',
+                'notes.user',
+                '=',
+                'users.id'
+            )->select(
+                'notes.*',
+                'users.name as author'
+            )->where('notes.order', '=', $orderId)
+            ->orderBy('id', 'desc')
+            ->get()
+            ->toArray();
+    }
+
     public function getMatch($searchKey){
         return Note::whereRaw(
             "MATCH(note) AGAINST( ? IN BOOLEAN MODE)",

@@ -33,4 +33,8 @@ class OrderController extends Controller
         return new AjaxResponse($this->orderService->getList($request->all()));
     }
 
+    public function getDetail(Request $request){
+        return new AjaxResponse($this->orderService->getDetail($request->all()));
+    }
+
 }

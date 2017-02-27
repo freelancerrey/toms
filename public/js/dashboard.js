@@ -4,12 +4,33 @@ $(document).ready(function() {
 
     $('#new-order-modal').on('show.bs.modal', function () {
         var modal_content = $(this).find(".modal-content");
+        if(typeof attachFormXHR !== 'undefined'){
+            attachFormXHR.abort();
+        }
+        if(typeof createOrderXHR !== 'undefined'){
+            attachFormXHR.abort();
+        }
         clearAllCreateField(modal_content);
         modal_content.find("ul.nav-tabs li a:first").tab('show');
     });
 
     $('#create-order-reference').bootcomplete({
-        url :'ajax/payment/autolist'
+        url :'ajax/payment/autolist',
+        idFieldName: "payment\\[id\\]"
+    });
+
+    $('#view-order-reference').bootcomplete({
+        url :'ajax/payment/autolist',
+        idFieldName: "payment\\[id\\]"
+    });
+
+    $('#create-order-reference, #view-order-reference').on('input', function(){
+        $(this).parent().prev().val("");
+        restoreIgnoredPaymentField($(this).closest("table"));
+    });
+
+    $('input[name=payment\\[id\\]]').on('change', function(e){
+        ignorePaymentField($(this).closest("table"));
     });
 
     $('#create-order-paydate').datetimepicker({
@@ -23,18 +44,19 @@ $(document).ready(function() {
     });
 
     $("button.attach-form-button").on('click',function(e){
-        getFormDetai(this);
+        getFormDetail(this);
     });
 
     $("input.form-id-input").keypress(function(e) {
         if (e.which == "13") {
-            getFormDetai($(this).next().find('button.attach-form-button')[0]);
+            getFormDetail($(this).next().find('button.attach-form-button')[0]);
         }
     });
 
     $("button.remove-attached-form").on('click', function(e){
         tabpane = $(this).parents('div.tab-pane');
         tabpane.find("input[name]").val("");
+        removeFormAttachError(tabpane);
         tabpane.find('table tr:not(:eq(5)) td').text("");
     });
 
@@ -213,14 +235,49 @@ $(document).ready(function() {
         }
     });
 
+    document.querySelector("div.mytable-wrapper tbody").onclick = function(e){
 
+            var originalElement = e.srcElement || e.originalTarget,
+                columnTr = $(originalElement).closest('tr');
+
+            loadOrderDetails(columnTr.data("id"));
+
+    };
+
+    $("#view-order-edit-reset-btn").on('click',function(e){
+        $(this).parent().prev().addClass("edit-mode");
+    });
 
     loadOrderList();
 
 });
 
+function ignorePaymentField(containingParent){
 
-function getFormDetai(caller){
+    containingParent.find("tbody tr:first-child").nextAll().each(function(index){
+        var inputField = $(this).find("select,input"),
+            fieldname = inputField.attr("name");
+            if(inputField.is("select")){
+                inputField.val(inputField.find("option:first-child").val());
+            }else{
+                inputField.val("");
+            }
+            inputField.removeAttr("name").attr("disabled", true);
+            inputField[0].dataset.name = fieldname;
+    });
+
+}
+
+function restoreIgnoredPaymentField(containingParent){
+    containingParent.find("[data-name]").each(function(index){
+        $(this).attr("name", this.dataset.name);
+        $(this).attr("disabled", false);
+        delete this.dataset.name;
+    });
+}
+
+
+function getFormDetail(caller){
 
     tabpane = $(caller).parents('div.tab-pane');
 
@@ -232,7 +289,7 @@ function getFormDetai(caller){
     tabpane.addClass('loading');
     tabpane.find('button').prop('disabled', true);
     tabpane.find('input').prop('disabled', true);
-    tabpane.find('div.attach-form-btngroup').removeClass('has-error').removeAttr('data-toggle title data-original-title').tooltip('destroy');
+    removeFormAttachError(tabpane);
 
     attachFormXHR = $.ajax({
         url: "ajax/form/apicallurl",
@@ -304,6 +361,10 @@ function getFormDetai(caller){
 
 }
 
+function removeFormAttachError(tabpane){
+    tabpane.find('div.attach-form-btngroup').removeClass('has-error').removeAttr('data-toggle title data-original-title').tooltip('destroy');
+}
+
 function clearAllErrors(modal_content){
     modal_content.find("ul.nav-tabs li").removeClass("hilight-error");
     modal_content.find("[data-errorfor],.attach-form-btngroup").removeClass('has-error').removeAttr('data-toggle title data-original-title').tooltip('destroy');
@@ -320,10 +381,11 @@ function clearAllCreateField(modal_content){
         } else if (this.nodeName === "TEXTAREA") {
             this.value = "";
         } else if (this.nodeName === "SELECT") {
-            $(this).find("option:eq(0)").prop("selected", true);
+            $(this).find("option:eq(0)").attr("selected", true);
         }
     });
     modal_content.find('button.remove-attached-form').click();
+    restoreIgnoredPaymentField(modal_content);
     clearAllErrors(modal_content);
 }
 
@@ -411,7 +473,7 @@ function generateOrderTrs(orders){
     for(i in orders){
         var order = orders[i];
         badgeHtml = (order.priority > 0)? "<span class='badge'>"+order.priority+"</span>":"";
-        ordersHtml += "<tr><th scope='row' class='text-center'>"+order.id+"</th> <td>"+order.payment_name+"</td><td class='text-center'>\
+        ordersHtml += "<tr data-id='"+order.id+"'><th scope='row' class='text-center'>"+order.id+"</th> <td>"+order.payment_name+"</td><td class='text-center'>\
                       "+moment(order.payment_date).format('L')+"</td> <td class='text-center'>"+emptyIfNull(order.type)+"</td>\
                        <td>"+emptyIfNull(order.name)+"</td> <td class='text-center'>"+emptyIfNull(order.clicks)+"</td>\
                        <td class='text-center'>"+dateIfNotNull(order.date_submitted)+"</td><td class='text-center'>"+badgeHtml+"</td>\
@@ -527,6 +589,95 @@ function search(){
     }
 }
 
+function loadOrderDetails(order_id){
+    var view_order_modal = $("#view-order-modal");
+
+    //init and set loading here please don't forget
+    $("#view-order-title").text("Loading...");
+    restoreIgnoredPaymentField($("#view-payment").find("table"));
+    view_order_modal.find("ul.nav-tabs li a:first").tab('show');
+    view_order_modal.find('div.modal-body').removeClass("edit-mode").addClass("loading");
+    view_order_modal.modal('show');
+
+    $.ajax({
+        url: "ajax/order/detail",
+        dataType: "json",
+        accepts: "application/json; charset=utf-8",
+        type : "GET",
+        data : { 'id': order_id },
+        success : function(response) {
+            loadViewOrderFieldValues(view_order_modal, response);
+        },
+        complete : function(data) {
+            view_order_modal.find('div.modal-body').removeClass("loading");
+        },
+        statusCode: {
+            400: function(response) {
+
+            },
+            500: function(response) {
+
+            }
+        }
+
+    });
+
+}
+
+function loadViewOrderFieldValues(view_order_modal, data){
+    var notes = data.notes;
+
+    delete data.notes;
+
+    $("#view-order-title").text("Order ID: "+data.id);
+
+    for(fieldname in data){
+
+        fieldnameSelector = fieldname.split("-");
+
+        if(fieldnameSelector.length > 1){
+            fieldnameSelector[1] = "\\["+fieldnameSelector[1]+"\\]";
+        }
+
+        fieldnameSelector = fieldnameSelector.join("");
+        jDataElement = $(view_order_modal).find("input[name="+fieldnameSelector+"], select[name="+fieldnameSelector+"]");
+        jDisplayElement = $(view_order_modal).find("[data-displayfor="+fieldname+"]");
+
+        jDataElement.val(data[fieldname]);
+        jDataElement[0].dataset.original = data[fieldname];
+        jDisplayElement.text(data[fieldname]);
+
+        if (jDataElement.is("input[type='checkbox']")) {
+            jDataElement.attr("checked", !!data[fieldname]);
+        }
+        if (jDataElement.is("select")) {
+            jDisplayElement.text(jDataElement.find("option[value="+data[fieldname]+"]").text());
+        }
+        if (fieldname == "order-type") {
+            jDisplayElement.text(orderTypes[data[fieldname]]);
+        }
+
+
+    }
+
+    $(view_order_modal).find("#view-notes div.note").remove();
+
+    for(i in notes){
+        $(view_order_modal).find("#view-notes").append(generateNoteHtml(notes[i]));
+    }
+
+    ignorePaymentField($("#view-payment table"));
+
+}
+
+function generateNoteHtml(note){
+    return "<div class='note'>\
+        <span>"+moment(note.created_at).format('lll')+"<span style='float: right;'>\
+        ID: "+note.id+"</span></span>\
+        <p>"+note.note+"</p>\
+        <span class='author'>- "+(note['author'])+"</span>\
+    </div>";
+}
 
 
 // ========================  HELPERs =====================

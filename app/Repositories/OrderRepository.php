@@ -18,6 +18,46 @@ class OrderRepository
 
     }
 
+    public function getRecord($id)
+    {
+
+        return Order::join(
+            'payments',
+            'orders.payment',
+            '=',
+            'payments.id'
+        )->select(
+            'orders.id as id',
+            'payments.id as payment-id',
+            'payments.reference as payment-reference',
+            'payments.gateway as payment-gateway',
+            'payments.name as payment-name',
+            'payments.email as payment-email',
+            'payments.amount as payment-amount',
+            'payments.date as payment-date',
+            'orders.put_on_top as order-put_on_top',
+            'orders.entry as order-entry',
+            'orders.type as order-type',
+            'orders.name as order-name',
+            'orders.email as order-email',
+            'orders.paypal_name as order-paypal_name',
+            'orders.clicks as order-clicks',
+            'orders.date_submitted as order-date_submitted',
+            'orders.url as order-url',
+            'orders.stats as order-stats',
+            'orders.in_rotator as order-in_rotator',
+            'orders.clicks_sent as order-clicks_sent',
+            'orders.optins as order-optins',
+            'orders.followup_sent as order-followup_sent',
+            'orders.screenshot as order-screenshot',
+            'orders.priority as order-priority',
+            'orders.status as order-status'
+        )->where(
+            'orders.id', '=', $id
+        )->first();
+
+    }
+
     public function getList(array $data, array $noteMatches = []){
 
         $defaultSorter = config('custom.default_orders_list_sort');

@@ -31,4 +31,9 @@ class PaymentRepository
         return Payment::where('reference', $reference)->first();
     }
 
+    public function findById($id)
+    {
+        return Payment::where('id','=', $id)->first();
+    }
+
 }

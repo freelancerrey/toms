@@ -53,7 +53,10 @@
                             <tbody>
                                 <tr>
                                     <th scope="row" class="active text-right" style="width: 165px;">Reference : </th>
-                                    <td data-errorfor='payment-reference'><input name='payment[reference]' id='create-order-reference' type='text' value='' placeholder='Enter Reference here...'></td>
+                                    <td data-errorfor='payment-reference'>
+                                        <input name='payment[id]' type='hidden' value=''>
+                                        <input name='payment[reference]' id='create-order-reference' type='text' value='' placeholder='Enter Reference here...'>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th scope="row" class="active text-right">Paid Thru : </th>
@@ -170,35 +173,40 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="clear" class="btn btn-default" id='create-clear-button'>Clear</button>
-                <button type="button" class="btn btn-primary" id='create-order-button'>Create</button>
+                <button type="clear" class="btn btn-default" id='create-clear-button'>
+                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                    Clear
+                </button>
+                <button type="button" class="btn btn-primary" id='create-order-button'>
+                    <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
+                    Create
+                </button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 <div class="modal fade" id="view-order-modal" tabindex="-1" role="dialog" aria-labelledby="view-order-modal">
+    <input type='hidden' name='id' value=''>
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="view-order-title">Modal title</h4>
             </div>
-            <div class="modal-body" style='height: 410px;'>
+            <div class="modal-body" style='height: 450px;'>
                 <div class='row' style='margin-bottom: 10px'>
-                    <div class="col-md-10 text-left">
-                        <select style='padding: 7px 10px; border: 1px solid #d1d1d1;'>
-                            @foreach ($order_statuses as $status)
-                                <option value="{{ $status['status'] }}">ORDER - {{ $status['status'] }}</option>
-                            @endforeach
+                    <div class="col-md-2 text-left">
+                        <select style='padding: 7px 10px; border: 1px solid #d1d1d1;' name='order[priority]'>
+                            @for ($i = 0; $i <= config('custom.priority_level'); $i++)
+                                <option value='{{ $i }}'>{{ $i }}</option>
+                            @endfor
                         </select>
                     </div>
-                    <div class="col-md-2 text-right">
-                        <select style='padding: 7px 10px; border: 1px solid #d1d1d1;'>
-                            <option value='1'>1</option>
-                            <option value='2'>2</option>
-                            <option value='3'>3</option>
-                            <option value='4'>4</option>
-                            <option value='5'>5</option>
+                    <div class="col-md-10 text-right">
+                        <select style='padding: 7px 10px; border: 1px solid #d1d1d1;' name='order[status]'>
+                            @foreach ($order_statuses as $status)
+                                <option value="{{ $status['id'] }}">{{ $status['category'] }} - {{ $status['status'] }}</option>
+                            @endforeach
                         </select>
                     </div>
                 </div>
@@ -215,174 +223,183 @@
                             <tbody>
                                 <tr>
                                     <th scope="row" class="active text-right" style="width: 165px;">Reference : </th>
-                                    <td><input type='text' value='test' placeholder='Enter Reference here...'></td>
+                                    <td data-errorfor='payment-reference'>
+                                        <input name='payment[id]' type='hidden' value=''>
+                                        <input name='payment[reference]' id='view-order-reference' type='text' value='' placeholder='Enter Reference here...'>
+                                        <span data-displayfor='payment-reference'>test</span>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th scope="row" class="active text-right">Paid Thru : </th>
-                                    <td>
-                                        <select>
-                                            <option value='1'>Authorize.net</option>
-                                            <option value='2'>Paypal</option>
+                                    <td data-errorfor='payment-gateway'>
+                                        <select name='payment[gateway]'>
+                                            @foreach ($payment_gateways as $gateway)
+                                                <option value="{{ $gateway['id'] }}">{{ $gateway['gateway'] }}</option>
+                                            @endforeach
                                         </select>
+                                        <span data-displayfor='payment-gateway'></span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th scope="row" class="active text-right">Name : </th>
-                                    <td><input type='text' value='' placeholder='Enter Name here...'></td>
+                                    <td data-errorfor='payment-name'>
+                                        <input type='text' name='payment[name]' value='' placeholder='Enter Name here...'>
+                                        <span data-displayfor='payment-name'></span>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th scope="row" class="active text-right">Email : </th>
-                                    <td><input type='text' value='' placeholder='Enter Email here...'></td>
+                                    <td data-errorfor='payment-email'>
+                                        <input type='text' name='payment[email]' value='' placeholder='Enter Email here...'>
+                                        <span data-displayfor='payment-email'></span>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th scope="row" class="active text-right">Amount : </th>
-                                    <td><input type='text' value='' placeholder='Enter Amount here...'></td>
+                                    <td data-errorfor='payment-amount'>
+                                        <input type='text' name='payment[amount]' value='' placeholder='Enter Amount here...'>
+                                        <span data-displayfor='payment-amount'></span>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th scope="row" class="active text-right">Date : </th>
-                                    <td><input type='text' value='' placeholder='Enter Date here...'></td>
+                                    <td data-errorfor='payment-date'>
+                                        <input type='text' name='payment[date]' value='' id='create-order-paydate' placeholder='Enter Date here...'>
+                                        <span data-displayfor='payment-date'></span>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                     <div role="tabpanel" class="tab-pane" id="view-order">
-                        <div class='row attach-formid-btngroup'>
-                            <div class="col-md-7 text-left">
-                                <div class="input-group">
+                        <div class='row attach-form-row'>
+                            <div class="col-md-8 text-left">
+                                <div class="input-group attach-form-btngroup" data-placement="bottom">
                                     <div class="input-group-btn">
-                                        <button type="button" class="btn btn-default">Gravity</button>
-                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <button type="button" class="btn btn-default form-type-display" data-entryprefix='GF'>Gravity</button>
+                                        <button type="button" class="btn btn-default form-type-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <span class="caret"></span>
-                                            <span class="sr-only">Toggle Dropdown</span>
+                                            <span class="sr-only"></span>
                                         </button>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="#">Gravity</a></li>
-                                            <li><a href="#">Wufoo</a></li>
+                                        <button type="button" class="btn btn-default remove-attached-form"><span class="glyphicon glyphicon-remove-sign"></span></button>
+                                        <ul class="dropdown-menu form-type-list">
+                                            <li data-prefix='GF'><a href="#">Gravity</a></li>
+                                            <li data-prefix='WF'><a href="#">Wufoo</a></li>
                                         </ul>
                                     </div>
-                                    <input type="text" class="form-control" aria-label="..." id='create-order-formid' placeholder="Form/Entry ID...">
+                                    <input type="text" class="form-control form-id-input" aria-label="..." placeholder="Form/Entry ID...">
                                     <span class="input-group-btn">
-                                        <button class="btn btn-info" type="button">Go!</button>
+                                        <button class="btn btn-primary attach-form-button" type="button">Go!</button>
                                     </span>
                                 </div>
                             </div>
-                            <div class="col-md-5 text-right">
-                                <div class="checkbox"><label><input type="checkbox" value=""><strong>Put on top of the Que</strong></label></div>
+                            <div class="col-md-4 text-right">
+                                <label>
+                                    <input type="checkbox" class='order-putontop' name='order[put_on_top]' value="0">
+                                    <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
+                                    <strong>Put on Top of Que</strong>
+                                </label>
                             </div>
                         </div>
-                        <table class="table table-bordered" style='margin-top: 10px'>
+                        <input type="hidden" name="order[entry]" value="">
+                        <input type="hidden" name="order[type]" value="">
+                        <input type="hidden" name="order[name]" value="">
+                        <input type="hidden" name="order[email]" value="">
+                        <input type="hidden" name="order[paypal_name]" value="">
+                        <input type="hidden" name="order[date_submitted]" value="">
+                        <table class="table table-bordered" style='margin-top: 5px'>
                             <tbody>
-                                <tr id='form-entry-view'> <th scope="row" class="active text-right">Form/Entry ID : </th> <td>Mark <span class="glyphicon glyphicon-circle-arrow-up" style='font-size: 20px; float: right;' aria-hidden="true"></span></td></tr>
-                                <tr> <th scope="row" class="active text-right" style="width: 165px;">Traffic Type : </th> <td>Mark</td></tr>
-                                <tr> <th scope="row" class="active text-right">Customer Name : </th> <td>Larry</td></tr>
-                                <tr> <th scope="row" class="active text-right">Email : </th> <td>Jacob</td></tr>
-                                <tr> <th scope="row" class="active text-right">Paypal Name : </th> <td>Jacob</td></tr>
-                                <tr> <th scope="row" class="active text-right">Number of Clicks : </th> <td>Larry</td></tr>
-                                <tr> <th scope="row" class="active text-right">Date Submitted : </th> <td>Larry</td></tr>
+                                <tr>
+                                    <th scope="row" class="active text-right" style="width: 165px;">Entry ID : </th>
+                                    <td data-errorfor='order-entry' data-displayfor='order-entry'></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" class="active text-right">Traffic Type : </th>
+                                    <td data-errorfor='order-type' data-displayfor='order-type'></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" class="active text-right">Customer Name : </th>
+                                    <td data-errorfor='order-name' data-displayfor='order-name'></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" class="active text-right">Email : </th>
+                                    <td data-errorfor='order-email' data-displayfor='order-email'></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" class="active text-right">Paypal Name : </th>
+                                    <td data-errorfor='order-paypal_name' data-displayfor='order-paypal_name'></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" class="active text-right">Number of Clicks : </th>
+                                    <td data-errorfor='order-clicks'>
+                                        <input type='text' name='order[clicks]' value=''>
+                                        <span data-displayfor='order-clicks'></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" class="active text-right">Date Submitted : </th>
+                                    <td data-errorfor='order-date_submitted' data-displayfor='order-date_submitted'></td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
                     <div role="tabpanel" class="tab-pane" id="view-traffic">
-                        <table class="table table-bordered">
+                        <table class="table table-bordered" style="margin-top: 20px;">
                             <tbody>
                                 <tr>
                                     <th scope="row" class="active text-right" style="width: 165px;">URL : </th>
-                                    <td><input type='text' value='' placeholder='Enter URL here...'></td>
+                                    <td data-errorfor='order-url'>
+                                        <input type='text' name='order[url]' value='' placeholder='Enter URL here...'>
+                                        <span data-displayfor='order-url'></span>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th scope="row" class="active text-right">Stats Page : </th>
-                                    <td><input type='text' value='' placeholder='Enter Stats Page here...'></td>
+                                    <td data-errorfor='order-stats'>
+                                        <input type='text' name='order[stats]' value='' placeholder='Enter Stats Page here...'>
+                                        <span data-displayfor='order-stats'></span>
+                                    </td>
                                 </tr>
-                                <tr>
+                                <tr class='check-display'>
                                     <th scope="row" class="active text-right">In the Rotator : </th>
-                                    <td><input type="checkbox" value=""></td>
+                                    <td>
+                                        <input type="checkbox" name='order[in_rotator]' value="">
+                                        <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th scope="row" class="active text-right">No. Of Clicks Sent : </th>
-                                    <td><input type='text' value='' placeholder='Enter no. of clicks here...'></td>
+                                    <td data-errorfor='order-clicks_sent'>
+                                        <input type='text' value='' name='order[clicks_sent]' placeholder='Enter sent clicks here...'>
+                                        <span data-displayfor='order-clicks_sent'></span>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th scope="row" class="active text-right">No. Of Optins : </th>
-                                    <td><input type='text' value='' placeholder='Enter no. of optins here...'></td>
+                                    <td data-errorfor='order-optins'>
+                                        <input type='text' name='order[optins]' value='' placeholder='Enter no. of optins here...'>
+                                        <span data-displayfor='order-optins'></span>
+                                    </td>
                                 </tr>
-                                <tr>
+                                <tr class='check-display'>
                                     <th scope="row" class="active text-right">Follow Up Sent : </th>
-                                    <td><input type="checkbox" value=""></td>
+                                    <td>
+                                        <input type="checkbox" name='order[followup_sent]' value="">
+                                        <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th scope="row" class="active text-right">Result Screenshoot : </th>
-                                    <td><input type='text' value='' placeholder='Enter Screenshoot URL here...'></td>
+                                    <td data-errorfor='order-screenshot'>
+                                        <input type='text' value='' name='order[screenshot]' placeholder='Enter Screenshoot URL here...'>
+                                        <span data-displayfor='order-screenshot'></span>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                     <div role="tabpanel" class="tab-pane" id="view-notes">
                         <textarea></textarea>
-                        <div class='note'>
-                            <span>Dec 23, 2016</span>
-                            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem </p>
-                            <span class='author'>- James Starr</span>
-                        </div>
-                        <div class='note'>
-                            <span>Dec 23, 2016</span>
-                            <p>Sed ut perspiciatis unde omnis </p>
-                            <span class='author'>- James Starr</span>
-                        </div>
-                        <div class='note'>
-                            <span>Dec 23, 2016</span>
-                            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit</p>
-                            <span class='author'>- James Starr</span>
-                        </div>
-                        <div class='note'>
-                            <span>Dec 23, 2016</span>
-                            <p>veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit</p>
-                            <span class='author'>- James Starr</span>
-                        </div>
-                        <div class='note'>
-                            <span>Dec 23, 2016</span>
-                            <p>Sed ut perspiciatis unde </p>
-                            <span class='author'>- James Starr</span>
-                        </div>
-                        <div class='note'>
-                            <span>Dec 23, 2016</span>
-                            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit</p>
-                            <span class='author'>- James Starr</span>
-                        </div>
-                        <div class='note'>
-                            <span>Dec 23, 2016</span>
-                            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit</p>
-                            <span class='author'>- James Starr</span>
-                        </div>
-                        <div class='note'>
-                            <span>Dec 23, 2016</span>
-                            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit</p>
-                            <span class='author'>- James Starr</span>
-                        </div>
-                        <div class='note'>
-                            <span>Dec 23, 2016</span>
-                            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit</p>
-                            <span class='author'>- James Starr</span>
-                        </div>
-                        <div class='note'>
-                            <span>Dec 23, 2016</span>
-                            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit</p>
-                            <span class='author'>- James Starr</span>
-                        </div>
-                        <div class='note'>
-                            <span>Dec 23, 2016</span>
-                            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit</p>
-                            <span class='author'>- James Starr</span>
-                        </div>
-                        <div class='note'>
-                            <span>Dec 23, 2016</span>
-                            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit</p>
-                            <span class='author'>- James Starr</span>
-                        </div>
-                        <div class='note'>
-                            <span>Dec 23, 2016</span>
-                            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit</p>
-                            <span class='author'>- James Starr</span>
-                        </div>
                     </div>
                     <div role="tabpanel" class="tab-pane" id="view-logs">
                         <table id='log-table'>
@@ -403,8 +420,14 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-default" id='view-order-edit-reset-btn'>
+                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                    Edit
+                </button>
+                <button type="button" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
+                    Save changes
+                </button>
             </div>
         </div>
     </div>
@@ -427,9 +450,18 @@
             @endforeach
         </div>
         <div class='text-right' style='margin-top: 15px;'>
-            <button class="btn btn-default btn-sm clear-filter-btn" type="clear">Clear</button>
-            <button class="btn btn-default btn-sm default-filter-btn" type="button">Default</button>
-            <button class="btn btn-primary btn-sm update-filter-btn" type="submit">Update</button>
+            <button class="btn btn-default btn-sm clear-filter-btn" type="clear">
+                <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+                Clear
+            </button>
+            <button class="btn btn-default btn-sm default-filter-btn" type="button">
+                <span class="glyphicon glyphicon-pushpin" aria-hidden="true"></span>
+                Default
+            </button>
+            <button class="btn btn-primary btn-sm update-filter-btn" type="submit">
+                <span class="glyphicon glyphicon-filter" aria-hidden="true"></span>
+                Update
+            </button>
         </div>
     </div>
 </div>
