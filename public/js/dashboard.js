@@ -381,7 +381,7 @@ function clearAllCreateField(modal_content){
         } else if (this.nodeName === "TEXTAREA") {
             this.value = "";
         } else if (this.nodeName === "SELECT") {
-            $(this).find("option:eq(0)").attr("selected", true);
+            this.value = $(this).find("option:first-child").val();
         }
     });
     modal_content.find('button.remove-attached-form').click();
