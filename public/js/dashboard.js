@@ -8,7 +8,7 @@ $(document).ready(function() {
             attachFormXHR.abort();
         }
         if(typeof createOrderXHR !== 'undefined'){
-            attachFormXHR.abort();
+            createOrderXHR.abort();
         }
         clearAllCreateField(modal_content);
         modal_content.find("ul.nav-tabs li a:first").tab('show');
@@ -72,6 +72,7 @@ $(document).ready(function() {
         });
 
         clearAllErrors(modal_content);
+        modal_content.find(".modal-body").addClass("loading");
         $(thisbutton).parent().find('button').prop('disabled', true);
         $("#create-order button, #create-order input").prop('disabled', true);
 
@@ -96,9 +97,11 @@ $(document).ready(function() {
                 modal_content.find("[name]").prop('disabled', false);
                 $("#create-order button, #create-order input").prop('disabled', false);
                 $(thisbutton).parent().find('button').prop('disabled', false);
+                modal_content.find(".modal-body").removeClass("loading");
             },
             statusCode: {
                 400: function(response) {
+                    modal_content.find(".modal-body").removeClass("loading");
                     for(fieldname in response.responseJSON){
                         var error_element = modal_content.find("[data-errorfor="+fieldname.replace('.','-')+"]");
                         error_element.addClass('has-error');
