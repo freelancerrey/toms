@@ -244,11 +244,20 @@ $(document).ready(function() {
                 columnTr = $(originalElement).closest('tr');
 
             loadOrderDetails(columnTr.data("id"));
+            $("#view-order-edit-reset-btn").find("span.glyphicon").removeClass("glyphicon-repeat").addClass("glyphicon-pencil").next().text("Edit");
 
     };
 
     $("#view-order-edit-reset-btn").on('click',function(e){
-        $(this).parent().prev().addClass("edit-mode");
+        var jthis = $(this);
+        if(jthis.find("span.label").text() == "Edit"){
+            jthis.parent().prev().addClass("edit-mode");
+            jthis.find("span.glyphicon").removeClass("glyphicon-pencil").addClass("glyphicon-repeat").next().text("Reset");
+        } else {
+            jthis.parent().prev().removeClass("edit-mode");
+            jthis.find("span.glyphicon").removeClass("glyphicon-repeat").addClass("glyphicon-pencil").next().text("Edit");
+            resetOrderFieldValues($(this).parent().prev());
+        }
     });
 
     loadOrderList();
@@ -645,21 +654,21 @@ function loadViewOrderFieldValues(view_order_modal, data){
         fieldnameSelector = fieldnameSelector.join("");
         jDataElement = $(view_order_modal).find("input[name="+fieldnameSelector+"], select[name="+fieldnameSelector+"]");
         jDisplayElement = $(view_order_modal).find("[data-displayfor="+fieldname+"]");
+        fieldValue = emptyIfNull(data[fieldname]);
 
-        jDataElement.val(data[fieldname]);
-        jDataElement[0].dataset.original = data[fieldname];
-        jDisplayElement.text(data[fieldname]);
+        jDataElement.val(fieldValue);
+        jDataElement[0].dataset.original = fieldValue;
+        jDisplayElement.text(fieldValue);
 
         if (jDataElement.is("input[type='checkbox']")) {
-            jDataElement.attr("checked", !!data[fieldname]);
+            jDataElement.attr("checked", !!fieldValue);
         }
         if (jDataElement.is("select")) {
-            jDisplayElement.text(jDataElement.find("option[value="+data[fieldname]+"]").text());
+            jDisplayElement.text(jDataElement.find("option[value="+fieldValue+"]").text());
         }
         if (fieldname == "order-type") {
-            jDisplayElement.text(orderTypes[data[fieldname]]);
+            jDisplayElement.text(orderTypes[fieldValue]);
         }
-
 
     }
 
@@ -680,6 +689,18 @@ function generateNoteHtml(note){
         <p>"+note.note+"</p>\
         <span class='author'>- "+(note['author'])+"</span>\
     </div>";
+}
+
+function resetOrderFieldValues(view_order_modal){
+    $(view_order_modal).find("[data-original]").each(function(index){
+        var jthis = $(this);
+
+        jthis.val(this.dataset.original);
+        if(jthis.is("input[type='checkbox']")){
+            this.checked = !!this.dataset.original;
+        }
+
+    });
 }
 
 

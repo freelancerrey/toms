@@ -422,7 +422,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" id='view-order-edit-reset-btn'>
                     <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                    Edit
+                    <span class='label'>Edit</span>
                 </button>
                 <button type="button" class="btn btn-primary">
                     <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>

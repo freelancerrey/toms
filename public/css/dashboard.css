@@ -283,6 +283,11 @@ ul.nav-tabs li.active.hilight-error a{
     background-color: #f0f0f0;
 }
 
+button span.label{
+    color: #636b6f;
+    font-size: 14px;
+}
+
 div.pagination-wrapper{
     margin: 15px 0;
 }
