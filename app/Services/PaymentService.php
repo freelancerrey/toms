@@ -68,6 +68,11 @@ class PaymentService
      */
     public function validate(array $data)
     {
+
+        $messages = [
+            'required_without' => 'The :attribute is required.'
+        ];
+
         $validator = Validator::make($data, [
             'payment.id' => 'integer|between:0,65535|exists:payments,id',
             'payment.reference' => 'required_without:payment.id|string|max:100',
@@ -76,7 +81,7 @@ class PaymentService
             'payment.email' => 'required_without:payment.id|email|max:100',
             'payment.amount' => 'required_without:payment.id|numeric|between:0,999999.99',
             'payment.date' => 'required_without:payment.id|date_format:Y-m-d H:i:s'
-        ]);
+        ], $messages);
 
         if ($validator->fails()) {
             throw new ValidationException($validator->errors());
