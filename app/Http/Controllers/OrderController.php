@@ -29,6 +29,11 @@ class OrderController extends Controller
         return new AjaxResponse($this->orderService->create($request->all()));
     }
 
+    public function postUpdate(Request $request)
+    {
+        return new AjaxResponse($this->orderService->update($request->all()));
+    }
+
     public function getList(Request $request){
         return new AjaxResponse($this->orderService->getList($request->all()));
     }

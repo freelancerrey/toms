@@ -20,6 +20,7 @@ Route::group(['prefix' => 'ajax'], function () {
     Route::get('order/list', 'OrderController@getList');
     Route::get('order/detail', 'OrderController@getDetail');
     Route::post('order/create', 'OrderController@postCreate');
+    Route::post('order/update', 'OrderController@postUpdate');
     Route::get('payment/autolist', 'PaymentController@getAutoCompleteList');
 });
 

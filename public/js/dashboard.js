@@ -62,26 +62,19 @@ $(document).ready(function() {
 
     $("#create-order-button").on('click', function(e){
 
-        var modal_content = $(this).parents(".modal-content");
-        var request_data = {'_token': window.Laravel.csrfToken };
-        var thisbutton = this;
-
-        modal_content.find("[name]").each(function(index) {
-            request_data[this.name] = (this.type === 'checkbox')? ((this.checked)? 1:0):$(this).val();
-            this.disabled = true;
-        });
+        var modal_content = $(this).parents(".modal-content"),
+            thisbutton = this;
 
         clearAllErrors(modal_content);
         modal_content.find(".modal-body").addClass("loading");
         $(thisbutton).parent().find('button').prop('disabled', true);
-        $("#create-order button, #create-order input").prop('disabled', true);
 
         createOrderXHR = $.ajax({
             url: "ajax/order/create",
             dataType: "json",
             accepts: "application/json; charset=utf-8",
             type : "POST",
-            data : request_data,
+            data : parseRequestData(modal_content),
             success : function(data) {
                 if(data.hasOwnProperty('id')){
                     $('#new-order-modal').modal('hide');
@@ -94,8 +87,6 @@ $(document).ready(function() {
                 }
             },
             complete : function(response){
-                modal_content.find("[name]").prop('disabled', false);
-                $("#create-order button, #create-order input").prop('disabled', false);
                 $(thisbutton).parent().find('button').prop('disabled', false);
                 modal_content.find(".modal-body").removeClass("loading");
             },
@@ -260,6 +251,41 @@ $(document).ready(function() {
         }
     });
 
+    $("#view-order-edit-save-btn").on('click', function(e){
+
+        var modal_content = $(this).parents(".modal-content"),
+            thisbutton = this;
+
+        clearAllErrors(modal_content);
+        modal_content.find(".modal-body").addClass("loading");
+        $(thisbutton).parent().find('button').prop('disabled', true);
+
+        createOrderXHR = $.ajax({
+            url: "ajax/order/update",
+            dataType: "json",
+            accepts: "application/json; charset=utf-8",
+            type : "POST",
+            data : parseRequestData(modal_content),
+            success : function(data) {
+
+            },
+            complete : function(response){
+                $(thisbutton).parent().find('button').prop('disabled', false);
+                modal_content.find(".modal-body").removeClass("loading");
+            },
+            statusCode: {
+                400: function(response) {
+                    modal_content.find(".modal-body").removeClass("loading");
+
+                },
+                500: function(response) {
+                    displayAlertMessage('danger', 'Error!', "Something's not right");
+                }
+            }
+        });
+
+    });
+
     loadOrderList();
 
 });
@@ -375,6 +401,28 @@ function getFormDetail(caller){
 
 function removeFormAttachError(tabpane){
     tabpane.find('div.attach-form-btngroup').removeClass('has-error').removeAttr('data-toggle title data-original-title').tooltip('destroy');
+}
+
+function parseRequestData(modal_content) {
+    var request_data = {'_token': window.Laravel.csrfToken };
+
+    modal_content.find("[name]").each(function(index) {
+        request_data[this.name] = (this.type === 'checkbox')? ((this.checked)? 1:0):$(this).val();
+    });
+
+    return request_data;
+}
+
+function showFieldErrors(modal_content, errorFields){
+    for(fieldname in errorFields){
+        var error_element = modal_content.find("[data-errorfor="+fieldname.replace('.','-')+"]");
+        error_element.addClass('has-error');
+        error_element.tooltip({'title': response.responseJSON[fieldname][0].replace('.',' '), 'placement': 'left'});
+    }
+    modal_content.find("[data-errorfor]").tooltip('show');
+    modal_content.find("div.tab-content div.tab-pane:has(.has-error:not(.attach-form-btngroup))").each(function(index){
+        modal_content.find("ul.nav-tabs li:has(a[aria-controls="+this.id+"])").addClass("hilight-error");
+    });
 }
 
 function clearAllErrors(modal_content){

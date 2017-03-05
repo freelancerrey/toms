@@ -186,7 +186,6 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 <div class="modal fade" id="view-order-modal" tabindex="-1" role="dialog" aria-labelledby="view-order-modal">
-    <input type='hidden' name='id' value=''>
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -194,6 +193,7 @@
                 <h4 class="modal-title" id="view-order-title">Modal title</h4>
             </div>
             <div class="modal-body" style='height: 450px;'>
+                <input type='hidden' name='id' value=''>
                 <div class='row' style='margin-bottom: 10px'>
                     <div class="col-md-2 text-left">
                         <select style='padding: 7px 10px; border: 1px solid #d1d1d1;' name='order[priority]'>
@@ -226,7 +226,7 @@
                                     <td data-errorfor='payment-reference'>
                                         <input name='payment[id]' type='hidden' value=''>
                                         <input name='payment[reference]' id='view-order-reference' type='text' value='' placeholder='Enter Reference here...'>
-                                        <span data-displayfor='payment-reference'>test</span>
+                                        <span data-displayfor='payment-reference'></span>
                                     </td>
                                 </tr>
                                 <tr>
@@ -424,7 +424,7 @@
                     <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                     <span class='label'>Edit</span>
                 </button>
-                <button type="button" class="btn btn-primary">
+                <button type="button" class="btn btn-primary" id='view-order-edit-save-btn'>
                     <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
                     Save changes
                 </button>

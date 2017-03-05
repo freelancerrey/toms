@@ -53,6 +53,14 @@ class OrderService
 
     }
 
+    public function update(array $data)
+    {
+
+        $this->validateId($data);
+        $this->validate($data);
+
+    }
+
     public function getDetail(array $data)
     {
 
