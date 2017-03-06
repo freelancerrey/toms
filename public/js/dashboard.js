@@ -735,7 +735,7 @@ function loadViewOrderFieldValues(data){
         jDisplayElement.text(fieldValue);
 
         if (jDataElement.is("input[type='checkbox']")) {
-            jDataElement.attr("checked", !!fieldValue);
+            jDataElement[0].checked = fieldValue;
         }
         if (jDataElement.is("select")) {
             jDisplayElement.text(jDataElement.find("option[value="+fieldValue+"]").text());
