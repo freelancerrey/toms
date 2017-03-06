@@ -59,9 +59,10 @@ class OrderService
         $this->validateId($data);
         $this->validate($data);
 
-        $payment = $this->paymentService->createIfNotExist($data['payment']);
-
         $order = $this->orderRepository->getById($data['id']);
+
+        $payment = $this->paymentService->createIfNotExist($data['payment']);
+        $order->payment = $payment->id;
 
         foreach ($data['order'] as $key => $value) {
             $order->$key = $value;
