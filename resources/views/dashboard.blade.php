@@ -406,16 +406,10 @@
                     <div role="tabpanel" class="tab-pane" id="view-logs">
                         <table id='log-table'>
                             <thead>
-                                <tr><th style='width: 150px'>Time</th><th style='width: 130px'>User</th><th>Log</th><tr>
+                                <tr><th>Time</th><th>User</th><th>Log</th><tr>
                             </thead>
                             <tbody>
-                                <tr><td class='text-center'>12/23/2016 10:34:32 PM</td><td class='text-left'>James Starr</td><td class='text-left'>Order created</td></tr>
-                                <tr><td class='text-center'>12/23/2016 10:34:32 PM</td><td class='text-left'>James Starr</td><td class='text-left'>Order created</td></tr>
-                                <tr><td class='text-center'>12/23/2016 10:34:32 PM</td><td class='text-left'>James Starr</td><td class='text-left'>um doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore verita</td></tr>
-                                <tr><td class='text-center'>12/23/2016 10:34:32 PM</td><td class='text-left'>James Starr</td><td class='text-left'>Order created</td></tr>
-                                <tr><td class='text-center'>12/23/2016 10:34:32 PM</td><td class='text-left'>James Starr</td><td class='text-left'>Order created</td></tr>
-                                <tr><td class='text-center'>12/23/2016 10:34:32 PM</td><td class='text-left'>James Starr</td><td class='text-left'>Order created</td></tr>
-                                <tr><td class='text-center'>12/23/2016 10:34:32 PM</td><td class='text-left'>James Starr</td><td class='text-left'>Order created</td></tr>
+                                <tr><td class='text-center'>12/23/16 10:34:32 PM</td><td class='text-left'>James Starr</td><td class='text-left'>Update <span class='field-name'>Type</span> to <span class='field-value'>test</span></td></tr>
                             </tbody>
                         </table>
                     </div>

@@ -713,9 +713,12 @@ function loadOrderDetails(order_id){
 
 function loadViewOrderFieldValues(data){
     var view_order_modal = $("#view-order-modal"),
-        notes = data.notes;
+        jlogtbody = $("#log-table tbody"),
+        notes = data.notes,
+        logs = data.logs;
 
     delete data.notes;
+    delete data.logs;
 
     for(fieldname in data){
 
@@ -750,6 +753,17 @@ function loadViewOrderFieldValues(data){
     $(view_order_modal).find("#view-notes div.note").remove();
     for(i in notes){
         $(view_order_modal).find("#view-notes").append(generateNoteHtml(notes[i]));
+    }
+
+    jlogtbody.empty();
+    for (i in logs) {
+        jlogtbody.append("\
+            <tr><td class='text-center'>"+moment(logs[i].date).format('MM/DD/YY LTS')+"</td>\
+            <td class='text-left'>"+logs[i].name+"</td>\
+            <td class='text-left'>\
+            "+logs[i].log.replace("<#>","<span class='field-name'>").replace("<*>","<span class='field-value'>").replace("</#>","</span>").replace("</.>","</span>")+"\
+            </td></tr>"
+        );
     }
 
 }

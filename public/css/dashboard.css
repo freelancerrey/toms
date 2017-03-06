@@ -261,6 +261,16 @@ tr.check-display span.glyphicon{
     vertical-align: top;
 }
 
+#log-table td span.field-name{
+    font-weight: bold;
+    color: #000;
+}
+
+#log-table td span.field-value{
+    font-weight: bold;
+    color: #4C8900;
+}
+
 table td.has-error{
     border-bottom: 2px solid #a94442 !important;
 }

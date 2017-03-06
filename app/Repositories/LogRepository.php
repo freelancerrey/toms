@@ -24,4 +24,26 @@ class LogRepository
 
     }
 
+    public function getAllByOrder($orderId)
+    {
+
+        return Log::join(
+            'Users',
+            'Logs.user',
+            '=',
+            'Users.id'
+        )
+        ->where('Logs.order', '=', $orderId)
+        ->select(
+            'Logs.id',
+            'Logs.created_at as date',
+            'Users.name',
+            'Logs.log'
+        )
+        ->orderBy('id','desck')
+        ->get()
+        ->toArray();
+
+    }
+
 }

@@ -47,13 +47,6 @@ class OrderObserver
         $logs = [];
         $order = $order->toArray();
 
-        $logs[] = [
-            'order' => $order['id'],
-            'user' => $this->userId,
-            'log' => "Created <#>Order</#> with ID: <*>".$order['id']."</*>",
-            'created_at' => new DateTime()
-        ];
-
         $this->createPaymentLogs($logs, $order['id'], $order['payment'], "Set");
 
         foreach ($order as $field => $value) {
@@ -74,8 +67,14 @@ class OrderObserver
 
         }
 
-        if (sizeof($logs))
-            $this->logRepository->insert($logs);
+        $logs[] = [
+            'order' => $order['id'],
+            'user' => $this->userId,
+            'log' => "Created <#>Order</#> with ID: <*>".$order['id']."</*>",
+            'created_at' => new DateTime()
+        ];
+
+        $this->logRepository->insert($logs);
 
     }
 

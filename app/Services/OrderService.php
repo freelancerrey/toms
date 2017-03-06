@@ -4,6 +4,7 @@ namespace App\Services;
 use App\Exceptions\ValidationException;
 use App\Repositories\OrderRepository;
 use App\Repositories\NoteRepository;
+use App\Repositories\LogRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use App\Order;
@@ -14,17 +15,20 @@ class OrderService
 
     private $orderRepository;
     private $noteRepository;
+    private $logRepository;
     private $paymentService;
     private $noteService;
 
     public function __construct(
         OrderRepository $orderRepository,
         NoteRepository $noteRepository,
+        LogRepository $logRepository,
         PaymentService $paymentService,
         NoteService $noteService
     ) {
         $this->orderRepository = $orderRepository;
         $this->noteRepository = $noteRepository;
+        $this->logRepository = $logRepository;
         $this->paymentService = $paymentService;
         $this->noteService = $noteService;
     }
@@ -86,6 +90,8 @@ class OrderService
         $details = $this->orderRepository->getRecord($data['id']);
 
         $details['notes'] = $this->noteRepository->getForOrder($data['id']);
+
+        $details['logs'] = $this->logRepository->getAllByOrder($data['id']);
 
         return $details;
 
