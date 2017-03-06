@@ -54,4 +54,25 @@ class OrderStatusRepository
 
     }
 
+    public function getDescriptionById($id)
+    {
+
+        $status = OrderStatus::join(
+            'status_categories',
+            'order_statuses.category',
+            '=',
+            'status_categories.id'
+        )
+        ->where('order_statuses.id', '=', $id)
+        ->select(
+            'status_categories.category',
+            'order_statuses.status'
+        )
+        ->get()
+        ->toArray();
+
+        return implode(' - ', $status[0]);
+
+    }
+
 }

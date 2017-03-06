@@ -16,4 +16,11 @@ class OrderTypeRepository
 
     }
 
+    public function getDescriptionById($id)
+    {
+
+        return OrderType::where('id', '=', $id)->pluck('type')->toArray()[0];
+
+    }
+
 }

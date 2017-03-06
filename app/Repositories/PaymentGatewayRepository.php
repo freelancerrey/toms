@@ -16,4 +16,11 @@ class PaymentGatewayRepository
 
     }
 
+    public function getDescriptionById($id)
+    {
+
+        return PaymentGateway::where('id', '=', $id)->pluck('gateway')->toArray()[0];
+
+    }
+
 }
