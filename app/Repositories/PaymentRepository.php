@@ -10,11 +10,17 @@ class PaymentRepository
     public function save(Payment $payment)
     {
 
-        DB::transaction(function () use ($payment) {
+        $saved = false;
 
-            $payment->save();
+        DB::transaction(function () use ($payment, &$saved) {
+
+            $saved = $payment->save();
 
         });
+
+        if (!$saved) {
+            abort(500, "Something went wrong!! Can't save Payment");
+        }
 
     }
 

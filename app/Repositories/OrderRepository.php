@@ -10,11 +10,24 @@ class OrderRepository
     public function save(Order $order)
     {
 
-        DB::transaction(function () use ($order) {
+        $saved = false;
 
-            $order->save();
+        DB::transaction(function () use ($order, &$saved) {
+
+            $saved = $order->save();
 
         });
+
+        if (!$saved) {
+            abort(500, "Something went wrong!! Can't save Order");
+        }
+
+    }
+
+    public function getById($id)
+    {
+
+        return Order::findOrFail($id);
 
     }
 

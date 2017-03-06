@@ -264,7 +264,7 @@
                                 <tr>
                                     <th scope="row" class="active text-right">Date : </th>
                                     <td data-errorfor='payment-date'>
-                                        <input type='text' name='payment[date]' value='' id='create-order-paydate' placeholder='Enter Date here...'>
+                                        <input type='text' name='payment[date]' value='' id='view-edit-order-paydate' placeholder='Enter Date here...'>
                                         <span data-displayfor='payment-date'></span>
                                     </td>
                                 </tr>
@@ -399,7 +399,9 @@
                         </table>
                     </div>
                     <div role="tabpanel" class="tab-pane" id="view-notes">
-                        <textarea></textarea>
+                        <div data-errorfor='note'>
+                            <textarea name='note'></textarea>
+                        </div>
                     </div>
                     <div role="tabpanel" class="tab-pane" id="view-logs">
                         <table id='log-table'>

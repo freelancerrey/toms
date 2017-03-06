@@ -10,11 +10,17 @@ class NoteRepository
     public function save(Note $note)
     {
 
-        DB::transaction(function () use ($note) {
+        $saved = false;
 
-            $note->save();
+        DB::transaction(function () use ($note, &$saved) {
+
+            $saved = $note->save();
 
         });
+
+        if (!$saved) {
+            abort(500, "Something went wrong!! Can't save Note");
+        }
 
     }
 

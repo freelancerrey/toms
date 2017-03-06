@@ -20,7 +20,6 @@ class NoteService
 
     public function create(Order $order, User $user, array $data)
     {
-        $this->validate($data);
 
         $note = new Note;
         $note->order = $order->id;
@@ -53,7 +52,7 @@ class NoteService
      *
      * @param array $data
      */
-    private function validate(array $data)
+    public function validate(array $data)
     {
         $validator = Validator::make($data, [
             'note' => 'required|string|filled|max:750'

@@ -59,6 +59,22 @@ class OrderService
         $this->validateId($data);
         $this->validate($data);
 
+        $payment = $this->paymentService->createIfNotExist($data['payment']);
+
+        $order = $this->orderRepository->getById($data['id']);
+
+        foreach ($data['order'] as $key => $value) {
+            $order->$key = $value;
+        }
+
+        $this->orderRepository->save($order);
+
+        if (array_key_exists('note', $data) && !is_null($data['note'])) {
+            $this->noteService->create($order, Auth::user(), $data);
+        }
+
+        return $order;
+
     }
 
     public function getDetail(array $data)
@@ -157,6 +173,10 @@ class OrderService
 
         if ($validator->fails()) {
             throw new ValidationException($validator->errors());
+        }
+
+        if (array_key_exists('note', $data) && !is_null($data['note'])) {
+            $this->noteService->validate($data);
         }
 
     }

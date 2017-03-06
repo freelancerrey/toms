@@ -148,7 +148,7 @@ tr.check-display span.glyphicon{
     padding: 10px 20px;
     font-size: 12px;
     width: 100%;
-    margin: 10px;
+    margin: 10px 0;
     font-style: italic;
 }
 
@@ -216,10 +216,14 @@ tr.check-display span.glyphicon{
     border-color: #ccc;
 }
 
+#view-notes > div.has-error{
+    border: 2px solid #a94442 !important;
+}
+
 #view-notes textarea{
-    margin: 0px 10px;
+    margin: 0;
     height: 80px;
-    width: 521px;
+    width: 100%;
     border: 1px solid rgb(179, 179, 179);
     padding: 10px;
     font-size: 12px;

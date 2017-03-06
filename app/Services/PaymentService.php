@@ -74,7 +74,7 @@ class PaymentService
         ];
 
         $validator = Validator::make($data, [
-            'payment.id' => 'integer|between:0,65535|exists:payments,id',
+            'payment.id' => 'nullable|integer|between:0,65535|exists:payments,id',
             'payment.reference' => 'required_without:payment.id|string|max:100',
             'payment.gateway' => 'required_without:payment.id|integer|between:0,65535|exists:payment_gateways,id',
             'payment.name' => 'required_without:payment.id|string|max:50',

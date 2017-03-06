@@ -1,4 +1,4 @@
-var attachFormXHR, createOrderXHR;
+var attachFormXHR, createOrderXHR, updateOrderXHR;
 
 $(document).ready(function() {
 
@@ -10,8 +10,8 @@ $(document).ready(function() {
         if(typeof createOrderXHR !== 'undefined'){
             createOrderXHR.abort();
         }
-        clearAllCreateField(modal_content);
-        modal_content.find("ul.nav-tabs li a:first").tab('show');
+        clearAllCreateField();
+        $(this).find(".modal-content ul.nav-tabs li a:first").tab('show');
     });
 
     $('#create-order-reference').bootcomplete({
@@ -30,10 +30,10 @@ $(document).ready(function() {
     });
 
     $('input[name=payment\\[id\\]]').on('change', function(e){
-        ignorePaymentField($(this).closest("table"));
+        ignorePaymentFields($(this).closest("table"));
     });
 
-    $('#create-order-paydate').datetimepicker({
+    $('#create-order-paydate, #view-edit-order-paydate').datetimepicker({
         useCurrent: false,
         format: 'YYYY-MM-DD HH:mm:ss'
     });
@@ -54,10 +54,7 @@ $(document).ready(function() {
     });
 
     $("button.remove-attached-form").on('click', function(e){
-        tabpane = $(this).parents('div.tab-pane');
-        tabpane.find("input[name]").val("");
-        removeFormAttachError(tabpane);
-        tabpane.find('table tr:not(:eq(5)) td').text("");
+        removeAttachedForm(this);
     });
 
     $("#create-order-button").on('click', function(e){
@@ -78,10 +75,10 @@ $(document).ready(function() {
             success : function(data) {
                 if(data.hasOwnProperty('id')){
                     $('#new-order-modal').modal('hide');
+                    displayAlertMessage('success', 'Success!', "Order has been created");
                     if ($("#collapseFilters .well input[value="+data.status+"][data-active]").length || isFilterClear()) {
                         refreshOrderList();
                     }
-                    displayAlertMessage('success', 'Success!', "Order has been created");
                 } else {
                     displayAlertMessage('danger', 'Error!', "Something's not right");
                 }
@@ -93,15 +90,7 @@ $(document).ready(function() {
             statusCode: {
                 400: function(response) {
                     modal_content.find(".modal-body").removeClass("loading");
-                    for(fieldname in response.responseJSON){
-                        var error_element = modal_content.find("[data-errorfor="+fieldname.replace('.','-')+"]");
-                        error_element.addClass('has-error');
-                        error_element.tooltip({'title': response.responseJSON[fieldname][0].replace('.',' '), 'placement': 'left'});
-                    }
-                    modal_content.find("[data-errorfor]:visible").tooltip('show');
-                    modal_content.find("div.tab-content div.tab-pane:has(.has-error:not(.attach-form-btngroup))").each(function(index){
-                        modal_content.find("ul.nav-tabs li:has(a[aria-controls="+this.id+"])").addClass("hilight-error");
-                    });
+                    showFieldErrors(modal_content, response.responseJSON);
                 },
                 500: function(response) {
                     displayAlertMessage('danger', 'Error!', "Something's not right");
@@ -112,8 +101,7 @@ $(document).ready(function() {
     });
 
     $("#create-clear-button").on('click', function(e){
-        var modal_content = $(this).parents(".modal-content");
-        clearAllCreateField(modal_content);
+        clearAllCreateField();
     });
 
     $("div.pagination-wrapper button.pag-first-btn").on('click', function(e){
@@ -231,23 +219,43 @@ $(document).ready(function() {
 
     document.querySelector("div.mytable-wrapper tbody").onclick = function(e){
 
-            var originalElement = e.srcElement || e.originalTarget,
-                columnTr = $(originalElement).closest('tr');
+        var originalElement = e.srcElement || e.originalTarget,
+            columnTr = $(originalElement).closest('tr'),
+            view_order_modal = $("#view-order-modal");
 
-            loadOrderDetails(columnTr.data("id"));
-            $("#view-order-edit-reset-btn").find("span.glyphicon").removeClass("glyphicon-repeat").addClass("glyphicon-pencil").next().text("Edit");
+        if(typeof attachFormXHR !== 'undefined'){
+            attachFormXHR.abort();
+        }
+        if(typeof updateOrderXHR !== 'undefined'){
+            updateOrderXHR.abort();
+        }
+
+        clearAllErrors(view_order_modal);
+        $("#view-order-title").text("Loading...");
+        restoreIgnoredPaymentField($("#view-payment").find("table"));
+        view_order_modal.find("ul.nav-tabs li a:first").tab('show');
+        view_order_modal.find('div.modal-body').removeClass("edit-mode").addClass("loading");
+        view_order_modal.modal('show');
+
+        loadOrderDetails(columnTr.data("id"));
+        $("#view-order-edit-reset-btn").find("span.glyphicon").removeClass("glyphicon-repeat").addClass("glyphicon-pencil").next().text("Edit");
 
     };
+
+    document.querySelector("#view-order-modal").oninput = removeErrorOnInput;
+    document.querySelector("#new-order-modal").oninput = removeErrorOnInput;
 
     $("#view-order-edit-reset-btn").on('click',function(e){
         var jthis = $(this);
         if(jthis.find("span.label").text() == "Edit"){
             jthis.parent().prev().addClass("edit-mode");
             jthis.find("span.glyphicon").removeClass("glyphicon-pencil").addClass("glyphicon-repeat").next().text("Reset");
+            ignorePaymentFields($("#view-payment table"));
         } else {
+            clearAllErrors($(this).parents(".modal-content"));
             jthis.parent().prev().removeClass("edit-mode");
             jthis.find("span.glyphicon").removeClass("glyphicon-repeat").addClass("glyphicon-pencil").next().text("Edit");
-            resetOrderFieldValues($(this).parent().prev());
+            resetViewOrderFieldValues();
         }
     });
 
@@ -260,14 +268,20 @@ $(document).ready(function() {
         modal_content.find(".modal-body").addClass("loading");
         $(thisbutton).parent().find('button').prop('disabled', true);
 
-        createOrderXHR = $.ajax({
+        updateOrderXHR = $.ajax({
             url: "ajax/order/update",
             dataType: "json",
             accepts: "application/json; charset=utf-8",
             type : "POST",
             data : parseRequestData(modal_content),
             success : function(data) {
-
+                if(data.hasOwnProperty('id')){
+                    $("#view-order-modal").modal('hide');
+                    displayAlertMessage('success', 'Success!', "Order has been updated");
+                    refreshOrderList();
+                } else {
+                    displayAlertMessage('danger', 'Error!', "Something's not right");
+                }
             },
             complete : function(response){
                 $(thisbutton).parent().find('button').prop('disabled', false);
@@ -276,7 +290,7 @@ $(document).ready(function() {
             statusCode: {
                 400: function(response) {
                     modal_content.find(".modal-body").removeClass("loading");
-
+                    showFieldErrors(modal_content, response.responseJSON);
                 },
                 500: function(response) {
                     displayAlertMessage('danger', 'Error!', "Something's not right");
@@ -290,18 +304,21 @@ $(document).ready(function() {
 
 });
 
-function ignorePaymentField(containingParent){
+function ignorePaymentFields(containingParent){
 
     containingParent.find("tbody tr:first-child").nextAll().each(function(index){
-        var inputField = $(this).find("select,input"),
-            fieldname = inputField.attr("name");
-            if(inputField.is("select")){
-                inputField.val(inputField.find("option:first-child").val());
-            }else{
-                inputField.val("");
-            }
-            inputField.removeAttr("name").attr("disabled", true);
+        var inputField = $(this).find("select,input");
+        fieldname = inputField.attr("name");
+        if(inputField.is("select")){
+            inputField.val(inputField.find("option:first-child").val());
+        }else{
+            inputField.val("");
+        }
+        inputField.removeAttr("name").attr("disabled", true);
+        if (fieldname) {
             inputField[0].dataset.name = fieldname;
+        }
+        $(inputField).parents("[data-errorfor]").removeClass('has-error').removeAttr('data-toggle title data-original-title').tooltip('destroy');
     });
 
 }
@@ -399,8 +416,24 @@ function getFormDetail(caller){
 
 }
 
+function removeAttachedForm(caller){
+    tabpane = $(caller).parents('div.tab-pane');
+    tabpane.find("input[name]").val("");
+    removeFormAttachError(tabpane);
+    tabpane.find('table tr:not(:eq(5)) td').text("");
+}
+
 function removeFormAttachError(tabpane){
     tabpane.find('div.attach-form-btngroup').removeClass('has-error').removeAttr('data-toggle title data-original-title').tooltip('destroy');
+}
+
+function removeErrorOnInput(e){
+    var originalElement = e.srcElement || e.originalTarget,
+        errorElement = $(originalElement).parents("[data-errorfor]");
+
+    if(errorElement.hasClass("has-error")){
+        errorElement.removeClass('has-error').removeAttr('data-toggle title data-original-title').tooltip('destroy');
+    }
 }
 
 function parseRequestData(modal_content) {
@@ -417,7 +450,7 @@ function showFieldErrors(modal_content, errorFields){
     for(fieldname in errorFields){
         var error_element = modal_content.find("[data-errorfor="+fieldname.replace('.','-')+"]");
         error_element.addClass('has-error');
-        error_element.tooltip({'title': response.responseJSON[fieldname][0].replace('.',' '), 'placement': 'left'});
+        error_element.tooltip({'title': errorFields[fieldname][0].replace('.',' '), 'placement': 'left'});
     }
     modal_content.find("[data-errorfor]").tooltip('show');
     modal_content.find("div.tab-content div.tab-pane:has(.has-error:not(.attach-form-btngroup))").each(function(index){
@@ -430,7 +463,8 @@ function clearAllErrors(modal_content){
     modal_content.find("[data-errorfor],.attach-form-btngroup").removeClass('has-error').removeAttr('data-toggle title data-original-title').tooltip('destroy');
 }
 
-function clearAllCreateField(modal_content){
+function clearAllCreateField(){
+    var modal_content = $('#new-order-modal .modal-content');
     modal_content.find("[name],.form-id-input").each(function(index) {
         if(this.nodeName === "INPUT"){
             if(this.type === "checkbox"){
@@ -444,7 +478,7 @@ function clearAllCreateField(modal_content){
             this.value = $(this).find("option:first-child").val();
         }
     });
-    modal_content.find('button.remove-attached-form').click();
+    removeAttachedForm(modal_content.find('button.remove-attached-form'));
     restoreIgnoredPaymentField(modal_content);
     clearAllErrors(modal_content);
 }
@@ -650,14 +684,6 @@ function search(){
 }
 
 function loadOrderDetails(order_id){
-    var view_order_modal = $("#view-order-modal");
-
-    //init and set loading here please don't forget
-    $("#view-order-title").text("Loading...");
-    restoreIgnoredPaymentField($("#view-payment").find("table"));
-    view_order_modal.find("ul.nav-tabs li a:first").tab('show');
-    view_order_modal.find('div.modal-body').removeClass("edit-mode").addClass("loading");
-    view_order_modal.modal('show');
 
     $.ajax({
         url: "ajax/order/detail",
@@ -666,17 +692,18 @@ function loadOrderDetails(order_id){
         type : "GET",
         data : { 'id': order_id },
         success : function(response) {
-            loadViewOrderFieldValues(view_order_modal, response);
+            $("#view-order-title").text("Order ID: "+response.id);
+            loadViewOrderFieldValues(response);
         },
         complete : function(data) {
-            view_order_modal.find('div.modal-body').removeClass("loading");
+            $("#view-order-modal").find('div.modal-body').removeClass("loading");
         },
         statusCode: {
             400: function(response) {
-
+                displayAlertMessage('danger', 'Error!', "Bad Request");
             },
             500: function(response) {
-
+                displayAlertMessage('danger', 'Error!', "Something's not right");
             }
         }
 
@@ -684,12 +711,11 @@ function loadOrderDetails(order_id){
 
 }
 
-function loadViewOrderFieldValues(view_order_modal, data){
-    var notes = data.notes;
+function loadViewOrderFieldValues(data){
+    var view_order_modal = $("#view-order-modal"),
+        notes = data.notes;
 
     delete data.notes;
-
-    $("#view-order-title").text("Order ID: "+data.id);
 
     for(fieldname in data){
 
@@ -720,13 +746,11 @@ function loadViewOrderFieldValues(view_order_modal, data){
 
     }
 
+    $(view_order_modal).find("#view-notes textarea").val("");
     $(view_order_modal).find("#view-notes div.note").remove();
-
     for(i in notes){
         $(view_order_modal).find("#view-notes").append(generateNoteHtml(notes[i]));
     }
-
-    ignorePaymentField($("#view-payment table"));
 
 }
 
@@ -739,14 +763,29 @@ function generateNoteHtml(note){
     </div>";
 }
 
-function resetOrderFieldValues(view_order_modal){
-    $(view_order_modal).find("[data-original]").each(function(index){
+function resetViewOrderFieldValues(){
+    var view_order_modal = $("#view-order-modal");
+    view_order_modal.find("[data-original]").each(function(index){
         var jthis = $(this);
 
         jthis.val(this.dataset.original);
         if(jthis.is("input[type='checkbox']")){
             this.checked = !!this.dataset.original;
         }
+
+        displayFieldName = jthis.attr("name")||jthis[0].dataset.name;
+        jDisplayElement = view_order_modal.find("[data-displayfor="+(displayFieldName.replace("[", "-").replace("]", ""))+"]");
+
+        jDisplayElement.text(this.dataset.original);
+
+        if (jthis.is("select")) {
+            jDisplayElement.text(jthis.find("option[value="+this.dataset.original+"]").text());
+        }
+        if (jthis.attr("name") == "order[type]") {
+            jDisplayElement.text(orderTypes[this.dataset.original]);
+        }
+
+        view_order_modal.find("#view-notes textarea").val("");
 
     });
 }
