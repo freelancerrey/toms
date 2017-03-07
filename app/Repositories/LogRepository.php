@@ -33,7 +33,7 @@ class LogRepository
             '=',
             'users.id'
         )
-        ->where('Logs.order', '=', $orderId)
+        ->where('logs.order', '=', $orderId)
         ->select(
             'logs.id',
             'logs.created_at as date',
