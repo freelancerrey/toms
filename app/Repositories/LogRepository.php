@@ -28,17 +28,17 @@ class LogRepository
     {
 
         return Log::join(
-            'Users',
-            'Logs.user',
+            'users',
+            'logs.user',
             '=',
-            'Users.id'
+            'users.id'
         )
         ->where('Logs.order', '=', $orderId)
         ->select(
-            'Logs.id',
-            'Logs.created_at as date',
-            'Users.name',
-            'Logs.log'
+            'logs.id',
+            'logs.created_at as date',
+            'users.name',
+            'logs.log'
         )
         ->orderBy('id','desck')
         ->get()
