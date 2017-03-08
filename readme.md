@@ -1,4 +1,4 @@
-<p align="center">#TOMS (Traffic Order Management System) </p>
+#TOMS (Traffic Order Management System)
 
 ### About TOMS
 
