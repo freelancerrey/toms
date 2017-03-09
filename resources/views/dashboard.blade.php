@@ -191,6 +191,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="view-order-title">Modal title</h4>
+                <span class="label label-warning"><span class='user-updated'>Rey</span> updated this Order while you are viewing it. <a href="javascript:void(0)">Refresh</a></span>
             </div>
             <div class="modal-body" style='height: 450px;'>
                 <input type='hidden' name='id' value=''>
@@ -541,4 +542,6 @@
         formsMappings = {!! json_encode($order_type_mappings['forms'], true) !!},
         user_default_filter = {!! json_encode(explode(',', Auth::user()->default_filter), true) !!};
 </script>
+<script type="text/javascript" src="/js/pusher.min.js"></script>
+<script type="text/javascript" src="/js/realtime.js"></script>
 @endsection

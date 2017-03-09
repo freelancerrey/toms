@@ -96,6 +96,26 @@ td.status-cell{
     display: block;
 }
 
+#view-order-modal .modal-header h4,
+#view-order-modal .modal-header.updated span.label{
+    display: inline-block;
+}
+
+#view-order-modal .modal-header span.label{
+    background-color: #cf5800;
+    font-size: 12px;
+    float: right;
+    margin: 2px 20px 5px 0;
+    padding: 5px 10px;
+    font-weight: normal;
+    display: none;
+}
+
+.modal-header span.label a{
+    font-weight: bold;
+    color: #31ccff;
+}
+
 #view-order-modal div.modal-body.edit-mode .attach-form-btngroup{
     display: table;
 }
